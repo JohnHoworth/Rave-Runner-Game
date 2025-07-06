@@ -124,45 +124,37 @@ export default function Home() {
     if (!gameState) return;
 
     const gameLoop = setInterval(() => {
-      setGameState(prev => {
-        if (!prev) return null;
+      const { enemies, player, maze } = gameState;
 
-        let playerCaught = false;
-
-        const newEnemies = prev.enemies.map(enemy => {
-          // Use BFS pathfinding to find the path to the player
-          const path = findPath(enemy, prev.player, prev.maze);
-
-          if (path && path.length > 1) {
-            // The first element in the path is the current position, so move to the second
-            return path[1];
-          }
-
-          // If there's no path or the ghost is already at the player, don't move.
-          return enemy;
-        });
-
-        const newState = { ...prev, enemies: newEnemies };
-
-        // Check for player collision
-        for (const enemy of newEnemies) {
-          if (enemy.x === newState.player.x && enemy.y === newState.player.y) {
-            playerCaught = true;
-            break;
-          }
+      const newEnemies = enemies.map(enemy => {
+        const path = findPath(enemy, player, maze);
+        if (path && path.length > 1) {
+          return path[1];
         }
-
-        if (playerCaught) {
-          toast({
-            title: "You Got Busted!",
-            description: "The party busters caught you. Try again!",
-            variant: "destructive",
-          });
-          return createInitialState();
-        }
-
-        return newState;
+        return enemy;
       });
+
+      let playerCaught = false;
+      for (const enemy of newEnemies) {
+        if (enemy.x === player.x && enemy.y === player.y) {
+          playerCaught = true;
+          break;
+        }
+      }
+
+      if (playerCaught) {
+        toast({
+          title: "You Got Busted!",
+          description: "The party busters caught you. Try again!",
+          variant: "destructive",
+        });
+        setGameState(createInitialState());
+      } else {
+        setGameState(prev => {
+            if (!prev) return null;
+            return { ...prev, enemies: newEnemies };
+        });
+      }
     }, 400);
 
     return () => clearInterval(gameLoop);

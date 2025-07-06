@@ -1,12 +1,14 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
 import GameBoard from '@/components/game/GameBoard';
 import GameUI from '@/components/game/GameUI';
 import Header from '@/components/layout/Header';
-import type { GameState, Level, Item } from "@/lib/types";
+import type { GameState, Level, Item, CollectibleType, Position } from "@/lib/types";
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse" },
@@ -20,17 +22,27 @@ const INITIAL_LEVELS: Level[] = [
 
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
-  const emptySpots = findEmptySpots(maze, 20); // Find 20 empty spots for player, enemies, items
+  const emptySpots = findEmptySpots(maze, 20); 
 
-  const playerPos = emptySpots.pop()!;
-  const enemyPositions = [emptySpots.pop()!, emptySpots.pop()!, emptySpots.pop()!];
+  const playerPos = emptySpots.pop();
+  if (!playerPos) throw new Error("Could not find an empty spot for the player.");
+
+  const enemyPositions = [emptySpots.pop(), emptySpots.pop(), emptySpots.pop()]
+    .filter((p): p is Position => !!p);
   
-  const items: Item[] = [
-    ...Array(5).fill(0).map(() => ({ type: 'flyer' as const, ...emptySpots.pop()! })),
-    ...Array(5).fill(0).map(() => ({ type: 'glowstick' as const, ...emptySpots.pop()! })),
-    ...Array(3).fill(0).map(() => ({ type: 'vinyl' as const, ...emptySpots.pop()! })),
-  ].filter(item => item.x !== undefined);
+  const items: Item[] = [];
+  const itemTypes: CollectibleType[] = [
+    ...Array(5).fill('flyer'),
+    ...Array(5).fill('glowstick'),
+    ...Array(3).fill('vinyl')
+  ];
 
+  itemTypes.forEach(type => {
+    const pos = emptySpots.pop();
+    if (pos) {
+      items.push({ type, ...pos });
+    }
+  });
 
   return {
     score: 0,
@@ -48,6 +60,7 @@ const createInitialState = (): GameState => {
 export default function Home() {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
+  const { toast } = useToast();
 
   useEffect(() => {
     setGameState(createInitialState());
@@ -59,19 +72,16 @@ export default function Home() {
 
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
       
-      // Check wall collision
       if (prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1) {
         return prev;
       }
       
-      // Check boundaries
       if (newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH || newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT) {
         return prev;
       }
 
       const newState = { ...prev, player: newPlayerPos };
 
-      // Check item collision
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
         const collectedItem = newState.items.splice(itemIndex, 1)[0];
@@ -108,6 +118,74 @@ export default function Home() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [movePlayer]);
+
+  // Game loop for enemy movement
+  useEffect(() => {
+    if (!gameState) return;
+
+    const gameLoop = setInterval(() => {
+      setGameState(prev => {
+        if (!prev) return null;
+
+        let playerCaught = false;
+
+        const newEnemies = prev.enemies.map(enemy => {
+          const diffX = prev.player.x - enemy.x;
+          const diffY = prev.player.y - enemy.y;
+
+          if (diffX === 0 && diffY === 0) return enemy;
+
+          // Attempt to move horizontally first if horizontal distance is greater
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            const nextX = enemy.x + Math.sign(diffX);
+            if (prev.maze[enemy.y]?.[nextX] !== 1) {
+              return { x: nextX, y: enemy.y };
+            }
+          }
+          
+          // Attempt to move vertically (either as primary, or as secondary if horizontal is blocked)
+          const nextY = enemy.y + Math.sign(diffY);
+          if (prev.maze[nextY]?.[enemy.x] !== 1) {
+            return { x: enemy.x, y: nextY };
+          }
+          
+          // If vertical is also blocked, try horizontal again (if it was secondary)
+          if (Math.abs(diffX) <= Math.abs(diffY)) {
+            const nextX = enemy.x + Math.sign(diffX);
+            if (prev.maze[enemy.y]?.[nextX] !== 1) {
+              return { x: nextX, y: enemy.y };
+            }
+          }
+          
+          return enemy;
+        });
+
+        const newState = { ...prev, enemies: newEnemies };
+
+        // Check for player collision
+        for (const enemy of newEnemies) {
+          if (enemy.x === newState.player.x && enemy.y === newState.player.y) {
+            playerCaught = true;
+            break;
+          }
+        }
+
+        if (playerCaught) {
+          toast({
+            title: "You Got Busted!",
+            description: "The party busters caught you. Try again!",
+            variant: "destructive",
+          });
+          return createInitialState();
+        }
+
+        return newState;
+      });
+    }, 400);
+
+    return () => clearInterval(gameLoop);
+  }, [gameState, toast]);
+
 
   if (!gameState) {
     return (

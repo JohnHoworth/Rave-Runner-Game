@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -9,6 +8,7 @@ import type { GameState, Level, Item, CollectibleType, Position } from "@/lib/ty
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { findPath } from "@/lib/pathfinding";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse" },
@@ -130,33 +130,15 @@ export default function Home() {
         let playerCaught = false;
 
         const newEnemies = prev.enemies.map(enemy => {
-          const diffX = prev.player.x - enemy.x;
-          const diffY = prev.player.y - enemy.y;
+          // Use BFS pathfinding to find the path to the player
+          const path = findPath(enemy, prev.player, prev.maze);
 
-          if (diffX === 0 && diffY === 0) return enemy;
+          if (path && path.length > 1) {
+            // The first element in the path is the current position, so move to the second
+            return path[1];
+          }
 
-          // Attempt to move horizontally first if horizontal distance is greater
-          if (Math.abs(diffX) > Math.abs(diffY)) {
-            const nextX = enemy.x + Math.sign(diffX);
-            if (prev.maze[enemy.y]?.[nextX] !== 1) {
-              return { x: nextX, y: enemy.y };
-            }
-          }
-          
-          // Attempt to move vertically (either as primary, or as secondary if horizontal is blocked)
-          const nextY = enemy.y + Math.sign(diffY);
-          if (prev.maze[nextY]?.[enemy.x] !== 1) {
-            return { x: enemy.x, y: nextY };
-          }
-          
-          // If vertical is also blocked, try horizontal again (if it was secondary)
-          if (Math.abs(diffX) <= Math.abs(diffY)) {
-            const nextX = enemy.x + Math.sign(diffX);
-            if (prev.maze[enemy.y]?.[nextX] !== 1) {
-              return { x: nextX, y: enemy.y };
-            }
-          }
-          
+          // If there's no path or the ghost is already at the player, don't move.
           return enemy;
         });
 

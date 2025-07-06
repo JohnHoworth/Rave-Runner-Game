@@ -6,6 +6,7 @@ import GameUI from '@/components/game/GameUI';
 import Header from '@/components/layout/Header';
 import type { GameState, Level, Item } from "@/lib/types";
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
+import { Loader2 } from "lucide-react";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse" },
@@ -45,11 +46,17 @@ const createInitialState = (): GameState => {
 
 
 export default function Home() {
-  const [gameState, setGameState] = useState<GameState>(createInitialState());
+  const [gameState, setGameState] = useState<GameState | null>(null);
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
+
+  useEffect(() => {
+    setGameState(createInitialState());
+  }, []);
 
   const movePlayer = useCallback((dx: number, dy: number) => {
     setGameState(prev => {
+      if (!prev) return null;
+
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
       
       // Check wall collision
@@ -101,6 +108,15 @@ export default function Home() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [movePlayer]);
+
+  if (!gameState) {
+    return (
+      <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden items-center justify-center">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+        <p className="text-xl mt-4 text-accent">Loading the Rave...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">

@@ -26,7 +26,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to keep the player visually centered within the transformed view
+  // Calculate the offset to move the maze under the player
   const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
   const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
   

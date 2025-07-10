@@ -30,7 +30,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
   // Calculate the offset to center the player in the isometric view.
-  // We want to translate the maze by the negative of the player's isometric position.
   const mazeTx = -toIsometricX(player.x, player.y);
   const mazeTy = -toIsometricY(player.x, player.y);
 
@@ -49,7 +48,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-100 ease-linear"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `rotateX(60deg) rotateZ(45deg) translateX(${mazeTx}px) translateY(${mazeTy}px) scale(1.5)`,
+                    transform: `rotateX(60deg) rotateZ(45deg) translateX(${mazeTx}px) translateY(${mazeTy}px) scale(2.5)`,
                 }}
             >
                 {/* Maze Floor and Walls */}

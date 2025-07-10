@@ -7,7 +7,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 5; // The size of a tile in rem (e.g., 64px)
+const TILE_SIZE = 6; // The size of a tile in rem
 const VIEWPORT_SIZE = 40; // The visible area size in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -26,10 +26,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to move the maze under the player
+  // Calculate the offset to center the player.
   const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
   const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
-  
+
   return (
     <div
       className="bg-transparent border-4 border-secondary shadow-2xl rounded-lg overflow-hidden relative"
@@ -40,35 +40,38 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       }}
       data-ai-hint="maze puzzle"
     >
-        <div
-            className="absolute transition-all duration-100 ease-linear"
-            style={{
-                width: `${MAZE_WIDTH * TILE_SIZE}rem`,
-                height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
-                transform: `translateX(${mazeOffsetX}rem) translateY(${mazeOffsetY}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
-                transformStyle: 'preserve-3d',
-                top: `-${(MAZE_HEIGHT * TILE_SIZE) / 4}rem`,
-                left: `${(MAZE_WIDTH * TILE_SIZE) / 12}rem`,
-            }}
-        >
+      <div
+        className="absolute transition-all duration-100 ease-linear"
+        style={{
+            width: `${MAZE_WIDTH * TILE_SIZE}rem`,
+            height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
+            transform: `translateX(${mazeOffsetX}rem) translateY(${mazeOffsetY}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
+            transformStyle: 'preserve-3d',
+            top: `-${(MAZE_HEIGHT * TILE_SIZE) / 4}rem`,
+            left: `${(MAZE_WIDTH * TILE_SIZE) / 12}rem`,
+        }}
+      >
         {/* Maze Floor and Walls */}
         <div className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
             {maze.map((row, y) =>
                 row.map((cell, x) => (
                 <div
                     key={`${x}-${y}`}
-                    className={`absolute ${cell === 1 ? 'bg-primary/80' : 'bg-transparent'}`}
+                    className="absolute"
                     style={{
                         width: `${TILE_SIZE}rem`,
                         height: `${TILE_SIZE}rem`,
                         top: `${y * TILE_SIZE}rem`,
                         left: `${x * TILE_SIZE}rem`,
-                        transform: cell === 1 ? 'translateZ(1rem)' : 'none',
                         transformStyle: 'preserve-3d',
                     }}
                 >
-                    {cell === 1 && (
-                         <div className="absolute inset-0 bg-primary/40" style={{ transform: `translateZ(0) scaleY(0.5) rotateX(-90deg)`, transformOrigin: 'top' }} />
+                    {cell === 1 ? (
+                        <div className="absolute inset-0 bg-primary/80" style={{ transform: 'translateZ(1rem)' }}>
+                            <div className="absolute inset-0 bg-primary/40" style={{ transform: `translateZ(0) scaleY(0.5) rotateX(-90deg)`, transformOrigin: 'top' }} />
+                        </div>
+                    ) : (
+                        <div className="absolute inset-0 bg-transparent" />
                     )}
                 </div>
                 ))
@@ -77,10 +80,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
         {/* Items */}
         {items.map((item, i) => (
-          <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{ 
+          <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{
               top: `${item.y * TILE_SIZE}rem`,
               left: `${item.x * TILE_SIZE}rem`,
-              transform: 'translateZ(1.5rem) rotateZ(-45deg) rotateX(-60deg)' 
+              width: `${TILE_SIZE}rem`,
+              height: `${TILE_SIZE}rem`,
+              transform: 'translateZ(1.5rem) rotateZ(-45deg) rotateX(-60deg)'
           }}>
               <ItemIcon type={item.type} />
           </div>
@@ -88,22 +93,24 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
         {/* Enemies */}
         {enemies.map((enemy, i) => (
-          <div key={`enemy-${i}`} className="absolute w-12 h-12" style={{ 
+          <div key={`enemy-${i}`} className="absolute" style={{
               top: `${enemy.y * TILE_SIZE}rem`,
               left: `${enemy.x * TILE_SIZE}rem`,
-              transition: 'all 0.4s linear', 
+              width: `${TILE_SIZE}rem`,
+              height: `${TILE_SIZE}rem`,
+              transition: 'all 0.4s linear',
               transform: 'translateZ(2rem) rotateZ(-45deg) rotateX(-60deg)'
           }}>
               <GhostIcon className="w-full h-full" />
           </div>
         ))}
 
-         {/* Player Icon */}
+        {/* Player Icon */}
          <div className="absolute" style={{
             top: `${player.y * TILE_SIZE}rem`,
             left: `${player.x * TILE_SIZE}rem`,
-            width: '3rem',
-            height: '3rem',
+            width: `${TILE_SIZE}rem`,
+            height: `${TILE_SIZE}rem`,
             transform: 'translateZ(2rem) rotateZ(-45deg) rotateX(-60deg)',
             transition: 'top 0.1s linear, left 0.1s linear',
         }}>

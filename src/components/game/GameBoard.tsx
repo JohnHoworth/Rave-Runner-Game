@@ -55,7 +55,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
           width: `${boardWidthRem}rem`,
           height: `${boardHeightRem}rem`,
           transformStyle: 'preserve-3d',
-          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.9) translateX(${translateXRem}rem) translateY(${translateYRem}rem)`,
+          transform: `rotateX(60deg) rotateZ(-45deg) translateX(${translateXRem}rem) translateY(${translateYRem}rem) scale(0.9)`,
         }}
       >
         <div

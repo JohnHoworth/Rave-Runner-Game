@@ -7,7 +7,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 6; // The size of a tile in rem
+const TILE_SIZE = 8; // The size of a tile in rem
 const VIEWPORT_SIZE = 40; // The visible area size in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -27,9 +27,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
   // Calculate the offset to center the player.
-  const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
-  const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
-
+  const mazeTx = (VIEWPORT_SIZE / 2) - ((player.x - player.y) * TILE_SIZE / 2);
+  const mazeTy = (VIEWPORT_SIZE / 2) - ((player.x + player.y) * TILE_SIZE / 4);
+  
   return (
     <div
       className="bg-transparent border-4 border-secondary shadow-2xl rounded-lg overflow-hidden relative"
@@ -41,14 +41,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze puzzle"
     >
       <div
-        className="absolute transition-all duration-100 ease-linear"
+        className="absolute transition-transform duration-100 ease-linear"
         style={{
             width: `${MAZE_WIDTH * TILE_SIZE}rem`,
             height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
-            transform: `translateX(${mazeOffsetX}rem) translateY(${mazeOffsetY}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
+            transform: `translate(${mazeTx}rem, ${mazeTy}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
             transformStyle: 'preserve-3d',
-            top: `-${(MAZE_HEIGHT * TILE_SIZE) / 4}rem`,
-            left: `${(MAZE_WIDTH * TILE_SIZE) / 12}rem`,
         }}
       >
         {/* Maze Floor and Walls */}

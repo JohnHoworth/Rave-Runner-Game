@@ -78,7 +78,6 @@ export default function Home() {
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
-      // Check for wall collision first. If it's a wall, do nothing.
       if (
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
@@ -87,14 +86,12 @@ export default function Home() {
         return prev;
       }
   
-      // The move is valid, so we can start building the new state.
       let newState = { ...prev, player: newPlayerPos };
       
-      // Check for collision with enemies after player moves
       for (const enemy of newState.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
           setTimeout(resetGame, 0);
-          return newState; // Return the state where player and enemy occupy the same space before reset
+          return newState;
         }
       }
   
@@ -102,11 +99,9 @@ export default function Home() {
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
         
-        // Create a new array for items
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);
         
-        // Create new objects for collectibles, score, etc.
         const newCollectibles = { ...newState.collectibles };
         let newScore = newState.score;
         let newRaveBucks = newState.raveBucks;
@@ -125,7 +120,6 @@ export default function Home() {
           newCollectibles.vinyls++;
         }
         
-        // Update the new state object with new data
         newState = {
             ...newState,
             items: newItems,
@@ -142,18 +136,16 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Remapped controls for isometric view
-      if (e.key === 'ArrowUp') movePlayer(-1, -1); // Up-Left
-      if (e.key === 'ArrowDown') movePlayer(1, 1);   // Down-Right
-      if (e.key === 'ArrowLeft') movePlayer(-1, 1);  // Down-Left
-      if (e.key === 'ArrowRight') movePlayer(1, -1); // Up-Right
+      if (e.key === 'ArrowUp') movePlayer(-1, -1);
+      if (e.key === 'ArrowDown') movePlayer(1, 1);
+      if (e.key === 'ArrowLeft') movePlayer(-1, 1);
+      if (e.key === 'ArrowRight') movePlayer(1, -1);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [movePlayer]);
 
-  // Game loop for enemy movement
   useEffect(() => {
     if (!gameState) return;
 
@@ -165,20 +157,16 @@ export default function Home() {
 
         const newEnemies = enemies.map(enemy => {
           const path = findPath(enemy, player, maze);
-          // If a path exists and has more than one step (the first step is the enemy's current location)
           if (path && path.length > 1) {
-            // Move to the next step in the path
             return path[1];
           }
-          // If no path, stay in the same position
           return enemy;
         });
 
-        // Check for collision after enemies move
         for (const enemy of newEnemies) {
           if (enemy.x === player.x && enemy.y === player.y) {
              setTimeout(resetGame, 0);
-             return { ...prev, enemies: newEnemies }; // Return new state before reset
+             return { ...prev, enemies: newEnemies };
           }
         }
         
@@ -198,7 +186,7 @@ export default function Home() {
     return (
       <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden items-center justify-center">
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
-        <p className="text-xl mt-4 text-accent">Loading the Rave...</p>
+        <p className="text-xl mt-4 text-accent">Loading Game...</p>
       </div>
     );
   }

@@ -24,21 +24,8 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the board dimensions in rem
   const boardWidthRem = MAZE_WIDTH * TILE_SIZE_REM;
   const boardHeightRem = MAZE_HEIGHT * TILE_SIZE_REM;
-  
-  // Define the viewport's center in rem. The board container is 40rem x 40rem.
-  const viewportCenterRemX = 20; 
-  const viewportCenterRemY = 20; 
-
-  // Calculate the player's current position in rem from the top-left of the maze grid.
-  const playerRemX = player.x * TILE_SIZE_REM + TILE_SIZE_REM / 2;
-  const playerRemY = player.y * TILE_SIZE_REM + TILE_SIZE_REM / 2;
-
-  // Calculate the necessary translation to move the player's position to the viewport's center.
-  const translateX = viewportCenterRemX - playerRemX;
-  const translateY = viewportCenterRemY - playerRemY;
 
   return (
     <div
@@ -56,7 +43,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
           width: `${boardWidthRem}rem`,
           height: `${boardHeightRem}rem`,
           transformStyle: 'preserve-3d',
-          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.6) translateX(${translateX}rem) translateY(${translateY}rem)`,
+          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.6)`,
         }}
       >
         <div

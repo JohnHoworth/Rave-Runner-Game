@@ -58,12 +58,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
         {enemies.map((enemy, i) => (
             <div key={`enemy-${i}`} className="p-0.5" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.2s linear' }}>
-                <GhostIcon className="w-full h-full text-destructive drop-shadow-[0_0_5px_theme(colors.destructive)]" />
+                <GhostIcon className="w-full h-full text-destructive drop-shadow-[0_0_5px_hsl(var(--destructive))]" />
             </div>
         ))}
         
         <div className="p-0.5" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear' }}>
-            <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_5px_theme(colors.accent)]" />
+            <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_5px_hsl(var(--accent))]" />
         </div>
       </div>
     </div>

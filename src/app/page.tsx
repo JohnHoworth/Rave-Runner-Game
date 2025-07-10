@@ -75,48 +75,62 @@ export default function Home() {
   const movePlayer = useCallback((dx: number, dy: number) => {
     setGameState(prev => {
       if (!prev) return null;
-
+  
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
-      
-      if (prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1) {
+  
+      if (
+        newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
+        newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
+        prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
+      ) {
         return prev;
       }
-      
-      if (newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH || newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT) {
-        return prev;
-      }
-
-      // Check for collision with enemies after player moves
+  
       for (const enemy of prev.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
-          // Defer state reset to avoid issues within setGameState
           setTimeout(resetGame, 0);
-          return { ...prev, player: newPlayerPos }; // Briefly show move before reset
+          return { ...prev, player: newPlayerPos };
         }
       }
-
-      const newState = { ...prev, player: newPlayerPos };
-
+  
+      let newState = { ...prev, player: newPlayerPos };
+  
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
-        const collectedItem = newState.items.splice(itemIndex, 1)[0];
-        newState.collectibles = {...newState.collectibles};
+        const collectedItem = newState.items[itemIndex];
         
+        // Create new objects/arrays for state update
+        const newItems = [...newState.items];
+        newItems.splice(itemIndex, 1);
+        
+        const newCollectibles = { ...newState.collectibles };
+        let newScore = newState.score;
+        let newRaveBucks = newState.raveBucks;
+  
         if (collectedItem.type === 'flyer') {
-          newState.score += 10;
-          newState.collectibles.flyers++;
+          newScore += 10;
+          newCollectibles.flyers++;
         }
         if (collectedItem.type === 'glowstick') {
-          newState.score += 20;
-          newState.collectibles.glowsticks++;
+          newScore += 20;
+          newCollectibles.glowsticks++;
         }
         if (collectedItem.type === 'vinyl') {
-          newState.score += 50;
-          newState.raveBucks += 5;
-          newState.collectibles.vinyls++;
+          newScore += 50;
+          newRaveBucks += 5;
+          newCollectibles.vinyls++;
         }
+        
+        // Assign new state
+        newState = {
+            ...newState,
+            items: newItems,
+            collectibles: newCollectibles,
+            score: newScore,
+            raveBucks: newRaveBucks,
+        };
       }
-      
+  
       return newState;
     });
   }, [resetGame]);
@@ -187,7 +201,7 @@ export default function Home() {
       <main className="flex flex-1 overflow-hidden">
         <GameUI gameState={gameState} levels={levels} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
-          <GameBoard key={`${gameState.level}-${gameState.enemies.length}-${gameState.items.length}`} gameState={gameState} />
+          <GameBoard key={`${gameState.level}-${gameState.score}`} gameState={gameState} />
         </div>
       </main>
     </div>

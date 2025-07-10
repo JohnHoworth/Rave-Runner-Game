@@ -7,8 +7,8 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 4; // The size of a tile in rem (64px)
-const VIEWPORT_SIZE = 40; // in rem
+const TILE_SIZE = 4; // The size of a tile in rem (e.g., 64px)
+const VIEWPORT_SIZE = 40; // The visible area size in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -26,7 +26,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to keep the player visually centered
+  // Calculate the offset to keep the player visually centered within the transformed view
   const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
   const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
   
@@ -47,8 +47,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
                 transform: `translateX(${mazeOffsetX}rem) translateY(${mazeOffsetY}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
                 transformStyle: 'preserve-3d',
-                top: `-${(MAZE_HEIGHT * TILE_SIZE)/4}rem`, // Adjust to center the rotated maze
-                left: `${(MAZE_WIDTH * TILE_SIZE)/12}rem`, // Adjust to center the rotated maze
+                // Adjustments to keep the rotated maze centered within the viewport
+                top: `-${(MAZE_HEIGHT * TILE_SIZE) / 4}rem`,
+                left: `${(MAZE_WIDTH * TILE_SIZE) / 12}rem`,
             }}
         >
         {/* Maze Floor and Walls */}
@@ -97,7 +98,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
               <GhostIcon className="w-full h-full" />
           </div>
         ))}
-         {/* Player is part of the moving maze content but gets un-rotated */}
+
+         {/* Player Icon */}
          <div className="absolute" style={{
             top: `${player.y * TILE_SIZE}rem`,
             left: `${player.x * TILE_SIZE}rem`,

@@ -43,7 +43,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             cell === 1 ? (
               <div
                 key={`${x}-${y}`}
-                className="bg-primary/70 w-full h-full rounded-sm"
+                className="bg-secondary border-t-secondary/50 border-l-secondary/50 border-b-primary/30 border-r-primary/30 border-2 w-full h-full rounded-sm"
                 style={{ gridColumn: x + 1, gridRow: y + 1 }}
               />
             ) : null
@@ -58,7 +58,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
         {enemies.map((enemy, i) => (
             <div key={`enemy-${i}`} className="p-0.5" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.2s linear' }}>
-                <GhostIcon className="w-full h-full text-destructive drop-shadow-[0_0_5px_hsl(var(--destructive))]" />
+                <GhostIcon className="w-full h-full" />
             </div>
         ))}
         

@@ -3,17 +3,30 @@ export default function GhostIcon({ className }: { className?: string }) {
         <svg
             className={className}
             viewBox="0 0 24 24"
-            fill="currentColor"
+            fill="none"
             stroke="currentColor"
             strokeWidth="1"
             strokeLinecap="round"
             strokeLinejoin="round"
         >
-            <path d="M5 11a7 7 0 0 1 14 0v7a1.78 1.78 0 0 1 -3.1 1.4a1.65 1.65 0 0 0 -2.6 0a1.65 1.65 0 0 1 -2.6 0a1.78 1.78 0 0 1 -3.1 -1.4v-7" />
-            <path d="M10 10c-.5 -1 -2.5 -1 -3 0" />
-            <path d="M17 10c-.5 -1 -2.5 -1 -3 0" />
-            <path d="M10.5 5.5a.5 .5 0 1 0 0 -1a.5 .5 0 0 0 0 1z" />
-            <path d="M13.5 5.5a.5 .5 0 1 0 0 -1a.5 .5 0 0 0 0 1z" />
+            <style>
+                {`
+                @keyframes siren-red {
+                    0%, 100% { fill: #ff0000; }
+                    50% { fill: #660000; }
+                }
+                @keyframes siren-blue {
+                    0%, 100% { fill: #660000; }
+                    50% { fill: #0000ff; }
+                }
+                .siren-red { animation: siren-red 0.5s infinite; }
+                .siren-blue { animation: siren-blue 0.5s infinite; animation-delay: 0.25s; }
+                `}
+            </style>
+            <path className="siren-red" d="M12 2 L2 7 L12 12 L22 7 L12 2 Z" />
+            <path className="siren-blue" d="M2 7 L12 12 L2 17 L2 7 Z" />
+            <path className="siren-blue" d="M22 7 L12 12 L22 17 L22 7 Z" />
+            <path fill="#444" d="M4 16 L20 16 L20 20 L4 20 Z" />
         </svg>
     );
 }

@@ -49,7 +49,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         style={{
           width: `${MAZE_WIDTH * TILE_SIZE_REM}rem`,
           height: `${MAZE_HEIGHT * TILE_SIZE_REM}rem`,
-          transform: `translateY(${translateY}px) translateX(${translateX}px) rotateX(60deg) rotateZ(-45deg) scale(1.2)`,
+          transform: `translateY(${translateY}px) translateX(${translateX}px) rotateX(60deg) rotateZ(-45deg)`,
           transformStyle: 'preserve-3d',
         }}
       >

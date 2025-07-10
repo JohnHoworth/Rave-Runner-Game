@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -62,9 +63,14 @@ export default function Home() {
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
   const { toast } = useToast();
 
-  useEffect(() => {
+  const resetGame = useCallback(() => {
+    toast({
+      title: "You Got Busted!",
+      description: "The party busters caught you. Try again!",
+      variant: "destructive",
+    });
     setGameState(createInitialState());
-  }, []);
+  }, [toast]);
 
   const movePlayer = useCallback((dx: number, dy: number) => {
     setGameState(prev => {
@@ -78,6 +84,15 @@ export default function Home() {
       
       if (newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH || newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT) {
         return prev;
+      }
+
+      // Check for collision with enemies after player moves
+      for (const enemy of prev.enemies) {
+        if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
+          // Defer state reset to avoid issues within setGameState
+          setTimeout(resetGame, 0);
+          return { ...prev, player: newPlayerPos }; // Briefly show move before reset
+        }
       }
 
       const newState = { ...prev, player: newPlayerPos };
@@ -104,7 +119,7 @@ export default function Home() {
       
       return newState;
     });
-  }, []);
+  }, [resetGame]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -124,42 +139,38 @@ export default function Home() {
     if (!gameState) return;
 
     const gameLoop = setInterval(() => {
-      const { enemies, player, maze } = gameState;
-
-      const newEnemies = enemies.map(enemy => {
-        const path = findPath(enemy, player, maze);
-        if (path && path.length > 1) {
-          return path[1];
-        }
-        return enemy;
-      });
-
-      let playerCaught = false;
-      for (const enemy of newEnemies) {
-        if (enemy.x === player.x && enemy.y === player.y) {
-          playerCaught = true;
-          break;
-        }
-      }
-      
       setGameState(prev => {
         if (!prev) return null;
+
+        const { enemies, player, maze } = prev;
+
+        const newEnemies = enemies.map(enemy => {
+          const path = findPath(enemy, player, maze);
+          if (path && path.length > 1) {
+            return path[1];
+          }
+          return enemy;
+        });
+
+        // Check for collision after enemies move
+        for (const enemy of newEnemies) {
+          if (enemy.x === player.x && enemy.y === player.y) {
+             setTimeout(resetGame, 0);
+             return { ...prev, enemies: newEnemies }; // Return new state before reset
+          }
+        }
+        
         return { ...prev, enemies: newEnemies };
       });
 
-      if (playerCaught) {
-        toast({
-          title: "You Got Busted!",
-          description: "The party busters caught you. Try again!",
-          variant: "destructive",
-        });
-        setGameState(createInitialState());
-      }
     }, 400);
 
     return () => clearInterval(gameLoop);
-  }, [gameState, toast]);
+  }, [gameState, resetGame]);
 
+  useEffect(() => {
+    setGameState(createInitialState());
+  }, []);
 
   if (!gameState) {
     return (
@@ -176,7 +187,7 @@ export default function Home() {
       <main className="flex flex-1 overflow-hidden">
         <GameUI gameState={gameState} levels={levels} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
-          <GameBoard key={`${gameState.level}-${gameState.score}`} gameState={gameState} />
+          <GameBoard key={`${gameState.level}-${gameState.enemies.length}-${gameState.items.length}`} gameState={gameState} />
         </div>
       </main>
     </div>

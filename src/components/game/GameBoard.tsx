@@ -25,9 +25,9 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to center the player
-  const mazeTx = -player.y * TILE_SIZE * 0.5 - player.x * TILE_SIZE * 0.5;
-  const mazeTy = player.y * TILE_SIZE * 0.25 - player.x * TILE_SIZE * 0.25;
+  // Calculate the offset to center the player in the isometric view
+  const mazeTx = (-player.y * TILE_SIZE * 0.5) - (player.x * TILE_SIZE * 0.5);
+  const mazeTy = (player.y * TILE_SIZE * 0.25) - (player.x * TILE_SIZE * 0.25);
 
   return (
     <div

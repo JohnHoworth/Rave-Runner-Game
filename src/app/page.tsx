@@ -176,7 +176,7 @@ export default function Home() {
     }, 400);
 
     return () => clearInterval(gameLoop);
-  }, [gameState, resetGame]);
+  }, [resetGame]);
 
   useEffect(() => {
     setGameState(createInitialState());
@@ -197,7 +197,7 @@ export default function Home() {
       <main className="flex flex-1 overflow-hidden">
         <GameUI gameState={gameState} levels={levels} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
-          <GameBoard key={`${gameState.level}-${gameState.score}`} gameState={gameState} />
+          <GameBoard gameState={gameState} />
         </div>
       </main>
     </div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import PlayerIcon from "@/components/icons/PlayerIcon";
@@ -26,7 +27,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
   // The player is always in the center of the viewport.
-  // We move the maze container instead of the player.
+  // We move the maze container instead of the player icon.
   const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
   const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
   

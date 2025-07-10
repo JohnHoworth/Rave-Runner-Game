@@ -5,20 +5,18 @@ export default function GhostIcon({ className }: { className?: string }) {
             viewBox="0 0 64 64"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <style>
-                {`
+            <style dangerouslySetInnerHTML={{__html: `
                 @keyframes siren-red-car {
                     0%, 100% { fill: #ff4444; }
                     50% { fill: #8b0000; }
                 }
                 @keyframes siren-blue-car {
-                    0%, 100% { fill: #8b0000; }
-                    50% { fill: #4444ff; }
+                    0%, 100% { fill: #4444ff; }
+                    50% { fill: #222288; }
                 }
                 .siren-red-car { animation: siren-red-car 0.5s infinite; }
                 .siren-blue-car { animation: siren-blue-car 0.5s infinite; animation-delay: 0.25s; }
-                `}
-            </style>
+            `}} />
             <g transform="translate(0, 8)">
                 {/* Car body */}
                 <path d="M12 36 L4 40 L4 28 L12 24 Z" fill="#FFFFFF" /> {/* Left side */}

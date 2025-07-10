@@ -87,14 +87,13 @@ export default function Home() {
         return prev; // Invalid move, return original state
       }
       
-      // If move is valid, then proceed with state updates
       let newState = { ...prev, player: newPlayerPos };
       
       // Check for collision with enemies
       for (const enemy of newState.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
-          setTimeout(resetGame, 0); // Use setTimeout to avoid issues with React's batching
-          return { ...newState }; // Return intermediate state before reset
+          setTimeout(resetGame, 0);
+          return { ...newState };
         }
       }
   
@@ -141,10 +140,10 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
       // Remapped for isometric view
-      if (e.key === 'ArrowUp') movePlayer(0, -1); // Up-Left from camera view
-      if (e.key === 'ArrowDown') movePlayer(0, 1); // Down-Right from camera view
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Down-Left from camera view
-      if (e.key === 'ArrowRight') movePlayer(1, 0); // Up-Right from camera view
+      if (e.key === 'ArrowUp') movePlayer(0, -1);    // Up-Left
+      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Down-Right
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0);  // Down-Left
+      if (e.key === 'ArrowRight') movePlayer(1, 0); // Up-Right
     };
 
     window.addEventListener('keydown', handleKeyDown);

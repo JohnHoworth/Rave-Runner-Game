@@ -141,6 +141,11 @@ export default function Home() {
           break;
         }
       }
+      
+      setGameState(prev => {
+        if (!prev) return null;
+        return { ...prev, enemies: newEnemies };
+      });
 
       if (playerCaught) {
         toast({
@@ -149,11 +154,6 @@ export default function Home() {
           variant: "destructive",
         });
         setGameState(createInitialState());
-      } else {
-        setGameState(prev => {
-            if (!prev) return null;
-            return { ...prev, enemies: newEnemies };
-        });
       }
     }, 400);
 
@@ -176,7 +176,7 @@ export default function Home() {
       <main className="flex flex-1 overflow-hidden">
         <GameUI gameState={gameState} levels={levels} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
-          <GameBoard gameState={gameState} />
+          <GameBoard key={`${gameState.level}-${gameState.score}`} gameState={gameState} />
         </div>
       </main>
     </div>

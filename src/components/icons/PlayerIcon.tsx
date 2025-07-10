@@ -2,40 +2,23 @@ export default function PlayerIcon({ className }: { className?: string }) {
     return (
         <svg
             className={className}
-            viewBox="0 0 48 48"
-            fill="none"
+            viewBox="0 0 50 100"
+            xmlns="http://www.w3.org/2000/svg"
         >
-            <defs>
-                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                    <feMerge>
-                        <feMergeNode in="coloredBlur" />
-                        <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                </filter>
-            </defs>
-            
-            {/* 3D effect layers */}
-            <g transform="translate(0, 4)">
-                 <path d="M24 34 L14 28 L14 16 L24 10 L34 16 L34 28 Z" fill="hsl(var(--accent) / 0.3)" />
-            </g>
-            <g transform="translate(0, 2)">
-                 <path d="M24 34 L14 28 L14 16 L24 10 L34 16 L34 28 Z" fill="hsl(var(--accent) / 0.5)" />
-            </g>
-             <g transform="translate(0, 0)">
-                 <path d="M24 34 L14 28 L14 16 L24 10 L34 16 L34 28 Z" fill="hsl(var(--accent) / 0.7)" />
-            </g>
+            {/* Shadow */}
+            <path d="M 25,95 L 35,90 L 15,80 Z" fill="hsl(var(--background) / 0.5)" />
 
-            {/* Base shape */}
-            <g transform="translate(0, -2)" filter="url(#glow)">
-                <path d="M24 34 L14 28 L14 16 L24 10 L34 16 L34 28 Z" fill="hsl(var(--accent))" />
-                {/* Top face */}
-                <path d="M24 10 L34 16 L24 22 L14 16 Z" fill="hsl(var(--accent) / 0.7)" />
-                {/* Side face */}
-                <path d="M34 16 L34 28 L24 34 L24 22 Z" fill="hsl(var(--accent) / 0.5)" />
-                {/* Inner highlight */}
-                <path d="M24 30 L18 27 L18 19 L24 16 L30 19 L30 27 Z" fill="hsl(var(--primary))" />
-            </g>
+            {/* Suit */}
+            <path d="M 25,40 L 15,35 L 15,85 L 25,90 L 35,85 L 35,35 Z" fill="#334155" />
+            
+            {/* Head */}
+            <path d="M 25,5 L 15,0 L 15,35 L 25,40 L 35,35 L 35,0 Z" fill="#f1d4ad" />
+            
+            {/* Hair */}
+            <path d="M 25,5 L 15,0 L 15,20 L 25,25 L 35,20 L 35,0 Z" fill="#1e293b" />
+            
+            {/* Tie */}
+            <path d="M 25,55 L 22,53 L 22,70 L 25,72 L 28,70 L 28,53 Z" fill="hsl(var(--primary))" />
         </svg>
     );
 }

@@ -39,13 +39,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden"
+      className="bg-background border-4 border-secondary shadow-2xl rounded-lg p-2 overflow-hidden"
       style={{
         width: `${VIEWPORT_SIZE}rem`,
         height: `${VIEWPORT_SIZE}rem`,
         perspective: '1000px',
       }}
-      data-ai-hint="maze arcade"
+      data-ai-hint="maze puzzle"
     >
       <div
         className="relative transition-transform duration-300 ease-linear"
@@ -57,10 +57,14 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 translateX(${translateX}rem) 
                 translateY(${translateY}rem) 
                 rotateX(60deg) 
-                scale(0.9)
+                rotateZ(-45deg)
+                scale(0.6)
             `,
         }}
       >
+        {/* Maze Floor */}
+        <div className="absolute inset-0 bg-background" />
+
         {/* Maze Walls */}
         <div
             className="grid absolute inset-0"
@@ -75,16 +79,15 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 cell === 1 ? (
                 <div
                     key={`${x}-${y}-wall`}
-                    className="relative"
+                    className="relative bg-primary/80"
                     style={{
                         gridColumn: x + 1,
                         gridRow: y + 1,
                         transformStyle: 'preserve-3d',
+                        transform: 'translateZ(2rem) scaleY(1.5)',
+                        height:'100%'
                     }}
-                >
-                    <div className="absolute inset-0 bg-secondary/50 border-t-2 border-primary/50" style={{ transform: 'translateZ(1rem)' }} />
-                    <div className="absolute inset-0 bg-primary/30" style={{ height: '1rem', transformOrigin: 'top', transform: 'rotateX(-90deg) translateY(-0.5rem)' }} />
-                </div>
+                />
                 ) : null
             )
             )}

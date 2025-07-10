@@ -139,7 +139,6 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Remapped for isometric view
       if (e.key === 'ArrowUp') movePlayer(0, -1);
       if (e.key === 'ArrowDown') movePlayer(0, 1);
       if (e.key === 'ArrowLeft') movePlayer(-1, 0);
@@ -178,7 +177,7 @@ export default function Home() {
     }, 400);
 
     return () => clearInterval(gameLoop);
-  }, []);
+  }, [resetGame]);
 
   useEffect(() => {
     setGameState(createInitialState());

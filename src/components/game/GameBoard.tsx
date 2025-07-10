@@ -26,7 +26,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_theme(colors.primary)] rounded-lg p-2 scanlines"
+      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines"
       data-ai-hint="maze arcade"
     >
       <div

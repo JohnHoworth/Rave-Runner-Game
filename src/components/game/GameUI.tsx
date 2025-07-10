@@ -58,7 +58,7 @@ export default function GameUI({ gameState, levels }: { gameState: GameState, le
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">LEVELS</h2>
           <ul className="space-y-2">
             {levels.map((level, index) => (
-              <li key={index} className={`p-3 rounded-md transition-colors border ${gameState.level === index + 1 ? 'bg-primary/20 border-primary shadow-[0_0_10px_theme(colors.primary)]' : 'border-transparent'}`}>
+              <li key={index} className={`p-3 rounded-md transition-colors border ${gameState.level === index + 1 ? 'bg-primary/20 border-primary shadow-[0_0_10px_hsl(var(--primary))]' : 'border-transparent'}`}>
                 <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
                 <p className="text-sm text-muted-foreground">{level.artist}</p>
               </li>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import PlayerIcon from "@/components/icons/PlayerIcon";
@@ -26,20 +25,14 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  const boardWidth = MAZE_WIDTH * TILE_SIZE;
-  const boardHeight = MAZE_HEIGHT * TILE_SIZE;
-
-  // Center of player in rem units
-  const playerCenterX = (player.x + 0.5) * TILE_SIZE;
-  const playerCenterY = (player.y + 0.5) * TILE_SIZE;
+  // The player is always in the center of the viewport.
+  // We move the maze container instead of the player.
+  const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
+  const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
   
-  // Translation needed to center the player in the viewport
-  const translateX = (VIEWPORT_SIZE / 2) - playerCenterX;
-  const translateY = (VIEWPORT_SIZE / 2) - playerCenterY;
-
   return (
     <div
-      className="bg-background border-4 border-secondary shadow-2xl rounded-lg p-2 overflow-hidden"
+      className="bg-background border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
       style={{
         width: `${VIEWPORT_SIZE}rem`,
         height: `${VIEWPORT_SIZE}rem`,
@@ -48,83 +41,74 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze puzzle"
     >
       <div
-        className="relative transition-transform duration-300 ease-linear"
+        className="relative transition-all duration-100 ease-linear"
         style={{
-            width: `${boardWidth}rem`,
-            height: `${boardHeight}rem`,
-            transformStyle: 'preserve-3d',
-            transform: `
-                translateX(${translateX}rem) 
-                translateY(${translateY}rem) 
-                rotateX(60deg) 
-                rotateZ(-45deg)
-                scale(0.6)
-            `,
+          width: `${MAZE_WIDTH * TILE_SIZE}rem`,
+          height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
+          transformStyle: 'preserve-3d',
+          transform: `rotateX(60deg) scale(0.9)`,
+          top: `${mazeOffsetY}rem`,
+          left: `${mazeOffsetX}rem`,
         }}
       >
-        {/* Maze Floor */}
-        <div className="absolute inset-0 bg-background" />
-
-        {/* Maze Walls */}
+        {/* Maze Floor and Walls */}
         <div
-            className="grid absolute inset-0"
-            style={{
-                gridTemplateColumns: `repeat(${MAZE_WIDTH}, 1fr)`,
-                gridTemplateRows: `repeat(${MAZE_HEIGHT}, 1fr)`,
-                transformStyle: 'preserve-3d',
-            }}
+          className="grid absolute inset-0"
+          style={{
+            gridTemplateColumns: `repeat(${MAZE_WIDTH}, 1fr)`,
+            gridTemplateRows: `repeat(${MAZE_HEIGHT}, 1fr)`,
+          }}
         >
-            {maze.map((row, y) =>
-            row.map((cell, x) =>
-                cell === 1 ? (
-                <div
-                    key={`${x}-${y}-wall`}
-                    className="relative bg-primary/80"
-                    style={{
-                        gridColumn: x + 1,
-                        gridRow: y + 1,
-                        transformStyle: 'preserve-3d',
-                        transform: 'translateZ(2rem) scaleY(1.5)',
-                        height:'100%'
-                    }}
-                />
-                ) : null
-            )
-            )}
+          {maze.map((row, y) =>
+            row.map((cell, x) => (
+              <div
+                key={`${x}-${y}`}
+                className={`relative ${cell === 1 ? 'bg-primary/80' : 'bg-transparent'}`}
+                style={{
+                  gridColumn: x + 1,
+                  gridRow: y + 1,
+                  transform: cell === 1 ? 'translateZ(1rem)' : 'none',
+                  transformStyle: 'preserve-3d',
+                }}
+              />
+            ))
+          )}
         </div>
 
         {/* Items */}
         {items.map((item, i) => (
-            <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{ 
-                top: `${item.y * TILE_SIZE}rem`,
-                left: `${item.x * TILE_SIZE}rem`,
-                transform: 'translateZ(1.5rem)' 
-            }}>
-                <ItemIcon type={item.type} />
-            </div>
+          <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{ 
+              top: `${item.y * TILE_SIZE}rem`,
+              left: `${item.x * TILE_SIZE}rem`,
+              transform: 'translateZ(1rem)' 
+          }}>
+              <ItemIcon type={item.type} />
+          </div>
         ))}
 
         {/* Enemies */}
         {enemies.map((enemy, i) => (
-            <div key={`enemy-${i}`} className="absolute w-12 h-12" style={{ 
-                top: `${enemy.y * TILE_SIZE}rem`,
-                left: `${enemy.x * TILE_SIZE}rem`,
-                transition: 'all 0.4s linear', 
-                transform: 'translateZ(2rem)' 
-            }}>
-                <GhostIcon className="w-full h-full" />
-            </div>
+          <div key={`enemy-${i}`} className="absolute w-12 h-12" style={{ 
+              top: `${enemy.y * TILE_SIZE}rem`,
+              left: `${enemy.x * TILE_SIZE}rem`,
+              transition: 'all 0.4s linear', 
+              transform: 'translateZ(1rem)' 
+          }}>
+              <GhostIcon className="w-full h-full" />
+          </div>
         ))}
-        
-        {/* Player */}
-        <div className="absolute w-12 h-12" style={{ 
-             top: `${player.y * TILE_SIZE}rem`,
-             left: `${player.x * TILE_SIZE}rem`,
-             transition: 'all 0.1s linear', 
-             transform: 'translateZ(2rem)'
-        }}>
-            <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
-        </div>
+      </div>
+
+       {/* Player is rendered separately and stays in the center of the viewport */}
+      <div className="absolute" style={{
+        top: '50%',
+        left: '50%',
+        width: '3rem', // 48px
+        height: '3rem', // 48px
+        transform: 'translate(-50%, -50%) translateZ(60px) rotateX(-60deg) scale(0.9)', // Counter-rotate to stand upright
+        transformStyle: 'preserve-3d',
+      }}>
+          <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
       </div>
     </div>
   );

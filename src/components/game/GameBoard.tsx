@@ -28,7 +28,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   // We get the viewport dimensions and calculate the required translation
   // to move the maze container, so the player character appears stationary.
   const TILE_SIZE_PX = TILE_SIZE_REM * 16; // Assuming 1rem = 16px for calculation
-  const VIEWPORT_SIZE_PX = 40 * 16; 
+  const VIEWPORT_SIZE_PX = 40 * 16;
   
   const translateX = VIEWPORT_SIZE_PX / 2 - (player.x + 0.5) * TILE_SIZE_PX;
   const translateY = VIEWPORT_SIZE_PX / 2 - (player.y + 0.5) * TILE_SIZE_PX;
@@ -40,6 +40,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       style={{
         width: '40rem',
         height: '40rem',
+        perspective: '1000px',
       }}
       data-ai-hint="maze arcade"
     >
@@ -48,8 +49,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         style={{
           width: `${MAZE_WIDTH * TILE_SIZE_REM}rem`,
           height: `${MAZE_HEIGHT * TILE_SIZE_REM}rem`,
-          transform: `perspective(1000px) rotateX(60deg) rotateZ(-45deg) translateX(${translateX}px) translateY(${translateY}px) scale(1.2)`,
-          transformOrigin: 'center center',
+          transform: `rotateX(60deg) rotateZ(-45deg) translateY(${translateY}px) translateX(${translateX}px) scale(1.2)`,
+          transformStyle: 'preserve-3d',
         }}
       >
         <div

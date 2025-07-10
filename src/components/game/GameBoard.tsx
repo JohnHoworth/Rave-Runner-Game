@@ -29,7 +29,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
-  // Calculate the required translation to center the player
   const playerCenterX = (player.x + 0.5) * TILE_SIZE;
   const playerCenterY = (player.y + 0.5) * TILE_SIZE;
   
@@ -57,12 +56,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
               translateY(calc(${VIEWPORT_SIZE / 2}rem - ${boardHeight / 2}rem)) 
               rotateX(60deg) 
               rotateZ(-45deg) 
-              scale(0.9)
+              scale(1)
               translateX(${translateX}rem) 
               translateY(${translateY}rem)
             `,
         }}
        >
+        {/* Maze Walls */}
         <div
             className="grid absolute inset-0"
             style={{
@@ -75,7 +75,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             row.map((cell, x) =>
                 cell === 1 ? (
                 <div
-                    key={`${x}-${y}`}
+                    key={`${x}-${y}-wall`}
+                    className="relative"
                     style={{
                         gridColumn: x + 1,
                         gridRow: y + 1,
@@ -88,22 +89,39 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 ) : null
             )
             )}
+        </div>
 
-            {items.map((item, i) => (
-                <div key={`item-${i}`} className="p-2" style={{ gridColumn: item.x + 1, gridRow: item.y + 1, transform: 'translateZ(1.5rem)' }}>
-                    <ItemIcon type={item.type} />
-                </div>
-            ))}
-
-            {enemies.map((enemy, i) => (
-                <div key={`enemy-${i}`} className="p-1" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.4s linear', transform: 'translateZ(2rem)' }}>
-                    <GhostIcon className="w-full h-full" />
-                </div>
-            ))}
-
-            <div className="p-1" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear', transform: 'translateZ(2rem)' }}>
-                <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
+        {/* Items */}
+        {items.map((item, i) => (
+            <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{ 
+                top: `${item.y * TILE_SIZE}rem`,
+                left: `${item.x * TILE_SIZE}rem`,
+                transform: 'translateZ(1.5rem)' 
+            }}>
+                <ItemIcon type={item.type} />
             </div>
+        ))}
+
+        {/* Enemies */}
+        {enemies.map((enemy, i) => (
+            <div key={`enemy-${i}`} className="absolute w-12 h-12" style={{ 
+                top: `${enemy.y * TILE_SIZE}rem`,
+                left: `${enemy.x * TILE_SIZE}rem`,
+                transition: 'all 0.4s linear', 
+                transform: 'translateZ(2rem)' 
+            }}>
+                <GhostIcon className="w-full h-full" />
+            </div>
+        ))}
+        
+        {/* Player */}
+        <div className="absolute w-12 h-12" style={{ 
+             top: `${player.y * TILE_SIZE}rem`,
+             left: `${player.x * TILE_SIZE}rem`,
+             transition: 'all 0.1s linear', 
+             transform: 'translateZ(2rem)'
+        }}>
+            <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
         </div>
       </div>
     </div>

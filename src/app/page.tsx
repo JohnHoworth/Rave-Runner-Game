@@ -140,10 +140,10 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
       // Remapped for isometric view
-      if (e.key === 'ArrowUp') movePlayer(0, -1);    // Up-Left
-      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Down-Right
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0);  // Down-Left
-      if (e.key === 'ArrowRight') movePlayer(1, 0); // Up-Right
+      if (e.key === 'ArrowUp') movePlayer(0, -1);
+      if (e.key === 'ArrowDown') movePlayer(0, 1);
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0);
+      if (e.key === 'ArrowRight') movePlayer(1, 0);
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -178,7 +178,7 @@ export default function Home() {
     }, 400);
 
     return () => clearInterval(gameLoop);
-  }, [resetGame]);
+  }, []);
 
   useEffect(() => {
     setGameState(createInitialState());

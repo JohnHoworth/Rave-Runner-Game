@@ -37,13 +37,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       }}
       data-ai-hint="maze arcade"
     >
-      <div 
+      <div
         className="relative transition-transform duration-300 ease-linear"
         style={{
           width: `${boardWidthRem}rem`,
           height: `${boardHeightRem}rem`,
           transformStyle: 'preserve-3d',
-          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.6)`,
+          transform: 'rotateX(60deg) rotateZ(-45deg) scale(0.9)',
         }}
       >
         <div
@@ -59,8 +59,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                   <div
                     key={`${x}-${y}`}
                     className="bg-secondary/50 border-t-2 border-primary/50"
-                    style={{ 
-                        gridColumn: x + 1, 
+                    style={{
+                        gridColumn: x + 1,
                         gridRow: y + 1,
                         transform: 'translateZ(-1rem)',
                         boxShadow: '0 1rem 0 hsl(var(--secondary))',
@@ -69,7 +69,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 ) : null
               )
             )}
-            
+
             {items.map((item, i) => (
                  <div key={`item-${i}`} className="p-2" style={{ gridColumn: item.x + 1, gridRow: item.y + 1 }}>
                     <ItemIcon type={item.type} />
@@ -81,9 +81,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     <GhostIcon className="w-full h-full" />
                 </div>
             ))}
-            
-            <div className="p-1" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear' }}>
-                <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_8px_hsl(var(--accent))]" />
+
+            <div className="p-1" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear', transform: 'translateZ(1rem)' }}>
+                <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>
         </div>
       </div>

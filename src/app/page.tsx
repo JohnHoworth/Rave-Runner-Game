@@ -80,8 +80,8 @@ export default function Home() {
   
       // Wall collision check
       if (
-        newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
+        newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
         return prev; // Invalid move, return original state
@@ -141,10 +141,10 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
       // Remapped for isometric view
-      if (e.key === 'ArrowUp') movePlayer(-1, 0); // Up-Left
-      if (e.key === 'ArrowDown') movePlayer(1, 0); // Down-Right
-      if (e.key === 'ArrowLeft') movePlayer(0, -1); // Down-Left
-      if (e.key === 'ArrowRight') movePlayer(0, 1); // Up-Right
+      if (e.key === 'ArrowUp') movePlayer(0, -1); // Up-Left from camera view
+      if (e.key === 'ArrowDown') movePlayer(0, 1); // Down-Right from camera view
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Down-Left from camera view
+      if (e.key === 'ArrowRight') movePlayer(1, 0); // Up-Right from camera view
     };
 
     window.addEventListener('keydown', handleKeyDown);

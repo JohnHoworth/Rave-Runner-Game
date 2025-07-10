@@ -24,6 +24,22 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
+  // Calculate the required translation to keep the player centered
+  const boardWidth = MAZE_WIDTH * TILE_SIZE_REM;
+  const boardHeight = MAZE_HEIGHT * TILE_SIZE_REM;
+  
+  // The center of the viewport in rem.
+  const viewportCenterRemX = 20; 
+  const viewportCenterRemY = 20; 
+
+  // Player position in rem.
+  const playerRemX = player.x * TILE_SIZE_REM + TILE_SIZE_REM / 2;
+  const playerRemY = player.y * TILE_SIZE_REM + TILE_SIZE_REM / 2;
+
+  // Translation needed to move the player's position to the viewport center.
+  const translateX = viewportCenterRemX - playerRemX;
+  const translateY = viewportCenterRemY - playerRemY;
+
   return (
     <div
       className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden flex items-center justify-center"
@@ -35,11 +51,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze arcade"
     >
       <div 
-        className="relative"
+        className="relative transition-transform duration-300 ease-linear"
         style={{
-          width: `${MAZE_WIDTH * TILE_SIZE_REM}rem`,
-          height: `${MAZE_HEIGHT * TILE_SIZE_REM}rem`,
-          transform: 'rotateX(60deg) rotateZ(-45deg) scale(0.6)',
+          width: `${boardWidth}rem`,
+          height: `${boardHeight}rem`,
+          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.6) translateX(${translateX}rem) translateY(${translateY}rem)`,
           transformStyle: 'preserve-3d',
         }}
       >
@@ -74,13 +90,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             ))}
 
             {enemies.map((enemy, i) => (
-                <div key={`enemy-${i}`} className="p-1" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.2s linear' }}>
+                <div key={`enemy-${i}`} className="p-1" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.4s linear' }}>
                     <GhostIcon className="w-full h-full" />
                 </div>
             ))}
             
             <div className="p-1" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear' }}>
-                <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_8px_hsl(var(--accent))] -rotate-45" />
+                <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>
         </div>
       </div>

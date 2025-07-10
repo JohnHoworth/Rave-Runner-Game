@@ -29,9 +29,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
+  // Center of player in rem units
   const playerCenterX = (player.x + 0.5) * TILE_SIZE;
   const playerCenterY = (player.y + 0.5) * TILE_SIZE;
   
+  // Translation needed to center the player in the viewport
   const translateX = (VIEWPORT_SIZE / 2) - playerCenterX;
   const translateY = (VIEWPORT_SIZE / 2) - playerCenterY;
 
@@ -52,16 +54,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             height: `${boardHeight}rem`,
             transformStyle: 'preserve-3d',
             transform: `
-              translateX(calc(${VIEWPORT_SIZE / 2}rem - ${boardWidth / 2}rem)) 
-              translateY(calc(${VIEWPORT_SIZE / 2}rem - ${boardHeight / 2}rem)) 
-              rotateX(60deg) 
-              rotateZ(-45deg) 
-              scale(1)
-              translateX(${translateX}rem) 
-              translateY(${translateY}rem)
+                translateX(${translateX}rem) 
+                translateY(${translateY}rem) 
+                rotateX(60deg) 
+                scale(0.9)
             `,
         }}
-       >
+      >
         {/* Maze Walls */}
         <div
             className="grid absolute inset-0"

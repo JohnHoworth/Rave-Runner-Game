@@ -86,6 +86,7 @@ export default function Home() {
         return prev;
       }
   
+      // Check for collision with enemies after player moves
       for (const enemy of prev.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
           setTimeout(resetGame, 0);
@@ -99,7 +100,6 @@ export default function Home() {
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
         
-        // Create new objects/arrays for state update
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);
         
@@ -121,7 +121,6 @@ export default function Home() {
           newCollectibles.vinyls++;
         }
         
-        // Assign new state
         newState = {
             ...newState,
             items: newItems,
@@ -160,9 +159,12 @@ export default function Home() {
 
         const newEnemies = enemies.map(enemy => {
           const path = findPath(enemy, player, maze);
+          // If a path exists and has more than one step (the first step is the enemy's current location)
           if (path && path.length > 1) {
+            // Move to the next step in the path
             return path[1];
           }
+          // If no path, stay in the same position
           return enemy;
         });
 

@@ -78,23 +78,27 @@ export default function Home() {
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
+      // Wall collision check
       if (
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
-        return prev;
+        return prev; // Invalid move, return original state
       }
-  
+      
+      // If move is valid, then proceed with state updates
       let newState = { ...prev, player: newPlayerPos };
       
+      // Check for collision with enemies
       for (const enemy of newState.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
-          setTimeout(resetGame, 0);
-          return newState;
+          setTimeout(resetGame, 0); // Use setTimeout to avoid issues with React's batching
+          return { ...newState }; // Return intermediate state before reset
         }
       }
   
+      // Item collection
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
@@ -136,10 +140,11 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      if (e.key === 'ArrowUp') movePlayer(-1, -1);
-      if (e.key === 'ArrowDown') movePlayer(1, 1);
-      if (e.key === 'ArrowLeft') movePlayer(-1, 1);
-      if (e.key === 'ArrowRight') movePlayer(1, -1);
+      // Remapped for isometric view
+      if (e.key === 'ArrowUp') movePlayer(-1, 0); // Up-Left
+      if (e.key === 'ArrowDown') movePlayer(1, 0); // Down-Right
+      if (e.key === 'ArrowLeft') movePlayer(0, -1); // Down-Left
+      if (e.key === 'ArrowRight') movePlayer(0, 1); // Up-Right
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -147,8 +152,6 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
-    if (!gameState) return;
-
     const gameLoop = setInterval(() => {
       setGameState(prev => {
         if (!prev) return null;

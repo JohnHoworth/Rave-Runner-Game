@@ -27,6 +27,18 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidthRem = MAZE_WIDTH * TILE_SIZE_REM;
   const boardHeightRem = MAZE_HEIGHT * TILE_SIZE_REM;
 
+  // Calculate the center of the viewport
+  const viewportCenterRemX = 20; // 40rem / 2
+  const viewportCenterRemY = 20; // 40rem / 2
+
+  // Calculate the player's position in rem
+  const playerRemX = (player.x + 0.5) * TILE_SIZE_REM;
+  const playerRemY = (player.y + 0.5) * TILE_SIZE_REM;
+
+  // Calculate the required translation to center the player
+  const translateXRem = viewportCenterRemX - playerRemX;
+  const translateYRem = viewportCenterRemY - playerRemY;
+
   return (
     <div
       className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden flex items-center justify-center"
@@ -43,7 +55,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
           width: `${boardWidthRem}rem`,
           height: `${boardHeightRem}rem`,
           transformStyle: 'preserve-3d',
-          transform: 'rotateX(60deg) rotateZ(-45deg) scale(0.9)',
+          transform: `rotateX(60deg) rotateZ(-45deg) scale(0.9) translateX(${translateXRem}rem) translateY(${translateYRem}rem)`,
         }}
       >
         <div

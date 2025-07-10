@@ -139,11 +139,11 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Corrected isometric controls mapping
-      if (e.key === 'ArrowUp') movePlayer(-1, 0); // Up-Left
-      if (e.key === 'ArrowDown') movePlayer(1, 0);  // Down-Right
-      if (e.key === 'ArrowLeft') movePlayer(0, -1); // Up-Right
-      if (e.key === 'ArrowRight') movePlayer(0, 1); // Down-Left
+      // Corrected isometric controls
+      if (e.key === 'ArrowUp') movePlayer(0, -1); // Move up-left
+      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Move down-right
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Move down-left
+      if (e.key === 'ArrowRight') movePlayer(1, 0); // Move up-right
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -160,13 +160,16 @@ export default function Home() {
         const newEnemies = enemies.map(enemy => {
           const path = findPath(enemy, player, maze);
           if (path && path.length > 1) {
+            // Move one step along the path
             return path[1];
           }
-          return enemy;
+          return enemy; // Stay put if no path
         });
 
+        // Check for collision after moving all enemies
         for (const enemy of newEnemies) {
           if (enemy.x === player.x && enemy.y === player.y) {
+             // Use a timeout to allow the UI to update before resetting
              setTimeout(resetGame, 0);
              return { ...prev, enemies: newEnemies };
           }
@@ -175,7 +178,7 @@ export default function Home() {
         return { ...prev, enemies: newEnemies };
       });
 
-    }, 400);
+    }, 400); // Enemy movement speed
 
     return () => clearInterval(gameLoop);
   }, [resetGame]);

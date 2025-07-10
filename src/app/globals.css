@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 180 25% 20%;
+    --background: 200 15% 15%; /* Dark Desaturated Teal/Gray */
     --foreground: 180 10% 95%;
-    --card: 180 25% 25%;
+    --card: 200 15% 20%;
     --card-foreground: 180 10% 95%;
-    --popover: 180 25% 20%;
+    --popover: 200 15% 15%;
     --popover-foreground: 180 10% 95%;
-    --primary: 180 40% 70%;
-    --primary-foreground: 180 25% 10%;
+    --primary: 180 100% 75%; /* Electric Blue */
+    --primary-foreground: 200 25% 10%;
     --secondary: 180 15% 30%;
     --secondary-foreground: 180 10% 98%;
     --muted: 180 15% 30%;
     --muted-foreground: 180 10% 65%;
-    --accent: 180 40% 80%;
-    --accent-foreground: 180 25% 10%;
+    --accent: 75 100% 50%; /* Acid Yellow */
+    --accent-foreground: 75 25% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 180 15% 30%;
     --input: 180 15% 30%;
-    --ring: 180 40% 80%;
+    --ring: 180 100% 75%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 180 25% 20%;
+    --background: 200 15% 15%; /* Dark Desaturated Teal/Gray */
     --foreground: 180 10% 95%;
-    --card: 180 25% 25%;
+    --card: 200 15% 20%;
     --card-foreground: 180 10% 95%;
-    --popover: 180 25% 20%;
+    --popover: 200 15% 15%;
     --popover-foreground: 180 10% 95%;
-    --primary: 180 40% 70%;
-    --primary-foreground: 180 25% 10%;
+    --primary: 180 100% 75%; /* Electric Blue */
+    --primary-foreground: 200 25% 10%;
     --secondary: 180 15% 30%;
     --secondary-foreground: 180 10% 98%;
     --muted: 180 15% 30%;
     --muted-foreground: 180 10% 65%;
-    --accent: 180 40% 80%;
-    --accent-foreground: 180 25% 10%;
+    --accent: 75 100% 50%; /* Acid Yellow */
+    --accent-foreground: 75 25% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 180 15% 30%;
     --input: 180 15% 30%;
-    --ring: 180 40% 80%;
+    --ring: 180 100% 75%;
   }
 }
 

@@ -7,7 +7,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 4; // The size of a tile in rem (e.g., 64px)
+const TILE_SIZE = 5; // The size of a tile in rem (e.g., 64px)
 const VIEWPORT_SIZE = 40; // The visible area size in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -47,7 +47,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
                 transform: `translateX(${mazeOffsetX}rem) translateY(${mazeOffsetY}rem) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
                 transformStyle: 'preserve-3d',
-                // Adjustments to keep the rotated maze centered within the viewport
                 top: `-${(MAZE_HEIGHT * TILE_SIZE) / 4}rem`,
                 left: `${(MAZE_WIDTH * TILE_SIZE) / 12}rem`,
             }}

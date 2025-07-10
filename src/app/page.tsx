@@ -142,10 +142,11 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      if (e.key === 'ArrowUp') movePlayer(0, -1);
-      if (e.key === 'ArrowDown') movePlayer(0, 1);
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0);
-      if (e.key === 'ArrowRight') movePlayer(1, 0);
+      // Remapped controls for isometric view
+      if (e.key === 'ArrowUp') movePlayer(-1, -1); // Up-Left
+      if (e.key === 'ArrowDown') movePlayer(1, 1);   // Down-Right
+      if (e.key === 'ArrowLeft') movePlayer(-1, 1);  // Down-Left
+      if (e.key === 'ArrowRight') movePlayer(1, -1); // Up-Right
     };
 
     window.addEventListener('keydown', handleKeyDown);

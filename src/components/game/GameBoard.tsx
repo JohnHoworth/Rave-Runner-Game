@@ -26,28 +26,24 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // The player is always in the center of the viewport.
-  // We move the maze container instead of the player icon.
   const mazeOffsetX = (VIEWPORT_SIZE / 2) - ((player.x + 0.5) * TILE_SIZE);
   const mazeOffsetY = (VIEWPORT_SIZE / 2) - ((player.y + 0.5) * TILE_SIZE);
   
   return (
     <div
-      className="bg-background border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
+      className="bg-background border-4 border-secondary shadow-2xl rounded-lg overflow-hidden relative"
       style={{
         width: `${VIEWPORT_SIZE}rem`,
         height: `${VIEWPORT_SIZE}rem`,
-        perspective: '1000px',
       }}
       data-ai-hint="maze puzzle"
     >
       <div
-        className="relative transition-all duration-100 ease-linear"
+        className="absolute transition-all duration-100 ease-linear"
         style={{
           width: `${MAZE_WIDTH * TILE_SIZE}rem`,
           height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
-          transformStyle: 'preserve-3d',
-          transform: `rotateX(60deg) scale(0.9)`,
+          transform: `scale(1.5)`,
           top: `${mazeOffsetY}rem`,
           left: `${mazeOffsetX}rem`,
         }}
@@ -69,7 +65,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                   gridColumn: x + 1,
                   gridRow: y + 1,
                   transform: cell === 1 ? 'translateZ(1rem)' : 'none',
-                  transformStyle: 'preserve-3d',
                 }}
               />
             ))
@@ -81,7 +76,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
           <div key={`item-${i}`} className="absolute w-8 h-8 p-1" style={{ 
               top: `${item.y * TILE_SIZE}rem`,
               left: `${item.x * TILE_SIZE}rem`,
-              transform: 'translateZ(1rem)' 
+              transform: 'translateZ(1.5rem)' 
           }}>
               <ItemIcon type={item.type} />
           </div>
@@ -93,7 +88,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
               top: `${enemy.y * TILE_SIZE}rem`,
               left: `${enemy.x * TILE_SIZE}rem`,
               transition: 'all 0.4s linear', 
-              transform: 'translateZ(1rem)' 
+              transform: 'translateZ(2rem)' 
           }}>
               <GhostIcon className="w-full h-full" />
           </div>
@@ -106,7 +101,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         left: '50%',
         width: '3rem', // 48px
         height: '3rem', // 48px
-        transform: 'translate(-50%, -50%) translateZ(60px) rotateX(-60deg) scale(0.9)', // Counter-rotate to stand upright
+        transform: 'translate(-50%, -50%) translateZ(2rem) scale(1.5)', 
         transformStyle: 'preserve-3d',
       }}>
           <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />

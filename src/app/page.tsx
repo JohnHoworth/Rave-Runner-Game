@@ -78,6 +78,7 @@ export default function Home() {
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
+      // Check for wall collision first. If it's a wall, do nothing.
       if (
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
@@ -86,23 +87,26 @@ export default function Home() {
         return prev;
       }
   
+      // The move is valid, so we can start building the new state.
+      let newState = { ...prev, player: newPlayerPos };
+      
       // Check for collision with enemies after player moves
-      for (const enemy of prev.enemies) {
+      for (const enemy of newState.enemies) {
         if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
           setTimeout(resetGame, 0);
-          return { ...prev, player: newPlayerPos };
+          return newState; // Return the state where player and enemy occupy the same space before reset
         }
       }
-  
-      let newState = { ...prev, player: newPlayerPos };
   
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
         
+        // Create a new array for items
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);
         
+        // Create new objects for collectibles, score, etc.
         const newCollectibles = { ...newState.collectibles };
         let newScore = newState.score;
         let newRaveBucks = newState.raveBucks;
@@ -121,6 +125,7 @@ export default function Home() {
           newCollectibles.vinyls++;
         }
         
+        // Update the new state object with new data
         newState = {
             ...newState,
             items: newItems,

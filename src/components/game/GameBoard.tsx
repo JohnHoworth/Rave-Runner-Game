@@ -6,7 +6,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 4; // in rem
+const TILE_SIZE_REM = 4; // The size of a tile in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -24,11 +24,15 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Center the view on the player
-  const viewportWidth = 36 * TILE_SIZE; // Approx 36rem in pixels
-  const viewportHeight = 36 * TILE_SIZE;
-  const translateX = viewportWidth / 2 - (player.x + 0.5) * TILE_SIZE;
-  const translateY = viewportHeight / 2 - (player.y + 0.5) * TILE_SIZE;
+  // This calculation ensures the player is always in the center of the viewport.
+  // We get the viewport dimensions and calculate the required translation
+  // to move the maze container, so the player character appears stationary.
+  const TILE_SIZE_PX = TILE_SIZE_REM * 16; // Assuming 1rem = 16px for calculation
+  const VIEWPORT_SIZE_PX = 40 * 16; 
+  
+  const translateX = VIEWPORT_SIZE_PX / 2 - (player.x + 0.5) * TILE_SIZE_PX;
+  const translateY = VIEWPORT_SIZE_PX / 2 - (player.y + 0.5) * TILE_SIZE_PX;
+
 
   return (
     <div
@@ -42,8 +46,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       <div 
         className="relative transition-transform duration-100 ease-linear"
         style={{
-          width: `${MAZE_WIDTH * TILE_SIZE}rem`,
-          height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
+          width: `${MAZE_WIDTH * TILE_SIZE_REM}rem`,
+          height: `${MAZE_HEIGHT * TILE_SIZE_REM}rem`,
           transform: `perspective(1000px) rotateX(60deg) rotateZ(-45deg) translateX(${translateX}px) translateY(${translateY}px) scale(1.2)`,
           transformOrigin: 'center center',
         }}

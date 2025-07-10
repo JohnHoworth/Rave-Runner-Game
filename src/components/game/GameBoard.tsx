@@ -9,6 +9,10 @@ import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 const TILE_SIZE = 24; 
 const VIEWPORT_SIZE_REM = 40; 
 
+// Helper functions to convert grid coordinates to isometric screen coordinates
+const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / 2);
+const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / 4);
+
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
@@ -25,9 +29,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to center the player in the isometric view
-  const mazeTx = (-player.y * TILE_SIZE * 0.5) - (player.x * TILE_SIZE * 0.5);
-  const mazeTy = (player.y * TILE_SIZE * 0.25) - (player.x * TILE_SIZE * 0.25);
+  // Calculate the offset to center the player in the isometric view.
+  // We want to translate the maze by the negative of the player's isometric position.
+  const mazeTx = -toIsometricX(player.x, player.y);
+  const mazeTy = -toIsometricY(player.x, player.y);
 
   return (
     <div
@@ -44,7 +49,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-100 ease-linear"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `translate(${mazeTx}px, ${mazeTy}px) rotateX(60deg) rotateZ(45deg) scale(1.5)`,
+                    transform: `rotateX(60deg) rotateZ(45deg) translateX(${mazeTx}px) translateY(${mazeTy}px) scale(1.5)`,
                 }}
             >
                 {/* Maze Floor and Walls */}
@@ -57,8 +62,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             style={{
                                 width: `${TILE_SIZE}px`,
                                 height: `${TILE_SIZE}px`,
-                                top: `${y * TILE_SIZE}px`,
-                                left: `${x * TILE_SIZE}px`,
+                                top: `${toIsometricY(x, y)}px`,
+                                left: `${toIsometricX(x, y)}px`,
                                 transformStyle: 'preserve-3d',
                             }}
                         >
@@ -77,8 +82,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                  {/* Items */}
                 {items.map((item, i) => (
                 <div key={`item-${i}`} className="absolute p-1" style={{
-                    top: `${item.y * TILE_SIZE}px`,
-                    left: `${item.x * TILE_SIZE}px`,
+                    top: `${toIsometricY(item.x, item.y)}px`,
+                    left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transform: 'translateZ(12px) rotateZ(-45deg) rotateX(-60deg)'
@@ -90,8 +95,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 {/* Enemies */}
                 {enemies.map((enemy, i) => (
                 <div key={`enemy-${i}`} className="absolute" style={{
-                    top: `${enemy.y * TILE_SIZE}px`,
-                    left: `${enemy.x * TILE_SIZE}px`,
+                    top: `${toIsometricY(enemy.x, enemy.y)}px`,
+                    left: `${toIsometricX(enemy.x, enemy.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transition: 'all 0.4s linear',
@@ -100,15 +105,17 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     <GhostIcon className="w-full h-full" />
                 </div>
                 ))}
-            </div>
 
-             {/* Player Icon (always centered) */}
-             <div className="absolute" style={{
-                width: `${TILE_SIZE * 1.5}px`,
-                height: `${TILE_SIZE * 1.5}px`,
-                transform: 'translateZ(16px)', 
-            }}>
-                <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
+                 {/* Player Icon */}
+                 <div className="absolute" style={{
+                    top: `${toIsometricY(player.x, player.y)}px`,
+                    left: `${toIsometricX(player.x, player.y)}px`,
+                    width: `${TILE_SIZE * 1.5}px`,
+                    height: `${TILE_SIZE * 1.5}px`,
+                    transform: 'translateZ(16px) rotateZ(-45deg) rotateX(-60deg)', 
+                }}>
+                    <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
+                </div>
             </div>
         </div>
     </div>

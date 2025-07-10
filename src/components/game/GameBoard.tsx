@@ -6,7 +6,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_HEIGHT, MAZE_WIDTH } from "@/lib/maze";
 
-const TILE_SIZE = 2; // in rem
+const TILE_SIZE = 4; // in rem
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -24,46 +24,69 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
+  // Center the view on the player
+  const viewportWidth = 36 * TILE_SIZE; // Approx 36rem in pixels
+  const viewportHeight = 36 * TILE_SIZE;
+  const translateX = viewportWidth / 2 - (player.x + 0.5) * TILE_SIZE;
+  const translateY = viewportHeight / 2 - (player.y + 0.5) * TILE_SIZE;
+
   return (
     <div
-      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines"
+      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden"
+      style={{
+        width: '40rem',
+        height: '40rem',
+      }}
       data-ai-hint="maze arcade"
     >
-      <div
-        className="grid relative"
+      <div 
+        className="relative transition-transform duration-100 ease-linear"
         style={{
-          gridTemplateColumns: `repeat(${MAZE_WIDTH}, 1fr)`,
-          gridTemplateRows: `repeat(${MAZE_HEIGHT}, 1fr)`,
           width: `${MAZE_WIDTH * TILE_SIZE}rem`,
           height: `${MAZE_HEIGHT * TILE_SIZE}rem`,
+          transform: `perspective(1000px) rotateX(60deg) rotateZ(-45deg) translateX(${translateX}px) translateY(${translateY}px) scale(1.2)`,
+          transformOrigin: 'center center',
         }}
       >
-        {maze.map((row, y) =>
-          row.map((cell, x) =>
-            cell === 1 ? (
-              <div
-                key={`${x}-${y}`}
-                className="bg-secondary border-t-secondary/50 border-l-secondary/50 border-b-primary/30 border-r-primary/30 border-2 w-full h-full rounded-sm"
-                style={{ gridColumn: x + 1, gridRow: y + 1 }}
-              />
-            ) : null
-          )
-        )}
-        
-        {items.map((item, i) => (
-             <div key={`item-${i}`} className="p-1" style={{ gridColumn: item.x + 1, gridRow: item.y + 1 }}>
-                <ItemIcon type={item.type} />
-            </div>
-        ))}
+        <div
+            className="grid absolute inset-0"
+            style={{
+                gridTemplateColumns: `repeat(${MAZE_WIDTH}, 1fr)`,
+                gridTemplateRows: `repeat(${MAZE_HEIGHT}, 1fr)`,
+            }}
+        >
+            {maze.map((row, y) =>
+              row.map((cell, x) =>
+                cell === 1 ? (
+                  <div
+                    key={`${x}-${y}`}
+                    className="bg-secondary/50 border-t-2 border-primary/50"
+                    style={{ 
+                        gridColumn: x + 1, 
+                        gridRow: y + 1,
+                        transform: 'translateZ(-1rem)',
+                        boxShadow: '0 1rem 0 hsl(var(--secondary))',
+                    }}
+                  />
+                ) : null
+              )
+            )}
+            
+            {items.map((item, i) => (
+                 <div key={`item-${i}`} className="p-2" style={{ gridColumn: item.x + 1, gridRow: item.y + 1 }}>
+                    <ItemIcon type={item.type} />
+                </div>
+            ))}
 
-        {enemies.map((enemy, i) => (
-            <div key={`enemy-${i}`} className="p-0.5" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.2s linear' }}>
-                <GhostIcon className="w-full h-full" />
+            {enemies.map((enemy, i) => (
+                <div key={`enemy-${i}`} className="p-1" style={{ gridColumn: enemy.x + 1, gridRow: enemy.y + 1, transition: 'all 0.2s linear' }}>
+                    <GhostIcon className="w-full h-full" />
+                </div>
+            ))}
+            
+            <div className="p-1" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear' }}>
+                <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_8px_hsl(var(--accent))] -rotate-45" />
             </div>
-        ))}
-        
-        <div className="p-0.5" style={{ gridColumn: player.x + 1, gridRow: player.y + 1, transition: 'all 0.1s linear' }}>
-            <PlayerIcon className="w-full h-full text-accent drop-shadow-[0_0_5px_hsl(var(--accent))]" />
         </div>
       </div>
     </div>

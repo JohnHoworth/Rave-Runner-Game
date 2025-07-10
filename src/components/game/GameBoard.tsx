@@ -24,19 +24,9 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // This calculation ensures the player is always in the center of the viewport.
-  // We get the viewport dimensions and calculate the required translation
-  // to move the maze container, so the player character appears stationary.
-  const TILE_SIZE_PX = TILE_SIZE_REM * 16; // Assuming 1rem = 16px for calculation
-  const VIEWPORT_SIZE_PX = 40 * 16;
-  
-  const translateX = VIEWPORT_SIZE_PX / 2 - (player.x + 0.5) * TILE_SIZE_PX;
-  const translateY = VIEWPORT_SIZE_PX / 2 - (player.y + 0.5) * TILE_SIZE_PX;
-
-
   return (
     <div
-      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden"
+      className="bg-black/50 border-4 border-primary shadow-[0_0_20px_hsl(var(--primary))] rounded-lg p-2 scanlines overflow-hidden flex items-center justify-center"
       style={{
         width: '40rem',
         height: '40rem',
@@ -45,11 +35,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze arcade"
     >
       <div 
-        className="relative transition-transform duration-100 ease-linear"
+        className="relative"
         style={{
           width: `${MAZE_WIDTH * TILE_SIZE_REM}rem`,
           height: `${MAZE_HEIGHT * TILE_SIZE_REM}rem`,
-          transform: `translateY(${translateY}px) translateX(${translateX}px) rotateX(60deg) rotateZ(-45deg)`,
+          transform: 'rotateX(60deg) rotateZ(-45deg) scale(0.6)',
           transformStyle: 'preserve-3d',
         }}
       >

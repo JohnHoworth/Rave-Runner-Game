@@ -8,7 +8,6 @@ import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 
 const TILE_SIZE = 32; 
 const VIEWPORT_SIZE_REM = 48;
-const WALL_HEIGHT = TILE_SIZE * 0.75;
 
 const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / 2);
 const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / 4);
@@ -35,6 +34,38 @@ const getCameraRotation = (direction: PlayerDirection) => {
         default: return 225;
     }
 }
+
+const FloorTile = () => {
+    return (
+        <svg viewBox="-1 -1 34 18" className="w-full h-full overflow-visible">
+            <defs>
+                <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style={{stopColor: 'hsl(var(--primary))', stopOpacity: 0.3}} />
+                    <stop offset="100%" style={{stopColor: 'hsl(var(--primary))', stopOpacity: 0}} />
+                </radialGradient>
+                 <filter id="glow">
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                    <feMerge>
+                        <feMergeNode in="coloredBlur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+            <path
+                d="M 16 0 L 32 8 L 16 16 L 0 8 Z"
+                fill="url(#grad1)"
+            />
+            <path
+                d="M 16 0 L 32 8 L 16 16 L 0 8 Z"
+                fill="none"
+                stroke="hsl(var(--primary))"
+                strokeWidth="0.5"
+                filter="url(#glow)"
+            />
+        </svg>
+    )
+}
+
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
@@ -76,9 +107,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                                 transformStyle: 'preserve-3d',
                             }}
                         >
-                            {cell === 0 && (
-                                <div className="absolute inset-0 bg-primary/10 shadow-[inset_0_0_10px_hsl(var(--primary)/0.5)]" />
-                            )}
+                            {cell === 0 && <FloorTile />}
                         </div>
                         ))
                     )}

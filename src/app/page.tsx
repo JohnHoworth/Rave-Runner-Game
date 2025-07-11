@@ -81,9 +81,29 @@ export default function Home() {
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.05);
   };
+  
+  const playBustedSound = () => {
+    if (!audioContextRef.current) return;
+    const oscillator = audioContextRef.current.createOscillator();
+    const gainNode = audioContextRef.current.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
+
+    gainNode.gain.setValueAtTime(0.2, audioContextRef.current.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + 0.5);
+    
+    oscillator.frequency.setValueAtTime(220, audioContextRef.current.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(110, audioContextRef.current.currentTime + 0.5);
+    oscillator.type = 'sawtooth';
+
+    oscillator.start(audioContextRef.current.currentTime);
+    oscillator.stop(audioContextRef.current.currentTime + 0.5);
+  };
 
 
   const resetGame = useCallback(() => {
+    playBustedSound();
     setIsBusted(true);
     toast({
       title: "You Got Busted!",

@@ -25,15 +25,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const getCameraRotation = (direction: PlayerDirection) => {
-    switch (direction) {
-        case 'up': return 45;
-        case 'down': return 225;
-        case 'left': return 135;
-        case 'right': return -45;
-        default: return 225;
-    }
-}
+const STATIC_CAMERA_ROTATION = 45;
 
 const FloorTile = () => {
     return (
@@ -72,7 +64,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   const mazeTx = -toIsometricX(player.x, player.y);
   const mazeTy = -toIsometricY(player.x, player.y);
-  const cameraRotation = getCameraRotation(player.direction);
 
   return (
     <div
@@ -89,7 +80,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-300 ease-in-out"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `scale(2.5) rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
+                    transform: `scale(2.5) rotateX(55deg) rotateZ(${STATIC_CAMERA_ROTATION}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
                 {/* Maze Floor */}
@@ -120,7 +111,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
-                    transform: `translateZ(5px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
+                    transform: `translateZ(5px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`
                 }}>
                     <ItemIcon type={item.type} />
                 </div>
@@ -134,7 +125,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transition: 'all 0.4s linear',
-                    transform: `translateZ(10px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
+                    transform: `translateZ(10px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`
                 }}>
                     <GhostIcon className="w-full h-full" />
                 </div>
@@ -146,7 +137,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(player.x, player.y)}px`,
                     width: `${TILE_SIZE * 1.2}px`,
                     height: `${TILE_SIZE * 1.2}px`,
-                    transform: `translateZ(10px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`,
+                    transform: `translateZ(10px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`,
                 }}>
                     <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
                 </div>

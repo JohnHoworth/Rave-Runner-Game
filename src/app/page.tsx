@@ -84,7 +84,17 @@ export default function Home() {
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
+        // If the destination is a wall, just update direction and don't move.
         return { ...prev, player: { ...prev.player, direction } };
+      }
+      
+      // More robust check for cutting corners
+      if (dx !== 0 && dy !== 0) { // Diagonal movement
+        const isWallX = prev.maze[prev.player.y]?.[prev.player.x + dx] === 1;
+        const isWallY = prev.maze[prev.player.y + dy]?.[prev.player.x] === 1;
+        if (isWallX && isWallY) {
+           return { ...prev, player: { ...prev.player, direction } }; // Blocked by a corner
+        }
       }
       
       let newState = { ...prev, player: { ...newPlayerPos, direction } };

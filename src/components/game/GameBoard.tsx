@@ -23,11 +23,12 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = ({ isPlayerOn }: { isPlayerOn: boolean }) => {
+const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-primary/10",
-            isPlayerOn ? "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]" : "border border-primary/50"
+            "w-full h-full bg-primary/10 border border-primary/50",
+            isPlayerOn && "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]",
+            isEnemyOn && "border-2 border-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.7)]"
         )}></div>
     )
 }
@@ -42,6 +43,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const scale = 1.5;
   const translateX = `calc(50% - ${(player.x * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;
   const translateY = `calc(50% - ${(player.y * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;
+  
+  const enemyPositions = new Set(enemies.map(e => `${e.x},${e.y}`));
 
   return (
     <div
@@ -73,7 +76,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         left: `${x * TILE_SIZE}px`,
                     }}
                 >
-                    {cell === 0 && <FloorTile isPlayerOn={player.x === x && player.y === y} />}
+                    {cell === 0 && <FloorTile 
+                        isPlayerOn={player.x === x && player.y === y} 
+                        isEnemyOn={enemyPositions.has(`${x},${y}`)}
+                    />}
                 </div>
                 ))
             )}

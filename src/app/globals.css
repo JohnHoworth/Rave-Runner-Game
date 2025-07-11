@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 200 15% 15%; /* Dark Desaturated Teal/Gray */
-    --foreground: 180 10% 95%;
-    --card: 200 15% 20%;
-    --card-foreground: 180 10% 95%;
-    --popover: 200 15% 15%;
-    --popover-foreground: 180 10% 95%;
-    --primary: 180 100% 75%; /* Electric Blue */
-    --primary-foreground: 200 25% 10%;
-    --secondary: 180 15% 30%;
-    --secondary-foreground: 180 10% 98%;
-    --muted: 180 15% 30%;
-    --muted-foreground: 180 10% 65%;
-    --accent: 75 100% 50%; /* Acid Yellow */
-    --accent-foreground: 75 25% 10%;
+    --background: 220 40% 10%; /* Deep Space Blue */
+    --foreground: 220 15% 95%;
+    --card: 220 40% 15%;
+    --card-foreground: 220 15% 95%;
+    --popover: 220 40% 10%;
+    --popover-foreground: 220 15% 95%;
+    --primary: 180 100% 50%; /* Vibrant Cyan */
+    --primary-foreground: 180 25% 10%;
+    --secondary: 220 40% 25%;
+    --secondary-foreground: 220 15% 98%;
+    --muted: 220 40% 25%;
+    --muted-foreground: 220 15% 65%;
+    --accent: 330 100% 55%; /* Hot Pink */
+    --accent-foreground: 330 25% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 180 15% 30%;
-    --input: 180 15% 30%;
-    --ring: 180 100% 75%;
+    --border: 220 40% 25%;
+    --input: 220 40% 25%;
+    --ring: 180 100% 50%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 200 15% 15%; /* Dark Desaturated Teal/Gray */
-    --foreground: 180 10% 95%;
-    --card: 200 15% 20%;
-    --card-foreground: 180 10% 95%;
-    --popover: 200 15% 15%;
-    --popover-foreground: 180 10% 95%;
-    --primary: 180 100% 75%; /* Electric Blue */
-    --primary-foreground: 200 25% 10%;
-    --secondary: 180 15% 30%;
-    --secondary-foreground: 180 10% 98%;
-    --muted: 180 15% 30%;
-    --muted-foreground: 180 10% 65%;
-    --accent: 75 100% 50%; /* Acid Yellow */
-    --accent-foreground: 75 25% 10%;
+    --background: 220 40% 10%; /* Deep Space Blue */
+    --foreground: 220 15% 95%;
+    --card: 220 40% 15%;
+    --card-foreground: 220 15% 95%;
+    --popover: 220 40% 10%;
+    --popover-foreground: 220 15% 95%;
+    --primary: 180 100% 50%; /* Vibrant Cyan */
+    --primary-foreground: 180 25% 10%;
+    --secondary: 220 40% 25%;
+    --secondary-foreground: 220 15% 98%;
+    --muted: 220 40% 25%;
+    --muted-foreground: 220 15% 65%;
+    --accent: 330 100% 55%; /* Hot Pink */
+    --accent-foreground: 330 25% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 180 15% 30%;
-    --input: 180 15% 30%;
-    --ring: 180 100% 75%;
+    --border: 220 40% 25%;
+    --input: 220 40% 25%;
+    --ring: 180 100% 50%;
   }
 }
 

@@ -77,13 +77,16 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             }}
                         >
                             {cell === 1 ? (
-                                <div className="absolute inset-0 bg-primary/40" style={{ transform: `translateZ(${WALL_HEIGHT/2}px) scaleY(1)` }}>
-                                    {/* Top face */}
-                                    <div className="absolute w-full h-full bg-primary/70" style={{ transform: `translateZ(${WALL_HEIGHT/2}px)`}}/>
-                                    {/* Front face */}
-                                    <div className="absolute w-full h-full bg-primary/50 origin-top" style={{ transform: `rotateX(-90deg)` }}/>
-                                    {/* Left face */}
-                                    <div className="absolute w-full h-full bg-primary/60 origin-left" style={{ transform: `rotateY(90deg)` }}/>
+                                <div className="absolute inset-0" style={{ transform: `translateZ(-${WALL_HEIGHT/2}px)` }}>
+                                    {/* Wall Block */}
+                                    <div 
+                                        className="absolute w-full h-full bg-primary/70"
+                                        style={{transform: `translateZ(${WALL_HEIGHT}px) rotateX(90deg) translateY(-${TILE_SIZE/2}px)`}}
+                                    />
+                                    <div 
+                                        className="absolute w-full h-full bg-primary/50"
+                                        style={{transform: `translateZ(${WALL_HEIGHT}px) rotateY(-90deg) translateX(${TILE_SIZE/2}px)`}}
+                                    />
                                 </div>
                             ) : (
                                 <div className="absolute inset-0 bg-background/50" />
@@ -100,7 +103,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
-                    transform: `translateZ(${WALL_HEIGHT * 0.5}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
+                    transform: `translateZ(${WALL_HEIGHT * 0}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
                 }}>
                     <ItemIcon type={item.type} />
                 </div>

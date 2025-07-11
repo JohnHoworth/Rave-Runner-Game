@@ -84,7 +84,7 @@ export default function Home() {
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
-        return prev; // Invalid move, return original state
+        return { ...prev, player: { ...prev.player, direction } };
       }
       
       let newState = { ...prev, player: { ...newPlayerPos, direction } };
@@ -139,11 +139,10 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Corrected controls for direct movement
-      if (e.key === 'ArrowUp') movePlayer(0, -1, 'up'); // Move up
-      if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');  // Move down
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left'); // Move left
-      if (e.key === 'ArrowRight') movePlayer(1, 0, 'right'); // Move right
+      if (e.key === 'ArrowUp') movePlayer(0, -1, 'up');
+      if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left');
+      if (e.key === 'ArrowRight') movePlayer(1, 0, 'right');
     };
 
     window.addEventListener('keydown', handleKeyDown);

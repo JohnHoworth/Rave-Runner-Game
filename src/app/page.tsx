@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import GameBoard from '@/components/game/GameBoard';
 import GameUI from '@/components/game/GameUI';
 import Header from '@/components/layout/Header';
@@ -63,6 +63,25 @@ export default function Home() {
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
   const [isBusted, setIsBusted] = useState(false);
   const { toast } = useToast();
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const hasInteractedRef = useRef(false);
+
+  const playMoveSound = () => {
+    if (!audioContextRef.current) return;
+    const oscillator = audioContextRef.current.createOscillator();
+    const gainNode = audioContextRef.current.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
+
+    gainNode.gain.setValueAtTime(0.1, audioContextRef.current.currentTime);
+    oscillator.frequency.setValueAtTime(440, audioContextRef.current.currentTime);
+    oscillator.type = 'sine';
+
+    oscillator.start(audioContextRef.current.currentTime);
+    oscillator.stop(audioContextRef.current.currentTime + 0.05);
+  };
+
 
   const resetGame = useCallback(() => {
     setIsBusted(true);
@@ -94,6 +113,8 @@ export default function Home() {
         // Just update direction if moving against a wall
         return { ...prev, player: { ...prev.player, direction } };
       }
+
+      playMoveSound();
       
       let newState = { ...prev, player: { ...newPlayerPos, direction } };
       
@@ -147,6 +168,14 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
+
+      if (!hasInteractedRef.current) {
+        hasInteractedRef.current = true;
+        if (typeof window !== 'undefined' && !audioContextRef.current) {
+          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+      }
+
       if (e.key === 'ArrowUp') movePlayer(0, -1, 'up');
       if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');
       if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left');

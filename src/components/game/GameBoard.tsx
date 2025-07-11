@@ -8,7 +8,7 @@ import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 
 const TILE_SIZE = 32; 
 const VIEWPORT_SIZE_REM = 48;
-const WALL_HEIGHT = 24;
+const WALL_HEIGHT = TILE_SIZE * 0.75;
 
 const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / 2);
 const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / 4);
@@ -61,7 +61,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     transform: `rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
-                {/* Maze Floor and Walls */}
+                {/* Maze Floor */}
                 <div className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
                     {maze.map((row, y) =>
                         row.map((cell, x) => (
@@ -76,20 +76,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                                 transformStyle: 'preserve-3d',
                             }}
                         >
-                            {cell === 1 ? (
-                                <div className="absolute inset-0" style={{ transform: `translateZ(-${WALL_HEIGHT/2}px)` }}>
-                                    {/* Wall Block */}
-                                    <div 
-                                        className="absolute w-full h-full bg-primary/70"
-                                        style={{transform: `translateZ(${WALL_HEIGHT}px) rotateX(90deg) translateY(-${TILE_SIZE/2}px)`}}
-                                    />
-                                    <div 
-                                        className="absolute w-full h-full bg-primary/50"
-                                        style={{transform: `translateZ(${WALL_HEIGHT}px) rotateY(-90deg) translateX(${TILE_SIZE/2}px)`}}
-                                    />
-                                </div>
-                            ) : (
-                                <div className="absolute inset-0 bg-background/50" />
+                            {cell === 0 && (
+                                <div className="absolute inset-0 bg-primary/10 shadow-[inset_0_0_10px_hsl(var(--primary)/0.5)]" />
                             )}
                         </div>
                         ))
@@ -103,7 +91,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
-                    transform: `translateZ(${WALL_HEIGHT * 0}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
+                    transform: `translateZ(5px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
                 }}>
                     <ItemIcon type={item.type} />
                 </div>
@@ -117,7 +105,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transition: 'all 0.4s linear',
-                    transform: `translateZ(${WALL_HEIGHT}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
+                    transform: `translateZ(10px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
                 }}>
                     <GhostIcon className="w-full h-full" />
                 </div>
@@ -129,7 +117,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(player.x, player.y)}px`,
                     width: `${TILE_SIZE * 1.2}px`,
                     height: `${TILE_SIZE * 1.2}px`,
-                    transform: `translateZ(${WALL_HEIGHT}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`,
+                    transform: `translateZ(10px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`,
                 }}>
                     <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
                 </div>

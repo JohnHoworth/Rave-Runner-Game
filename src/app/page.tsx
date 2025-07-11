@@ -139,10 +139,11 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      if (e.key === 'ArrowUp') movePlayer(0, -1, 'up');
-      if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left');
-      if (e.key === 'ArrowRight') movePlayer(1, 0, 'right');
+      // Remapped controls for intuitive isometric movement
+      if (e.key === 'ArrowUp') movePlayer(1, -1, 'up'); // Up-Right
+      if (e.key === 'ArrowDown') movePlayer(-1, 1, 'down'); // Down-Left
+      if (e.key === 'ArrowLeft') movePlayer(-1, -1, 'left'); // Up-Left
+      if (e.key === 'ArrowRight') movePlayer(1, 1, 'right'); // Down-Right
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -178,7 +179,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, []);
+  }, [resetGame]);
 
   useEffect(() => {
     setGameState(createInitialState());

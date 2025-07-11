@@ -9,8 +9,10 @@ import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 const TILE_SIZE = 32; 
 const VIEWPORT_SIZE_REM = 48;
 
-const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / 2);
-const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / 4);
+// Adjusted isometric conversion functions
+const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / Math.sqrt(2));
+const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / (2 * Math.sqrt(2)));
+
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -25,6 +27,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
+// Static camera rotation, does not change
 const STATIC_CAMERA_ROTATION = 45;
 
 const FloorTile = () => {
@@ -62,6 +65,7 @@ const FloorTile = () => {
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
+  // Camera follows the player by translating the maze container
   const mazeTx = -toIsometricX(player.x, player.y);
   const mazeTy = -toIsometricY(player.x, player.y);
 
@@ -80,6 +84,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-300 ease-in-out"
                 style={{
                     transformStyle: 'preserve-3d',
+                    // Static camera rotation + dynamic translation to follow player
                     transform: `scale(2.5) rotateX(55deg) rotateZ(${STATIC_CAMERA_ROTATION}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
@@ -111,6 +116,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
+                    // Counter-rotate to keep items upright
                     transform: `translateZ(5px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`
                 }}>
                     <ItemIcon type={item.type} />
@@ -125,6 +131,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transition: 'all 0.4s linear',
+                     // Counter-rotate to keep enemies upright
                     transform: `translateZ(10px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`
                 }}>
                     <GhostIcon className="w-full h-full" />
@@ -137,6 +144,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(player.x, player.y)}px`,
                     width: `${TILE_SIZE * 1.2}px`,
                     height: `${TILE_SIZE * 1.2}px`,
+                     // Counter-rotate to keep player upright
                     transform: `translateZ(10px) rotateZ(-${STATIC_CAMERA_ROTATION}deg) rotateX(-55deg)`,
                 }}>
                     <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />

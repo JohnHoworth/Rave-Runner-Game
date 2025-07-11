@@ -140,10 +140,10 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
       // Corrected isometric controls
-      if (e.key === 'ArrowUp') movePlayer(0, -1); // Move up-left
-      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Move down-right
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Move down-left
-      if (e.key === 'ArrowRight') movePlayer(1, 0); // Move up-right
+      if (e.key === 'ArrowUp') movePlayer(0, -1); // Move up
+      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Move down
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Move left
+      if (e.key === 'ArrowRight') movePlayer(1, 0); // Move right
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -155,9 +155,11 @@ export default function Home() {
       setGameState(prev => {
         if (!prev) return null;
 
-        const { enemies, player, maze } = prev;
+        // Clone the previous state to ensure we're not mutating it directly
+        const newState = { ...prev };
+        const { player, maze } = newState;
 
-        const newEnemies = enemies.map(enemy => {
+        const newEnemies = newState.enemies.map(enemy => {
           const path = findPath(enemy, player, maze);
           if (path && path.length > 1) {
             // Move one step along the path
@@ -171,17 +173,18 @@ export default function Home() {
           if (enemy.x === player.x && enemy.y === player.y) {
              // Use a timeout to allow the UI to update before resetting
              setTimeout(resetGame, 0);
-             return { ...prev, enemies: newEnemies };
+             // Return the state with the new enemy positions, so the collision is visible
+             return { ...newState, enemies: newEnemies };
           }
         }
         
-        return { ...prev, enemies: newEnemies };
+        return { ...newState, enemies: newEnemies };
       });
 
     }, 400); // Enemy movement speed
 
     return () => clearInterval(gameLoop);
-  }, [resetGame]);
+  }, []); // Removed resetGame from dependencies
 
   useEffect(() => {
     setGameState(createInitialState());

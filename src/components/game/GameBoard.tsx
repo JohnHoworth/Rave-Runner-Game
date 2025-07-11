@@ -49,7 +49,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       style={{
         width: `${VIEWPORT_SIZE_REM}rem`,
         height: `${VIEWPORT_SIZE_REM}rem`,
-        perspective: '1200px',
+        perspective: '1000px',
       }}
       data-ai-hint="maze puzzle"
     >
@@ -58,7 +58,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-300 ease-in-out"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
+                    transform: `scale(1.5) rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
                 {/* Maze Floor */}

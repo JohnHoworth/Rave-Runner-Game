@@ -5,6 +5,12 @@ export type Position = {
   y: number;
 };
 
+export type PlayerDirection = 'up' | 'down' | 'left' | 'right';
+
+export type PlayerState = Position & {
+    direction: PlayerDirection;
+};
+
 export type Enemy = Position;
 
 export type Item = Position & {
@@ -20,7 +26,7 @@ export type GameState = {
     vinyls: number;
   };
   level: number;
-  player: Position;
+  player: PlayerState;
   enemies: Enemy[];
   items: Item[];
   maze: number[][];

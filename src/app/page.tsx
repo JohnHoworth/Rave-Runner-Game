@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from "react";
 import GameBoard from '@/components/game/GameBoard';
 import GameUI from '@/components/game/GameUI';
 import Header from '@/components/layout/Header';
-import type { GameState, Level, Item, CollectibleType, Position } from "@/lib/types";
+import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection } from "@/lib/types";
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -50,7 +50,7 @@ const createInitialState = (): GameState => {
     raveBucks: 0,
     collectibles: { flyers: 0, glowsticks: 0, vinyls: 0 },
     level: 1,
-    player: playerPos,
+    player: { ...playerPos, direction: 'down' },
     enemies: enemyPositions,
     items: items,
     maze: maze,
@@ -72,7 +72,7 @@ export default function Home() {
     setGameState(createInitialState());
   }, [toast]);
 
-  const movePlayer = useCallback((dx: number, dy: number) => {
+  const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     setGameState(prev => {
       if (!prev) return null;
   
@@ -87,7 +87,7 @@ export default function Home() {
         return prev; // Invalid move, return original state
       }
       
-      let newState = { ...prev, player: newPlayerPos };
+      let newState = { ...prev, player: { ...newPlayerPos, direction } };
       
       // Check for collision with enemies
       for (const enemy of newState.enemies) {
@@ -139,11 +139,11 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Corrected isometric controls
-      if (e.key === 'ArrowUp') movePlayer(0, -1); // Move up
-      if (e.key === 'ArrowDown') movePlayer(0, 1);  // Move down
-      if (e.key === 'ArrowLeft') movePlayer(-1, 0); // Move left
-      if (e.key === 'ArrowRight') movePlayer(1, 0); // Move right
+      // Corrected controls for direct movement
+      if (e.key === 'ArrowUp') movePlayer(0, -1, 'up'); // Move up
+      if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');  // Move down
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left'); // Move left
+      if (e.key === 'ArrowRight') movePlayer(1, 0, 'right'); // Move right
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -155,25 +155,20 @@ export default function Home() {
       setGameState(prev => {
         if (!prev) return null;
 
-        // Clone the previous state to ensure we're not mutating it directly
         const newState = { ...prev };
         const { player, maze } = newState;
 
         const newEnemies = newState.enemies.map(enemy => {
           const path = findPath(enemy, player, maze);
           if (path && path.length > 1) {
-            // Move one step along the path
             return path[1];
           }
-          return enemy; // Stay put if no path
+          return enemy; 
         });
 
-        // Check for collision after moving all enemies
         for (const enemy of newEnemies) {
           if (enemy.x === player.x && enemy.y === player.y) {
-             // Use a timeout to allow the UI to update before resetting
              setTimeout(resetGame, 0);
-             // Return the state with the new enemy positions, so the collision is visible
              return { ...newState, enemies: newEnemies };
           }
         }
@@ -181,10 +176,10 @@ export default function Home() {
         return { ...newState, enemies: newEnemies };
       });
 
-    }, 400); // Enemy movement speed
+    }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, []); // Removed resetGame from dependencies
+  }, [resetGame]);
 
   useEffect(() => {
     setGameState(createInitialState());

@@ -3,14 +3,13 @@
 
 import PlayerIcon from "@/components/icons/PlayerIcon";
 import GhostIcon from "@/components/icons/GhostIcon";
-import { GameState, Item } from "@/lib/types";
+import { GameState, Item, PlayerDirection } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 
-const TILE_SIZE = 24; 
-const VIEWPORT_SIZE_REM = 40; 
-const WALL_HEIGHT = 8;
+const TILE_SIZE = 32; 
+const VIEWPORT_SIZE_REM = 48;
+const WALL_HEIGHT = 24;
 
-// Helper functions to convert grid coordinates to isometric screen coordinates
 const toIsometricX = (x: number, y: number) => (x - y) * (TILE_SIZE / 2);
 const toIsometricY = (x: number, y: number) => (x + y) * (TILE_SIZE / 4);
 
@@ -27,12 +26,22 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
+const getCameraRotation = (direction: PlayerDirection) => {
+    switch (direction) {
+        case 'up': return 45;
+        case 'down': return 225;
+        case 'left': return 135;
+        case 'right': return -45;
+        default: return 225;
+    }
+}
+
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
-  // Calculate the offset to center the player in the isometric view.
   const mazeTx = -toIsometricX(player.x, player.y);
   const mazeTy = -toIsometricY(player.x, player.y);
+  const cameraRotation = getCameraRotation(player.direction);
 
   return (
     <div
@@ -40,16 +49,16 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       style={{
         width: `${VIEWPORT_SIZE_REM}rem`,
         height: `${VIEWPORT_SIZE_REM}rem`,
-        perspective: '1000px',
+        perspective: '1200px',
       }}
       data-ai-hint="maze puzzle"
     >
         <div className="absolute inset-0 flex items-center justify-center">
             <div
-                className="absolute transition-transform duration-100 ease-linear"
+                className="absolute transition-transform duration-300 ease-in-out"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `rotateX(60deg) rotateZ(45deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
+                    transform: `rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
                 {/* Maze Floor and Walls */}
@@ -68,9 +77,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             }}
                         >
                             {cell === 1 ? (
-                                <div className="absolute inset-0 bg-primary/40" style={{ transform: `translateZ(${WALL_HEIGHT/2}px)` }}>
-                                    <div className="absolute inset-0 bg-primary/60" style={{ transform: `translateZ(-${WALL_HEIGHT/2}px) scaleY(0.5) rotateX(90deg)`, transformOrigin: 'bottom' }} />
-                                    <div className="absolute inset-0 bg-primary/80" style={{ transform: `translateZ(-${WALL_HEIGHT/2}px) scaleX(0.5) rotateY(-90deg)`, transformOrigin: 'right' }} />
+                                <div className="absolute inset-0 bg-primary/40" style={{ transform: `translateZ(${WALL_HEIGHT/2}px) scaleY(1)` }}>
+                                    {/* Top face */}
+                                    <div className="absolute w-full h-full bg-primary/70" style={{ transform: `translateZ(${WALL_HEIGHT/2}px)`}}/>
+                                    {/* Front face */}
+                                    <div className="absolute w-full h-full bg-primary/50 origin-top" style={{ transform: `rotateX(-90deg)` }}/>
+                                    {/* Left face */}
+                                    <div className="absolute w-full h-full bg-primary/60 origin-left" style={{ transform: `rotateY(90deg)` }}/>
                                 </div>
                             ) : (
                                 <div className="absolute inset-0 bg-background/50" />
@@ -87,7 +100,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     left: `${toIsometricX(item.x, item.y)}px`,
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
-                    transform: `translateZ(${WALL_HEIGHT + 2}px) rotateZ(-45deg) rotateX(-60deg)`
+                    transform: `translateZ(${WALL_HEIGHT * 0.5}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
                 }}>
                     <ItemIcon type={item.type} />
                 </div>
@@ -101,7 +114,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     width: `${TILE_SIZE}px`,
                     height: `${TILE_SIZE}px`,
                     transition: 'all 0.4s linear',
-                    transform: `translateZ(${WALL_HEIGHT + 4}px) rotateZ(-45deg) rotateX(-60deg)`
+                    transform: `translateZ(${WALL_HEIGHT}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`
                 }}>
                     <GhostIcon className="w-full h-full" />
                 </div>
@@ -111,9 +124,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                  <div className="absolute" style={{
                     top: `${toIsometricY(player.x, player.y)}px`,
                     left: `${toIsometricX(player.x, player.y)}px`,
-                    width: `${TILE_SIZE * 1.5}px`,
-                    height: `${TILE_SIZE * 1.5}px`,
-                    transform: `translateZ(${WALL_HEIGHT + 4}px) rotateZ(-45deg) rotateX(-60deg)`,
+                    width: `${TILE_SIZE * 1.2}px`,
+                    height: `${TILE_SIZE * 1.2}px`,
+                    transform: `translateZ(${WALL_HEIGHT}px) rotateZ(-${cameraRotation}deg) rotateX(-55deg)`,
                 }}>
                     <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
                 </div>

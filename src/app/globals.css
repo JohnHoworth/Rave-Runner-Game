@@ -60,3 +60,15 @@
     @apply px-2 py-1 text-xs font-semibold text-foreground bg-muted rounded-md border;
   }
 }
+
+@keyframes flash-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+@keyframes flash-blue {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+.siren-red { animation: flash-red 0.8s ease-in-out infinite; }
+.siren-blue { animation: flash-blue 0.8s ease-in-out infinite; }

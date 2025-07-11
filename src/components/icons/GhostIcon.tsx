@@ -7,18 +7,6 @@ export default function GhostIcon({ className }: { className?: string }) {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
         >
-            <style dangerouslySetInnerHTML={{__html: `
-                @keyframes flash-red {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.2; }
-                }
-                @keyframes flash-blue {
-                    0%, 100% { opacity: 0.2; }
-                    50% { opacity: 1; }
-                }
-                .siren-red { animation: flash-red 0.8s ease-in-out infinite; }
-                .siren-blue { animation: flash-blue 0.8s ease-in-out infinite; }
-            `}} />
             <g>
                 {/* Base of the siren */}
                 <circle cx="50" cy="50" r="45" fill="#444" stroke="#666" strokeWidth="2" />

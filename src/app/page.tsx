@@ -101,6 +101,25 @@ export default function Home() {
     oscillator.stop(audioContextRef.current.currentTime + 0.5);
   };
 
+  const playCollectSound = () => {
+    if (!audioContextRef.current) return;
+    const oscillator = audioContextRef.current.createOscillator();
+    const gainNode = audioContextRef.current.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
+
+    gainNode.gain.setValueAtTime(0.1, audioContextRef.current.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + 0.2);
+    
+    oscillator.frequency.setValueAtTime(880, audioContextRef.current.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(1760, audioContextRef.current.currentTime + 0.2);
+    oscillator.type = 'triangle';
+
+    oscillator.start(audioContextRef.current.currentTime);
+    oscillator.stop(audioContextRef.current.currentTime + 0.2);
+  };
+
 
   const resetGame = useCallback(() => {
     playBustedSound();
@@ -149,6 +168,7 @@ export default function Home() {
       // Item collection
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
+        playCollectSound();
         const collectedItem = newState.items[itemIndex];
         
         const newItems = [...newState.items];

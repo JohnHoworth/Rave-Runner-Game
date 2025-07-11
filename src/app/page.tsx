@@ -61,18 +61,25 @@ const createInitialState = (): GameState => {
 export default function Home() {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
+  const [isBusted, setIsBusted] = useState(false);
   const { toast } = useToast();
 
   const resetGame = useCallback(() => {
+    setIsBusted(true);
     toast({
       title: "You Got Busted!",
       description: "The party busters caught you. Try again!",
       variant: "destructive",
     });
-    setGameState(createInitialState());
+
+    setTimeout(() => {
+        setGameState(createInitialState());
+        setIsBusted(false);
+    }, 2000);
   }, [toast]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
+    if (isBusted) return;
     setGameState(prev => {
       if (!prev) return null;
   
@@ -135,7 +142,7 @@ export default function Home() {
   
       return newState;
     });
-  }, [resetGame]);
+  }, [resetGame, isBusted]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -151,6 +158,8 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
+    if (isBusted) return;
+
     const gameLoop = setInterval(() => {
       setGameState(prev => {
         if (!prev) return null;
@@ -179,7 +188,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [resetGame]);
+  }, [resetGame, isBusted]);
 
   useEffect(() => {
     setGameState(createInitialState());
@@ -197,11 +206,18 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
-      <main className="flex flex-1 overflow-hidden">
+      <main className="flex flex-1 overflow-hidden relative">
         <GameUI gameState={gameState} levels={levels} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>
+        {isBusted && (
+            <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
+                <h1 className="text-9xl font-extrabold text-destructive animate-pulse tracking-widest font-headline">
+                    BUSTED
+                </h1>
+            </div>
+        )}
       </main>
     </div>
   );

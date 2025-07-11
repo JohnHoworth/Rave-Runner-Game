@@ -84,7 +84,7 @@ export default function Home() {
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
-        // If the destination is a wall, just update direction and don't move.
+        // Just update direction if moving against a wall
         return { ...prev, player: { ...prev.player, direction } };
       }
       
@@ -140,11 +140,10 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      // Remapped controls for intuitive isometric movement
-      if (e.key === 'ArrowUp') movePlayer(1, -1, 'up'); // Up-Right
-      if (e.key === 'ArrowDown') movePlayer(-1, 1, 'down'); // Down-Left
-      if (e.key === 'ArrowLeft') movePlayer(-1, -1, 'left'); // Up-Left
-      if (e.key === 'ArrowRight') movePlayer(1, 1, 'right'); // Down-Right
+      if (e.key === 'ArrowUp') movePlayer(0, -1, 'up');
+      if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');
+      if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left');
+      if (e.key === 'ArrowRight') movePlayer(1, 0, 'right');
     };
 
     window.addEventListener('keydown', handleKeyDown);

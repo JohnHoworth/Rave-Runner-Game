@@ -58,7 +58,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 className="absolute transition-transform duration-300 ease-in-out"
                 style={{
                     transformStyle: 'preserve-3d',
-                    transform: `scale(1.5) rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
+                    transform: `scale(2.5) rotateX(55deg) rotateZ(${cameraRotation}deg) translateX(${mazeTx}px) translateY(${mazeTy}px)`,
                 }}
             >
                 {/* Maze Floor */}

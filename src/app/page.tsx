@@ -88,15 +88,6 @@ export default function Home() {
         return { ...prev, player: { ...prev.player, direction } };
       }
       
-      // More robust check for cutting corners
-      if (dx !== 0 && dy !== 0) { // Diagonal movement
-        const isWallX = prev.maze[prev.player.y]?.[prev.player.x + dx] === 1;
-        const isWallY = prev.maze[prev.player.y + dy]?.[prev.player.x] === 1;
-        if (isWallX && isWallY) {
-           return { ...prev, player: { ...prev.player, direction } }; // Blocked by a corner
-        }
-      }
-      
       let newState = { ...prev, player: { ...newPlayerPos, direction } };
       
       // Check for collision with enemies

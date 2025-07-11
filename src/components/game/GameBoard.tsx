@@ -6,6 +6,7 @@ import GhostIcon from "@/components/icons/GhostIcon";
 import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
+import { cn } from "@/lib/utils";
 
 const TILE_SIZE = 32; 
 
@@ -22,9 +23,12 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = () => {
+const FloorTile = ({ isPlayerOn }: { isPlayerOn: boolean }) => {
     return (
-        <div className="w-full h-full bg-primary/10 border border-primary/50"></div>
+        <div className={cn(
+            "w-full h-full bg-primary/10",
+            isPlayerOn ? "border-2 border-destructive" : "border border-primary/50"
+        )}></div>
     )
 }
 
@@ -69,7 +73,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         left: `${x * TILE_SIZE}px`,
                     }}
                 >
-                    {cell === 0 && <FloorTile />}
+                    {cell === 0 && <FloorTile isPlayerOn={player.x === x && player.y === y} />}
                 </div>
                 ))
             )}

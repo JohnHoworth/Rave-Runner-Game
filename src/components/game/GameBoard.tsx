@@ -27,7 +27,7 @@ const FloorTile = ({ isPlayerOn }: { isPlayerOn: boolean }) => {
     return (
         <div className={cn(
             "w-full h-full bg-primary/10",
-            isPlayerOn ? "border-2 border-destructive" : "border border-primary/50"
+            isPlayerOn ? "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]" : "border border-primary/50"
         )}></div>
     )
 }

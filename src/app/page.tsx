@@ -65,6 +65,7 @@ export default function Home() {
   const { toast } = useToast();
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasInteractedRef = useRef(false);
+  const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
 
   const playMoveSound = () => {
     if (!audioContextRef.current) return;
@@ -173,6 +174,9 @@ export default function Home() {
         playCollectSound();
         const collectedItem = newState.items[itemIndex];
         
+        setLastCollected(collectedItem.type);
+        setTimeout(() => setLastCollected(null), 500);
+
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);
         
@@ -282,7 +286,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
-        <GameUI gameState={gameState} levels={levels} />
+        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>

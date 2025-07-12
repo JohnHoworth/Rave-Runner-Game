@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -5,11 +6,17 @@ import { Separator } from "@/components/ui/separator";
 import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2 } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
-import type { GameState, Level } from "@/lib/types";
+import type { GameState, Level, CollectibleType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 
-export default function GameUI({ gameState, levels }: { gameState: GameState, levels: Level[] }) {
+export default function GameUI({ gameState, levels, lastCollected }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+
+  const inventoryItemClasses = (type: CollectibleType) => cn(
+    "flex items-center justify-between p-2 rounded-lg transition-all duration-300",
+    lastCollected === type && "animate-flash border-2 border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.9)]"
+  );
 
   return (
     <>
@@ -29,21 +36,21 @@ export default function GameUI({ gameState, levels }: { gameState: GameState, le
         <div className="space-y-4">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">INVENTORY</h2>
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <div className={inventoryItemClasses('flyer')}>
               <div className="flex items-center gap-3">
                 <FileText className="w-6 h-6 text-primary/80" />
                 <span className="font-medium">Flyers</span>
               </div>
               <span className="text-2xl font-bold text-primary">{gameState.collectibles.flyers}</span>
             </div>
-             <div className="flex items-center justify-between">
+             <div className={inventoryItemClasses('glowstick')}>
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-accent" />
                 <span className="font-medium">Glowsticks</span>
               </div>
               <span className="text-2xl font-bold text-primary">{gameState.collectibles.glowsticks}</span>
             </div>
-             <div className="flex items-center justify-between">
+             <div className={inventoryItemClasses('vinyl')}>
               <div className="flex items-center gap-3">
                 <DiscAlbum className="w-6 h-6 text-primary" />
                 <span className="font-medium">Vinyls</span>

@@ -12,7 +12,7 @@ import { Progress } from "../ui/progress";
 import { ScrollArea } from "../ui/scroll-area";
 
 
-export default function GameUI({ gameState, levels, lastCollected, isScoring }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isScoring: boolean }) {
+export default function GameUI({ gameState, levels, lastCollected, isScoring, isBustedAnimating }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isScoring: boolean, isBustedAnimating: boolean }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
@@ -47,7 +47,7 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
                 <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
             </div>
             <div className="flex items-center gap-2">
-                <Siren className="w-7 h-7 text-destructive" />
+                <Siren className={cn("w-7 h-7 text-destructive", isBustedAnimating && "animate-flash-blue-glow")} />
                 <span className="text-primary tabular-nums font-mono">{gameState.bustedCount}</span>
             </div>
           </div>

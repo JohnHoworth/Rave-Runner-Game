@@ -117,3 +117,18 @@
 .animate-flash-blue-bolt {
   animation: flash-blue-bolt 1.2s step-end infinite;
 }
+
+@keyframes flash-blue-glow {
+  0%, 100% {
+    color: hsl(var(--destructive));
+    filter: none;
+  }
+  50% {
+    color: #3b82f6; /* blue-500 */
+    filter: drop-shadow(0 0 10px #3b82f6);
+  }
+}
+
+.animate-flash-blue-glow {
+  animation: flash-blue-glow 0.7s ease-in-out 3;
+}

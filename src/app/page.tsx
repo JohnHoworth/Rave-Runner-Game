@@ -77,6 +77,7 @@ export default function Home() {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
   const [isBusted, setIsBusted] = useState(false);
+  const [isBustedAnimating, setIsBustedAnimating] = useState(false);
   const { toast } = useToast();
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasInteractedRef = useRef(false);
@@ -191,6 +192,9 @@ export default function Home() {
     playBustedSound();
     stopAllSirens();
     setIsBusted(true);
+    setIsBustedAnimating(true);
+    setTimeout(() => setIsBustedAnimating(false), 2100);
+
     toast({
       title: "You Got Busted!",
       description: "The party busters caught you. Try again!",
@@ -339,7 +343,7 @@ export default function Home() {
     for (const enemy of enemies) {
       if (enemy.x === player.x && enemy.y === player.y) {
         resetGame();
-        break; 
+        return; 
       }
     }
   }, [gameState, isBusted, resetGame]);
@@ -454,7 +458,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
-        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isScoring={isScoring} />
+        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isScoring={isScoring} isBustedAnimating={isBustedAnimating} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>

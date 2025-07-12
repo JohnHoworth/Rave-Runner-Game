@@ -21,6 +21,8 @@ const INITIAL_LEVELS: Level[] = [
     { name: "Music Sounds Better With You", artist: "Stardust", theme: "French House Rooftop" },
 ];
 
+const MAX_FUEL = 100;
+
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
   const emptySpots = findEmptySpots(maze, 20); 
@@ -55,6 +57,8 @@ const createInitialState = (): GameState => {
     items: items,
     maze: maze,
     time: 0,
+    fuel: MAX_FUEL,
+    maxFuel: MAX_FUEL,
   };
 }
 
@@ -182,6 +186,7 @@ export default function Home() {
     if (isBusted) return;
     setGameState(prev => {
       if (!prev) return null;
+      if (prev.fuel <= 0) return prev;
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
@@ -197,7 +202,7 @@ export default function Home() {
 
       playMoveSound();
       
-      let newState = { ...prev, player: { ...newPlayerPos, direction } };
+      let newState = { ...prev, player: { ...newPlayerPos, direction }, fuel: prev.fuel - 1 };
       
       // Check for collision with enemies
       for (const enemy of newState.enemies) {

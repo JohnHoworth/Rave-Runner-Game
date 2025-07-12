@@ -3,11 +3,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer } from "lucide-react";
+import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer, Fuel } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
 import type { GameState, Level, CollectibleType } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Progress } from "../ui/progress";
 
 
 export default function GameUI({ gameState, levels, lastCollected, isScoring }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isScoring: boolean }) {
@@ -23,6 +24,8 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+
+  const fuelPercentage = (gameState.fuel / gameState.maxFuel) * 100;
 
   return (
     <>
@@ -41,6 +44,15 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
             <Timer className="w-7 h-7" />
             <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
           </div>
+
+          <div className="pt-2 space-y-2">
+            <h3 className="text-sm font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2">
+                <Fuel className="w-4 h-4" />
+                FUEL-O-METER
+            </h3>
+            <Progress value={fuelPercentage} className="h-3" />
+          </div>
+
           <div className="flex items-center justify-center pt-2">
             <div className="flex items-center gap-2 text-lg font-semibold text-accent">
               <Coins className="w-6 h-6" />
@@ -101,6 +113,7 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
               <li>Use <kbd>Arrow Keys</kbd> to move.</li>
               <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Sparkles className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-primary" />.</li>
               <li>Avoid the ghosts!</li>
+              <li>Watch your fuel, it depletes as you move!</li>
           </ul>
         </div>
         <Separator />

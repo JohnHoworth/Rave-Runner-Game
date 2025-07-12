@@ -31,6 +31,8 @@ export type GameState = {
   items: Item[];
   maze: number[][];
   time: number;
+  fuel: number;
+  maxFuel: number;
 };
 
 export type Level = {

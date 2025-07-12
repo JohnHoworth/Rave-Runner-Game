@@ -60,8 +60,7 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
             </h3>
             <Progress 
               value={fuelPercentage} 
-              className="h-3"
-              indicatorClassName={glowClass}
+              className={cn("h-3", glowClass)}
               indicatorStyle={{ backgroundColor: fuelColor, color: fuelColor }}
             />
           </div>

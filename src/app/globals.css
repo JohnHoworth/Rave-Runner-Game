@@ -79,8 +79,8 @@
     box-shadow: none;
   }
   50% {
-    border-color: #fb923c; /* orange-400 */
-    box-shadow: 0 0 15px 3px rgba(251, 146, 60, 0.8);
+    border-color: #f97316; /* orange-500 */
+    box-shadow: 0 0 20px 5px rgba(249, 115, 22, 1);
   }
 }
 

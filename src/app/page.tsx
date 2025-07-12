@@ -304,7 +304,7 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
-    if (isBusted || !gameState) return;
+    if (isBusted) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
@@ -329,7 +329,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [gameState?.player, isBusted]);
+  }, [isBusted]);
   
     // Centralized collision detection hook
   useEffect(() => {

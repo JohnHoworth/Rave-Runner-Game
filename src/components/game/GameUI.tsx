@@ -28,6 +28,12 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
   };
 
   const fuelPercentage = (gameState.fuel / gameState.maxFuel) * 100;
+  
+  // Calculate color from green (120) to red (0)
+  const fuelColorHue = (fuelPercentage / 100) * 120;
+  const fuelColor = `hsl(${fuelColorHue}, 100%, 50%)`;
+
+  const glowClass = fuelPercentage > 80 || fuelPercentage < 20 ? 'animate-glow' : '';
 
   return (
     <>
@@ -52,7 +58,12 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
                 <Fuel className="w-4 h-4" />
                 FUEL-O-METER
             </h3>
-            <Progress value={fuelPercentage} className="h-3" />
+            <Progress 
+              value={fuelPercentage} 
+              className="h-3"
+              indicatorClassName={glowClass}
+              indicatorStyle={{ backgroundColor: fuelColor, color: fuelColor }}
+            />
           </div>
 
           <div className="flex items-center justify-center pt-2">

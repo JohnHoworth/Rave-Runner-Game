@@ -166,3 +166,12 @@
 .animate-glow-red {
   animation: glow-red 0.8s ease-in-out infinite;
 }
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 2px 1px currentColor; }
+    50% { box-shadow: 0 0 8px 3px currentColor; }
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}

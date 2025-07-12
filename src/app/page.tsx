@@ -209,10 +209,11 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [toast, stopAllSirens, isBusted]);
+  }, [toast, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
+
     setGameState(prev => {
       if (!prev) return null;
       if (prev.fuel <= 0) return prev;
@@ -280,9 +281,16 @@ export default function Home() {
         };
       }
   
+      for (const enemy of newState.enemies) {
+        if (enemy.x === newState.player.x && enemy.y === newState.player.y) {
+           resetGame();
+           return newState;
+        }
+      }
+
       return newState;
     });
-  }, [isBusted]);
+  }, [isBusted, resetGame]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -326,7 +334,7 @@ export default function Home() {
         for (const enemy of newState.enemies) {
           if (enemy.x === player.x && enemy.y === player.y) {
              resetGame();
-             return newState; // Stop further processing in this tick
+             return newState;
           }
         }
         

@@ -304,11 +304,11 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
-    if (isBusted) return;
+    if (isBusted || !gameState) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
-        if (!prev || isBusted) return prev;
+        if (!prev) return prev;
 
         const newState = { ...prev };
         const { player, maze } = newState;
@@ -329,7 +329,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [resetGame, isBusted]);
+  }, [gameState?.player, isBusted]);
   
     // Centralized collision detection hook
   useEffect(() => {
@@ -469,5 +469,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

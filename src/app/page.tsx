@@ -209,7 +209,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [toast, stopAllSirens]);
+  }, [toast, stopAllSirens, isBusted]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -249,21 +249,18 @@ export default function Home() {
           playCollectSound();
           newScore += 10;
           newCollectibles.flyers++;
-        }
-        if (collectedItem.type === 'glowstick') {
+        } else if (collectedItem.type === 'glowstick') {
           newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 20;
           newCollectibles.glowsticks++;
-        }
-        if (collectedItem.type === 'vinyl') {
+        } else if (collectedItem.type === 'vinyl') {
           newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 50;
           newRaveBucks += 5;
           newCollectibles.vinyls++;
-        }
-        if (collectedItem.type === 'fuel_station') {
+        } else if (collectedItem.type === 'fuel_station') {
             playRefuelSound();
             newFuel = newState.maxFuel;
         }
@@ -311,7 +308,7 @@ export default function Home() {
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
-        if (!prev) return null;
+        if (!prev || isBusted) return prev;
 
         const newState = { ...prev };
         const { player, maze } = newState;
@@ -323,15 +320,17 @@ export default function Home() {
           }
           return enemy; 
         });
+        
+        newState.enemies = newEnemies;
 
-        for (const enemy of newEnemies) {
+        for (const enemy of newState.enemies) {
           if (enemy.x === player.x && enemy.y === player.y) {
-             setTimeout(resetGame, 0);
-             return { ...newState, enemies: newEnemies };
+             resetGame();
+             return newState; // Stop further processing in this tick
           }
         }
         
-        return { ...newState, enemies: newEnemies };
+        return newState;
       });
 
     }, 400); 

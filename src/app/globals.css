@@ -164,5 +164,5 @@
 }
 
 .animate-glow-red {
-  animation: glow-red 1.5s ease-in-out infinite;
+  animation: glow-red 0.8s ease-in-out infinite;
 }

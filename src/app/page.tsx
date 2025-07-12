@@ -204,11 +204,13 @@ export default function Home() {
     setTimeout(() => {
         setGameState(prevState => {
             const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
+            const newLevelState = createInitialState();
             return {
-                ...createInitialState(),
+                ...newLevelState,
                 bustedCount: newBustedCount,
                 score: prevState?.score ?? 0, 
                 raveBucks: prevState?.raveBucks ?? 0,
+                time: prevState?.time ?? 0,
             };
         });
         setIsBusted(false);

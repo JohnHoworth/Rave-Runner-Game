@@ -64,7 +64,7 @@ const createInitialState = (): GameState => {
   };
 }
 
-const SIREN_PROXIMITY_THRESHOLD = 1;
+const SIREN_PROXIMITY_THRESHOLD = 2;
 type SirenAudio = {
     gainNode: GainNode;
     osc1: OscillatorNode;
@@ -98,7 +98,7 @@ export default function Home() {
     return !!audioContextRef.current;
   }
 
-  const playMoveSound = () => {
+  const playMoveSound = useCallback(() => {
     if (!audioContextRef.current) return;
     const oscillator = audioContextRef.current.createOscillator();
     const gainNode = audioContextRef.current.createGain();
@@ -112,9 +112,9 @@ export default function Home() {
 
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.05);
-  };
+  }, []);
   
-  const playBustedSound = () => {
+  const playBustedSound = useCallback(() => {
     if (!audioContextRef.current) return;
     const oscillator = audioContextRef.current.createOscillator();
     const gainNode = audioContextRef.current.createGain();
@@ -131,9 +131,9 @@ export default function Home() {
 
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.5);
-  };
+  }, []);
 
-  const playCollectSound = () => {
+  const playCollectSound = useCallback(() => {
     if (!audioContextRef.current) return;
     const oscillator = audioContextRef.current.createOscillator();
     const gainNode = audioContextRef.current.createGain();
@@ -150,9 +150,9 @@ export default function Home() {
 
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.2);
-  };
+  }, []);
 
-   const playRefuelSound = () => {
+   const playRefuelSound = useCallback(() => {
     if (!audioContextRef.current) return;
     const audioCtx = audioContextRef.current;
     const gainNode = audioCtx.createGain();
@@ -169,7 +169,7 @@ export default function Home() {
     
     oscillator.start(audioCtx.currentTime);
     oscillator.stop(audioCtx.currentTime + 0.5);
-  };
+  }, []);
   
   const stopAllSirens = useCallback(() => {
     const siren = sirenAudioNode.current;
@@ -215,7 +215,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [isBusted, playBustedSound, stopAllSirens, toast]);
+  }, [isBusted, toast, playBustedSound, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -406,9 +406,9 @@ export default function Home() {
             siren = { gainNode, osc1, osc2, lfo, isPlaying: true };
             sirenAudioNode.current = siren;
         }
-        siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1);
+        siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
     } else if (siren) {
-        siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+        siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
         setTimeout(() => {
             if (sirenAudioNode.current) {
                 sirenAudioNode.current.osc1.stop();
@@ -416,7 +416,7 @@ export default function Home() {
                 sirenAudioNode.current.lfo.stop();
                 sirenAudioNode.current = null;
             }
-        }, 1000);
+        }, 300);
     }
   }, [gameState?.player, gameState?.enemies, isBusted, stopAllSirens]);
 
@@ -475,5 +475,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 const AnimatedDigit = ({ digit, style }: { digit: string; style: React.CSSProperties }) => {
   return (
@@ -12,9 +13,15 @@ const AnimatedDigit = ({ digit, style }: { digit: string; style: React.CSSProper
 
 export default function AnimatedScore({ score }: { score: number }) {
   const [animationKey, setAnimationKey] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    setAnimationKey(prevKey => prevKey + 1);
+    if (score > 0) {
+      setAnimationKey(prevKey => prevKey + 1);
+      setIsAnimating(true);
+      const timer = setTimeout(() => setIsAnimating(false), 1000); // Animation duration is 0.5s * 2 iterations
+      return () => clearTimeout(timer);
+    }
   }, [score]);
 
   const scoreString = score.toString().padStart(8, '0');
@@ -22,7 +29,10 @@ export default function AnimatedScore({ score }: { score: number }) {
   return (
     <div
       key={animationKey}
-      className="text-5xl font-bold text-primary tabular-nums font-mono overflow-hidden h-[1.2em]"
+      className={cn(
+        "text-5xl font-bold tabular-nums font-mono overflow-hidden h-[1.2em]",
+        isAnimating ? "animate-flash-yellow-glow" : "text-primary"
+      )}
     >
       {scoreString.split('').map((digit, index) => (
         <AnimatedDigit

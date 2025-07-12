@@ -134,3 +134,18 @@
 .animate-flash-blue-glow {
   animation: flash-blue-glow 0.7s ease-in-out 3;
 }
+
+@keyframes flash-yellow-glow {
+  0%, 100% {
+    color: hsl(var(--primary));
+    filter: none;
+  }
+  50% {
+    color: #DFFF00; /* Acid Yellow */
+    filter: drop-shadow(0 0 10px #DFFF00);
+  }
+}
+
+.animate-flash-yellow-glow {
+  animation: flash-yellow-glow 0.5s ease-in-out 2;
+}

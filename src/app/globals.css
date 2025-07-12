@@ -103,17 +103,17 @@
   animation: score-flash 0.5s ease-in-out;
 }
 
-@keyframes flash-green-opacity {
-  0%, 100% {
-    opacity: 0.3;
-    filter: drop-shadow(0 0 2px #34d399);
-  }
-  50% {
+@keyframes flash-blue-bolt {
+  0%, 49% {
     opacity: 1;
-    filter: drop-shadow(0 0 8px #34d399);
+    filter: drop-shadow(0 0 8px #3b82f6);
+  }
+  50%, 100% {
+    opacity: 0;
+    filter: none;
   }
 }
 
-.animate-glow-green {
-  animation: flash-green-opacity 1.5s ease-in-out infinite;
+.animate-flash-blue-bolt {
+  animation: flash-blue-bolt 1.2s step-end infinite;
 }

@@ -82,7 +82,6 @@ export default function Home() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasInteractedRef = useRef(false);
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
-  const [isScoring, setIsScoring] = useState(false);
   const sirenAudioNode = useRef<SirenAudio | null>(null);
 
   const initAudio = () => {
@@ -272,11 +271,6 @@ export default function Home() {
             newFuel = newState.maxFuel;
         }
         
-        if (newScore > newState.score) {
-          setIsScoring(true);
-          setTimeout(() => setIsScoring(false), 500);
-        }
-
         newState = {
             ...newState,
             items: newItems,
@@ -337,7 +331,7 @@ export default function Home() {
     return () => clearInterval(gameLoop);
   }, [isBusted]);
   
-    // Centralized collision detection hook
+  // Centralized collision detection hook
   useEffect(() => {
     if (!gameState || isBusted) return;
 
@@ -460,7 +454,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
-        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isScoring={isScoring} isBustedAnimating={isBustedAnimating} />
+        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isBustedAnimating={isBustedAnimating} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>

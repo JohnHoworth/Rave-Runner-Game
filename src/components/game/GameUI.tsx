@@ -10,9 +10,10 @@ import type { GameState, Level, CollectibleType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Progress } from "../ui/progress";
 import { ScrollArea } from "../ui/scroll-area";
+import AnimatedScore from './AnimatedScore';
 
 
-export default function GameUI({ gameState, levels, lastCollected, isScoring, isBustedAnimating }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isScoring: boolean, isBustedAnimating: boolean }) {
+export default function GameUI({ gameState, levels, lastCollected, isBustedAnimating }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isBustedAnimating: boolean }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
@@ -34,13 +35,7 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring, is
         {/* Score and Currency */}
         <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
-          <p className={cn(
-            "text-5xl font-bold text-primary tabular-nums font-mono",
-            isScoring && "animate-score-flash"
-            )}
-          >
-            {gameState.score.toString().padStart(8, '0')}
-          </p>
+          <AnimatedScore score={gameState.score} />
           <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-accent">
             <div className="flex items-center gap-2">
                 <Timer className="w-7 h-7" />

@@ -88,19 +88,21 @@
   animation: flash-border 0.5s ease-in-out 3;
 }
 
-@keyframes score-flash {
-  0%, 100% {
-    color: hsl(var(--primary));
-    text-shadow: none;
+@keyframes roll-up {
+  from {
+    transform: translateY(1.2em);
+    opacity: 0;
   }
-  50% {
-    color: #fde047; /* yellow-300 */
-    text-shadow: 0 0 12px rgba(253, 224, 71, 0.8);
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-.animate-score-flash {
-  animation: score-flash 0.5s ease-in-out;
+.animate-roll-up {
+  display: inline-block;
+  animation: roll-up 0.5s ease-out;
+  animation-fill-mode: backwards;
 }
 
 @keyframes flash-blue-bolt {

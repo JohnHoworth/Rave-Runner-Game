@@ -236,8 +236,7 @@ export default function Home() {
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
-        const newItems = [...newState.items];
-        newItems.splice(itemIndex, 1);
+        let newItems = [...newState.items];
         
         let newCollectibles = { ...newState.collectibles };
         let newScore = newState.score;
@@ -248,16 +247,19 @@ export default function Home() {
         setTimeout(() => setLastCollected(null), 1500);
   
         if (collectedItem.type === 'flyer') {
+          newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 10;
           newCollectibles.flyers++;
         }
         if (collectedItem.type === 'glowstick') {
+          newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 20;
           newCollectibles.glowsticks++;
         }
         if (collectedItem.type === 'vinyl') {
+          newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 50;
           newRaveBucks += 5;

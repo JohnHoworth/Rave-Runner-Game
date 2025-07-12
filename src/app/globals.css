@@ -103,15 +103,15 @@
   animation: score-flash 0.5s ease-in-out;
 }
 
-@keyframes glow-green {
+@keyframes flash-green-opacity {
   0%, 100% {
-    filter: drop-shadow(0 0 3px #34d399);
+    opacity: 0.4;
   }
   50% {
-    filter: drop-shadow(0 0 12px #34d399);
+    opacity: 1;
   }
 }
 
 .animate-glow-green {
-  animation: glow-green 1.5s ease-in-out infinite;
+  animation: flash-green-opacity 1.5s ease-in-out infinite;
 }

@@ -105,10 +105,12 @@
 
 @keyframes flash-green-opacity {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.3;
+    filter: drop-shadow(0 0 2px #34d399);
   }
   50% {
     opacity: 1;
+    filter: drop-shadow(0 0 8px #34d399);
   }
 }
 

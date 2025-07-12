@@ -63,6 +63,7 @@ type SirenAudio = {
     gainNode: GainNode;
     osc1: OscillatorNode;
     osc2: OscillatorNode;
+    lfo: OscillatorNode;
     isPlaying: boolean;
 };
 
@@ -153,6 +154,7 @@ export default function Home() {
         setTimeout(() => {
             siren.osc1.stop();
             siren.osc2.stop();
+            siren.lfo.stop();
         }, 100);
         sirenAudioNode.current = null;
     }
@@ -359,7 +361,7 @@ export default function Home() {
             osc2.start();
             lfo.start();
 
-            siren = { gainNode, osc1, osc2, isPlaying: true };
+            siren = { gainNode, osc1, osc2, lfo, isPlaying: true };
             sirenAudioNode.current = siren;
         }
         // Fade in
@@ -371,11 +373,12 @@ export default function Home() {
             if (sirenAudioNode.current) {
                 sirenAudioNode.current.osc1.stop();
                 sirenAudioNode.current.osc2.stop();
+                sirenAudioNode.current.lfo.stop();
                 sirenAudioNode.current = null;
             }
         }, 1000);
     }
-  }, [gameState, isBusted, stopAllSirens]);
+  }, [gameState?.player, gameState?.enemies, isBusted, stopAllSirens]);
 
 
   useEffect(() => {

@@ -177,7 +177,7 @@ export default function Home() {
         const collectedItem = newState.items[itemIndex];
         
         setLastCollected(collectedItem.type);
-        setTimeout(() => setLastCollected(null), 500);
+        setTimeout(() => setLastCollected(null), 1500);
 
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);

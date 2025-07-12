@@ -85,7 +85,7 @@
 }
 
 .animate-flash {
-  animation: flash-border 0.5s ease-in-out;
+  animation: flash-border 0.5s ease-in-out 3;
 }
 
 @keyframes score-flash {

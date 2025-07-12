@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2 } from "lucide-react";
+import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
 import type { GameState, Level, CollectibleType } from "@/lib/types";
@@ -15,8 +15,14 @@ export default function GameUI({ gameState, levels, lastCollected }: { gameState
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
     "flex items-center justify-between p-2 rounded-lg transition-all duration-300",
-    lastCollected === type && "animate-flash border-2 border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.9)]"
+    lastCollected === type && "animate-flash"
   );
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <>
@@ -25,10 +31,16 @@ export default function GameUI({ gameState, levels, lastCollected }: { gameState
         <div className="space-y-4">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
           <p className="text-5xl font-bold text-primary tabular-nums font-mono animate-pulse">{gameState.score.toString().padStart(8, '0')}</p>
-          <div className="flex items-center gap-2 text-lg font-semibold text-accent">
-            <Coins className="w-6 h-6" />
-            <span>RaveBucks™:</span>
-            <span className="text-primary">{gameState.raveBucks}</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-lg font-semibold text-accent">
+              <Coins className="w-6 h-6" />
+              <span>RaveBucks™:</span>
+              <span className="text-primary">{gameState.raveBucks}</span>
+            </div>
+             <div className="flex items-center gap-2 text-lg font-semibold text-accent">
+              <Timer className="w-6 h-6" />
+              <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
+            </div>
           </div>
         </div>
         <Separator />

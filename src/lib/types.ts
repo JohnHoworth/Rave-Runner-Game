@@ -30,6 +30,7 @@ export type GameState = {
   enemies: Enemy[];
   items: Item[];
   maze: number[][];
+  time: number;
 };
 
 export type Level = {

@@ -54,6 +54,7 @@ const createInitialState = (): GameState => {
     enemies: enemyPositions,
     items: items,
     maze: maze,
+    time: 0,
   };
 }
 
@@ -123,7 +124,7 @@ export default function Home() {
 
 
   const resetGame = useCallback(() => {
-    if (isBusted) return; // Prevent multiple resets
+    if (isBusted) return; 
 
     playBustedSound();
     setIsBusted(true);
@@ -268,6 +269,19 @@ export default function Home() {
 
     return () => clearInterval(gameLoop);
   }, [resetGame, isBusted]);
+  
+  useEffect(() => {
+    if (isBusted) return;
+
+    const timer = setInterval(() => {
+      setGameState(prev => {
+        if (!prev) return null;
+        return { ...prev, time: prev.time + 1 };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isBusted]);
 
   useEffect(() => {
     setGameState(createInitialState());

@@ -51,6 +51,7 @@ const createInitialState = (): GameState => {
   return {
     score: 0,
     raveBucks: 0,
+    bustedCount: 0,
     collectibles: { flyers: 0, glowsticks: 0, vinyls: 0 },
     level: 1,
     player: { ...playerPos, direction: 'down' },
@@ -197,7 +198,15 @@ export default function Home() {
     });
 
     setTimeout(() => {
-        setGameState(createInitialState());
+        setGameState(prevState => {
+            const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
+            return {
+                ...createInitialState(),
+                bustedCount: newBustedCount,
+                score: prevState?.score ?? 0, // Optionally carry over score or other stats
+                raveBucks: prevState?.raveBucks ?? 0,
+            };
+        });
         setIsBusted(false);
     }, 2000);
   }, [isBusted, toast, stopAllSirens]);
@@ -266,8 +275,9 @@ export default function Home() {
           newCollectibles.vinyls++;
         }
         if (collectedItem.type === 'fuel_station') {
-          playRefuelSound();
-          newFuel = newState.maxFuel;
+            playRefuelSound();
+            newFuel = newState.maxFuel;
+            // Don't remove the fuel station
         }
         
         if (newScore > newState.score) {

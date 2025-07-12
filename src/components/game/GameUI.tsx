@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer, Fuel } from "lucide-react";
+import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer, Fuel, Siren } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
 import type { GameState, Level, CollectibleType } from "@/lib/types";
@@ -41,9 +41,15 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
           >
             {gameState.score.toString().padStart(8, '0')}
           </p>
-          <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-accent">
-            <Timer className="w-7 h-7" />
-            <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
+          <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-accent">
+            <div className="flex items-center gap-2">
+                <Timer className="w-7 h-7" />
+                <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
+            </div>
+            <div className="flex items-center gap-2">
+                <Siren className="w-7 h-7 text-destructive" />
+                <span className="text-primary tabular-nums font-mono">{gameState.bustedCount}</span>
+            </div>
           </div>
 
           <div className="pt-2 space-y-2">

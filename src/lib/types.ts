@@ -20,6 +20,7 @@ export type Item = Position & {
 export type GameState = {
   score: number;
   raveBucks: number;
+  bustedCount: number;
   collectibles: {
     flyers: number;
     glowsticks: number;

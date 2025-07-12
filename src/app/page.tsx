@@ -186,7 +186,7 @@ export default function Home() {
   }, []);
 
   const resetGame = useCallback(() => {
-    if (isBusted) return; 
+    if (isBusted) return;
 
     playBustedSound();
     stopAllSirens();
@@ -209,7 +209,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [isBusted, toast, stopAllSirens]);
+  }, [toast, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;

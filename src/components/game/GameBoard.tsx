@@ -20,7 +20,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'vinyl':
             return <DiscAlbum className="w-full h-full text-primary animate-pulse" />;
         case 'fuel_station':
-            return <FuelIcon className="w-full h-full animate-pulse" />;
+            return <FuelIcon className="w-full h-full animate-glow-green" />;
         default:
             return null;
     }

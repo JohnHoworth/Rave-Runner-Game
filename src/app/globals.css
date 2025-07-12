@@ -102,3 +102,16 @@
 .animate-score-flash {
   animation: score-flash 0.5s ease-in-out;
 }
+
+@keyframes glow-green {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px #34d399);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #34d399);
+  }
+}
+
+.animate-glow-green {
+  animation: glow-green 1.5s ease-in-out infinite;
+}

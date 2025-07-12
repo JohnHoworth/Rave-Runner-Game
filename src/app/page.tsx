@@ -209,7 +209,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [toast, stopAllSirens]);
+  }, [isBusted, toast, stopAllSirens, playBustedSound]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -280,17 +280,9 @@ export default function Home() {
             fuel: newFuel,
         };
       }
-  
-      for (const enemy of newState.enemies) {
-        if (enemy.x === newState.player.x && enemy.y === newState.player.y) {
-           resetGame();
-           return newState;
-        }
-      }
-
       return newState;
     });
-  }, [isBusted, resetGame]);
+  }, [isBusted, playMoveSound, playCollectSound, playRefuelSound]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -331,13 +323,6 @@ export default function Home() {
         
         newState.enemies = newEnemies;
 
-        for (const enemy of newState.enemies) {
-          if (enemy.x === player.x && enemy.y === player.y) {
-             resetGame();
-             return newState;
-          }
-        }
-        
         return newState;
       });
 
@@ -346,6 +331,19 @@ export default function Home() {
     return () => clearInterval(gameLoop);
   }, [resetGame, isBusted]);
   
+    // Centralized collision detection hook
+  useEffect(() => {
+    if (!gameState || isBusted) return;
+
+    const { player, enemies } = gameState;
+    for (const enemy of enemies) {
+      if (enemy.x === player.x && enemy.y === player.y) {
+        resetGame();
+        break; 
+      }
+    }
+  }, [gameState, isBusted, resetGame]);
+
   useEffect(() => {
     if (isBusted || !gameState || !audioContextRef.current) {
         if (sirenAudioNode.current) {
@@ -471,3 +469,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

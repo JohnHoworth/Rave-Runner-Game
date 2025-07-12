@@ -203,7 +203,7 @@ export default function Home() {
             return {
                 ...createInitialState(),
                 bustedCount: newBustedCount,
-                score: prevState?.score ?? 0, // Optionally carry over score or other stats
+                score: prevState?.score ?? 0, 
                 raveBucks: prevState?.raveBucks ?? 0,
             };
         });
@@ -219,13 +219,11 @@ export default function Home() {
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
-      // Wall collision check
       if (
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
         prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
       ) {
-        // Just update direction if moving against a wall
         return { ...prev, player: { ...prev.player, direction } };
       }
 
@@ -233,15 +231,6 @@ export default function Home() {
       
       let newState = { ...prev, player: { ...newPlayerPos, direction }, fuel: prev.fuel - 1 };
       
-      // Check for collision with enemies
-      for (const enemy of newState.enemies) {
-        if (enemy.x === newPlayerPos.x && enemy.y === newPlayerPos.y) {
-          setTimeout(resetGame, 0);
-          return { ...newState };
-        }
-      }
-  
-      // Item collection
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
         const collectedItem = newState.items[itemIndex];
@@ -277,7 +266,6 @@ export default function Home() {
         if (collectedItem.type === 'fuel_station') {
             playRefuelSound();
             newFuel = newState.maxFuel;
-            // Don't remove the fuel station
         }
         
         if (newScore > newState.score) {
@@ -297,7 +285,7 @@ export default function Home() {
   
       return newState;
     });
-  }, [resetGame, isBusted]);
+  }, [isBusted]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -351,7 +339,6 @@ export default function Home() {
     return () => clearInterval(gameLoop);
   }, [resetGame, isBusted]);
   
-  // Siren audio proximity effect
   useEffect(() => {
     if (isBusted || !gameState || !audioContextRef.current) {
         if (sirenAudioNode.current) {
@@ -408,10 +395,8 @@ export default function Home() {
             siren = { gainNode, osc1, osc2, lfo, isPlaying: true };
             sirenAudioNode.current = siren;
         }
-        // Fade in
         siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1);
     } else if (siren) {
-        // Fade out and stop
         siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
         setTimeout(() => {
             if (sirenAudioNode.current) {
@@ -442,7 +427,6 @@ export default function Home() {
     setGameState(createInitialState());
   }, []);
 
-  // Cleanup audio on component unmount
   useEffect(() => {
     return () => {
       stopAllSirens();

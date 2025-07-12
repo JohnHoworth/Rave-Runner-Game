@@ -3,6 +3,7 @@
 
 import PlayerIcon from "@/components/icons/PlayerIcon";
 import GhostIcon from "@/components/icons/GhostIcon";
+import FuelIcon from "@/components/icons/FuelIcon";
 import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Sparkles } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
@@ -18,6 +19,8 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
             return <Sparkles className="w-full h-full text-accent animate-pulse" />;
         case 'vinyl':
             return <DiscAlbum className="w-full h-full text-primary animate-pulse" />;
+        case 'fuel_station':
+            return <FuelIcon className="w-full h-full animate-pulse" />;
         default:
             return null;
     }

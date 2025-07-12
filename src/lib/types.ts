@@ -1,4 +1,4 @@
-export type CollectibleType = 'flyer' | 'glowstick' | 'vinyl';
+export type CollectibleType = 'flyer' | 'glowstick' | 'vinyl' | 'fuel_station';
 
 export type Position = {
   x: number;

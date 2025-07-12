@@ -25,7 +25,7 @@ const MAX_FUEL = 100;
 
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
-  const emptySpots = findEmptySpots(maze, 20); 
+  const emptySpots = findEmptySpots(maze, 25); 
 
   const playerPos = emptySpots.pop();
   if (!playerPos) throw new Error("Could not find an empty spot for the player.");
@@ -37,7 +37,8 @@ const createInitialState = (): GameState => {
   const itemTypes: CollectibleType[] = [
     ...Array(5).fill('flyer'),
     ...Array(5).fill('glowstick'),
-    ...Array(3).fill('vinyl')
+    ...Array(3).fill('vinyl'),
+    ...Array(2).fill('fuel_station')
   ];
 
   itemTypes.forEach(type => {
@@ -148,6 +149,25 @@ export default function Home() {
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.2);
   };
+
+   const playRefuelSound = () => {
+    if (!audioContextRef.current) return;
+    const audioCtx = audioContextRef.current;
+    const gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
+    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(100, audioCtx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.5);
+    oscillator.connect(gainNode);
+    
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.5);
+  };
   
   const stopAllSirens = useCallback(() => {
     const siren = sirenAudioNode.current;
@@ -215,31 +235,37 @@ export default function Home() {
       // Item collection
       const itemIndex = newState.items.findIndex(item => item.x === newPlayerPos.x && item.y === newPlayerPos.y);
       if (itemIndex > -1) {
-        playCollectSound();
         const collectedItem = newState.items[itemIndex];
-        
-        setLastCollected(collectedItem.type);
-        setTimeout(() => setLastCollected(null), 1500);
-
         const newItems = [...newState.items];
         newItems.splice(itemIndex, 1);
         
-        const newCollectibles = { ...newState.collectibles };
+        let newCollectibles = { ...newState.collectibles };
         let newScore = newState.score;
         let newRaveBucks = newState.raveBucks;
+        let newFuel = newState.fuel;
+
+        setLastCollected(collectedItem.type);
+        setTimeout(() => setLastCollected(null), 1500);
   
         if (collectedItem.type === 'flyer') {
+          playCollectSound();
           newScore += 10;
           newCollectibles.flyers++;
         }
         if (collectedItem.type === 'glowstick') {
+          playCollectSound();
           newScore += 20;
           newCollectibles.glowsticks++;
         }
         if (collectedItem.type === 'vinyl') {
+          playCollectSound();
           newScore += 50;
           newRaveBucks += 5;
           newCollectibles.vinyls++;
+        }
+        if (collectedItem.type === 'fuel_station') {
+          playRefuelSound();
+          newFuel = newState.maxFuel;
         }
         
         if (newScore > newState.score) {
@@ -253,6 +279,7 @@ export default function Home() {
             collectibles: newCollectibles,
             score: newScore,
             raveBucks: newRaveBucks,
+            fuel: newFuel,
         };
       }
   

@@ -122,6 +122,7 @@ export default function GameUI({ gameState, levels, lastCollected, isScoring }: 
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
                   <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Sparkles className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-primary" />.</li>
+                  <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
                   <li>Watch your fuel, it depletes as you move!</li>
               </ul>

@@ -10,7 +10,7 @@ import type { GameState, Level, CollectibleType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 
-export default function GameUI({ gameState, levels, lastCollected }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null }) {
+export default function GameUI({ gameState, levels, lastCollected, isScoring }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isScoring: boolean }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
@@ -30,7 +30,13 @@ export default function GameUI({ gameState, levels, lastCollected }: { gameState
         {/* Score and Currency */}
         <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
-          <p className="text-5xl font-bold text-primary tabular-nums font-mono animate-pulse">{gameState.score.toString().padStart(8, '0')}</p>
+          <p className={cn(
+            "text-5xl font-bold text-primary tabular-nums font-mono",
+            isScoring && "animate-score-flash"
+            )}
+          >
+            {gameState.score.toString().padStart(8, '0')}
+          </p>
           <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-accent">
             <Timer className="w-7 h-7" />
             <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>

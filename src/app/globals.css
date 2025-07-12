@@ -18,7 +18,7 @@
     --muted-foreground: 220 15% 65%;
     --accent: 330 100% 55%; /* Hot Pink */
     --accent-foreground: 330 25% 10%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 40% 25%;
     --input: 220 40% 25%;
@@ -41,7 +41,7 @@
     --muted-foreground: 220 15% 65%;
     --accent: 330 100% 55%; /* Hot Pink */
     --accent-foreground: 330 25% 10%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 40% 25%;
     --input: 220 40% 25%;
@@ -86,4 +86,19 @@
 
 .animate-flash {
   animation: flash-border 0.5s ease-in-out;
+}
+
+@keyframes score-flash {
+  0%, 100% {
+    color: hsl(var(--primary));
+    text-shadow: none;
+  }
+  50% {
+    color: #fde047; /* yellow-300 */
+    text-shadow: 0 0 12px rgba(253, 224, 71, 0.8);
+  }
+}
+
+.animate-score-flash {
+  animation: score-flash 0.5s ease-in-out;
 }

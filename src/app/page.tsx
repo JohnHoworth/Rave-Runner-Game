@@ -67,6 +67,7 @@ export default function Home() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasInteractedRef = useRef(false);
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
+  const [isScoring, setIsScoring] = useState(false);
 
   const playMoveSound = () => {
     if (!audioContextRef.current) return;
@@ -199,6 +200,11 @@ export default function Home() {
           newCollectibles.vinyls++;
         }
         
+        if (newScore > newState.score) {
+          setIsScoring(true);
+          setTimeout(() => setIsScoring(false), 500);
+        }
+
         newState = {
             ...newState,
             items: newItems,
@@ -300,7 +306,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
-        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} />
+        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isScoring={isScoring} />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>

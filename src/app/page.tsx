@@ -75,7 +75,7 @@ export default function Home() {
   const hasInteractedRef = useRef(false);
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const [isScoring, setIsScoring] = useState(false);
-  const sirenAudioNodes = useRef<Map<number, SirenAudio>>(new Map());
+  const sirenAudioNode = useRef<SirenAudio | null>(null);
 
   const initAudio = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
@@ -145,18 +145,17 @@ export default function Home() {
   };
   
   const stopAllSirens = useCallback(() => {
-    sirenAudioNodes.current.forEach((siren) => {
-        if (siren.isPlaying && audioContextRef.current) {
-            siren.gainNode.gain.cancelScheduledValues(audioContextRef.current!.currentTime);
-            siren.gainNode.gain.setValueAtTime(siren.gainNode.gain.value, audioContextRef.current!.currentTime)
-            siren.gainNode.gain.linearRampToValueAtTime(0, audioContextRef.current!.currentTime + 0.1);
-            setTimeout(() => {
-                siren.osc1.stop();
-                siren.osc2.stop();
-            }, 100);
-        }
-    });
-    sirenAudioNodes.current.clear();
+    const siren = sirenAudioNode.current;
+    if (siren && siren.isPlaying && audioContextRef.current) {
+        siren.gainNode.gain.cancelScheduledValues(audioContextRef.current!.currentTime);
+        siren.gainNode.gain.setValueAtTime(siren.gainNode.gain.value, audioContextRef.current!.currentTime)
+        siren.gainNode.gain.linearRampToValueAtTime(0, audioContextRef.current!.currentTime + 0.1);
+        setTimeout(() => {
+            siren.osc1.stop();
+            siren.osc2.stop();
+        }, 100);
+        sirenAudioNode.current = null;
+    }
   }, []);
 
   const resetGame = useCallback(() => {
@@ -308,65 +307,75 @@ export default function Home() {
   
   // Siren audio proximity effect
   useEffect(() => {
-    if (isBusted || !gameState || !audioContextRef.current) return;
+    if (isBusted || !gameState || !audioContextRef.current) {
+        if (sirenAudioNode.current) {
+            stopAllSirens();
+        }
+        return;
+    }
     const { player, enemies } = gameState;
     const audioCtx = audioContextRef.current;
 
-    enemies.forEach((enemy, index) => {
+    const closestEnemy = enemies.reduce((closest, enemy) => {
         const distance = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
-        let siren = sirenAudioNodes.current.get(index);
-
-        if (distance <= SIREN_PROXIMITY_THRESHOLD) {
-            if (!siren) {
-                const gainNode = audioCtx.createGain();
-                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-
-                const osc1 = audioCtx.createOscillator();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(780, audioCtx.currentTime); 
-                osc1.connect(gainNode);
-                
-                const osc2 = audioCtx.createOscillator();
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(660, audioCtx.currentTime);
-                osc2.connect(gainNode);
-
-                const lfo = audioCtx.createOscillator();
-                lfo.type = 'square';
-                lfo.frequency.setValueAtTime(2, audioCtx.currentTime);
-
-                const lfoGain = audioCtx.createGain();
-                lfoGain.gain.setValueAtTime(60, audioCtx.currentTime);
-                
-                lfo.connect(lfoGain);
-                lfoGain.connect(osc1.frequency);
-                lfoGain.connect(osc2.frequency);
-
-                gainNode.connect(audioCtx.destination);
-                
-                osc1.start();
-                osc2.start();
-                lfo.start();
-                
-                siren = { gainNode, osc1, osc2, isPlaying: true };
-                sirenAudioNodes.current.set(index, siren);
-            }
-            // Fade in
-            siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1);
-        } else if (siren) {
-            // Fade out and stop
-            siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
-            setTimeout(() => {
-                if (sirenAudioNodes.current.has(index)) {
-                  siren!.osc1.stop();
-                  siren!.osc2.stop();
-                  sirenAudioNodes.current.delete(index);
-                }
-            }, 1000);
+        if (distance < closest.distance) {
+            return { enemy, distance };
         }
-    });
+        return closest;
+    }, { enemy: null as Position | null, distance: Infinity });
 
-  }, [gameState, isBusted]);
+    const { distance } = closestEnemy;
+    let siren = sirenAudioNode.current;
+
+    if (distance <= SIREN_PROXIMITY_THRESHOLD) {
+        if (!siren) {
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+
+            const osc1 = audioCtx.createOscillator();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(780, audioCtx.currentTime);
+            osc1.connect(gainNode);
+
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(660, audioCtx.currentTime);
+            osc2.connect(gainNode);
+
+            const lfo = audioCtx.createOscillator();
+            lfo.type = 'square';
+            lfo.frequency.setValueAtTime(2, audioCtx.currentTime);
+
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.setValueAtTime(60, audioCtx.currentTime);
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc1.frequency);
+            lfoGain.connect(osc2.frequency);
+
+            gainNode.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+            lfo.start();
+
+            siren = { gainNode, osc1, osc2, isPlaying: true };
+            sirenAudioNode.current = siren;
+        }
+        // Fade in
+        siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1);
+    } else if (siren) {
+        // Fade out and stop
+        siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+        setTimeout(() => {
+            if (sirenAudioNode.current) {
+                sirenAudioNode.current.osc1.stop();
+                sirenAudioNode.current.osc2.stop();
+                sirenAudioNode.current = null;
+            }
+        }, 1000);
+    }
+  }, [gameState, isBusted, stopAllSirens]);
 
 
   useEffect(() => {

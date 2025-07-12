@@ -33,7 +33,7 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
   const fuelColorHue = (fuelPercentage / 100) * 120;
   const fuelColor = `hsl(${fuelColorHue}, 100%, 50%)`;
 
-  const glowClass = fuelPercentage > 80 || fuelPercentage < 20 ? 'animate-glow' : '';
+  const glowClass = fuelPercentage < 25 ? 'animate-glow' : '';
 
   return (
     <>

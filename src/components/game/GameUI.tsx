@@ -28,18 +28,18 @@ export default function GameUI({ gameState, levels, lastCollected }: { gameState
     <>
       <aside className="w-80 bg-card/30 border-r border-border/50 p-6 flex-col gap-6 hidden lg:flex">
         {/* Score and Currency */}
-        <div className="space-y-4">
+        <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
           <p className="text-5xl font-bold text-primary tabular-nums font-mono animate-pulse">{gameState.score.toString().padStart(8, '0')}</p>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-accent">
+            <Timer className="w-7 h-7" />
+            <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
+          </div>
+          <div className="flex items-center justify-center pt-2">
             <div className="flex items-center gap-2 text-lg font-semibold text-accent">
               <Coins className="w-6 h-6" />
               <span>RaveBucks™:</span>
               <span className="text-primary">{gameState.raveBucks}</span>
-            </div>
-             <div className="flex items-center gap-2 text-lg font-semibold text-accent">
-              <Timer className="w-6 h-6" />
-              <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
             </div>
           </div>
         </div>

@@ -207,7 +207,7 @@ export default function Home() {
             return {
                 ...newLevelState,
                 bustedCount: newBustedCount,
-                score: prevState?.score ?? 0, 
+                score: prevState?.score ?? 0,
                 raveBucks: prevState?.raveBucks ?? 0,
                 time: prevState?.time ?? 0,
             };
@@ -460,7 +460,7 @@ export default function Home() {
         </div>
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
-                <h1 className="text-9xl font-extrabold text-destructive animate-pulse tracking-widest font-headline">
+                <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red">
                     BUSTED
                 </h1>
             </div>

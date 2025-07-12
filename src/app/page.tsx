@@ -122,6 +122,8 @@ export default function Home() {
 
 
   const resetGame = useCallback(() => {
+    if (isBusted) return; // Prevent multiple resets
+
     playBustedSound();
     setIsBusted(true);
     toast({
@@ -134,7 +136,7 @@ export default function Home() {
         setGameState(createInitialState());
         setIsBusted(false);
     }, 2000);
-  }, [toast]);
+  }, [isBusted, toast]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -212,7 +214,11 @@ export default function Home() {
       if (!hasInteractedRef.current) {
         hasInteractedRef.current = true;
         if (typeof window !== 'undefined' && !audioContextRef.current) {
-          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+          try {
+            audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+          } catch (e) {
+            console.error("Web Audio API is not supported in this browser");
+          }
         }
       }
 

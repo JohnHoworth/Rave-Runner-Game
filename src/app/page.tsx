@@ -64,7 +64,7 @@ const createInitialState = (): GameState => {
   };
 }
 
-const SIREN_PROXIMITY_THRESHOLD = 4;
+const SIREN_PROXIMITY_THRESHOLD = 1;
 type SirenAudio = {
     gainNode: GainNode;
     osc1: OscillatorNode;
@@ -215,7 +215,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [isBusted]);
+  }, [isBusted, playBustedSound, stopAllSirens, toast]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -475,3 +475,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

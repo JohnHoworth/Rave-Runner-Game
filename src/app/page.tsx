@@ -146,7 +146,7 @@ export default function Home() {
   
   const stopAllSirens = useCallback(() => {
     sirenAudioNodes.current.forEach((siren) => {
-        if (siren.isPlaying) {
+        if (siren.isPlaying && audioContextRef.current) {
             siren.gainNode.gain.cancelScheduledValues(audioContextRef.current!.currentTime);
             siren.gainNode.gain.setValueAtTime(siren.gainNode.gain.value, audioContextRef.current!.currentTime)
             siren.gainNode.gain.linearRampToValueAtTime(0, audioContextRef.current!.currentTime + 0.1);
@@ -274,7 +274,7 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
-    if (isBusted || !gameState) return;
+    if (isBusted) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
@@ -304,7 +304,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [resetGame, isBusted, gameState]);
+  }, [resetGame, isBusted]);
   
   // Siren audio proximity effect
   useEffect(() => {

@@ -215,7 +215,7 @@ export default function Home() {
         });
         setIsBusted(false);
     }, 2000);
-  }, [isBusted, toast, stopAllSirens, playBustedSound]);
+  }, [isBusted]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;

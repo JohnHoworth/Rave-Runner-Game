@@ -58,6 +58,13 @@ const createInitialState = (): GameState => {
   };
 }
 
+const SIREN_PROXIMITY_THRESHOLD = 4;
+type SirenAudio = {
+    gainNode: GainNode;
+    osc1: OscillatorNode;
+    osc2: OscillatorNode;
+    isPlaying: boolean;
+};
 
 export default function Home() {
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -68,6 +75,20 @@ export default function Home() {
   const hasInteractedRef = useRef(false);
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const [isScoring, setIsScoring] = useState(false);
+  const sirenAudioNodes = useRef<Map<number, SirenAudio>>(new Map());
+
+  const initAudio = () => {
+    if (typeof window !== 'undefined' && !audioContextRef.current) {
+      try {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        return true;
+      } catch (e) {
+        console.error("Web Audio API is not supported in this browser");
+        return false;
+      }
+    }
+    return !!audioContextRef.current;
+  }
 
   const playMoveSound = () => {
     if (!audioContextRef.current) return;
@@ -122,12 +143,27 @@ export default function Home() {
     oscillator.start(audioContextRef.current.currentTime);
     oscillator.stop(audioContextRef.current.currentTime + 0.2);
   };
-
+  
+  const stopAllSirens = useCallback(() => {
+    sirenAudioNodes.current.forEach((siren) => {
+        if (siren.isPlaying) {
+            siren.gainNode.gain.cancelScheduledValues(audioContextRef.current!.currentTime);
+            siren.gainNode.gain.setValueAtTime(siren.gainNode.gain.value, audioContextRef.current!.currentTime)
+            siren.gainNode.gain.linearRampToValueAtTime(0, audioContextRef.current!.currentTime + 0.1);
+            setTimeout(() => {
+                siren.osc1.stop();
+                siren.osc2.stop();
+            }, 100);
+        }
+    });
+    sirenAudioNodes.current.clear();
+  }, []);
 
   const resetGame = useCallback(() => {
     if (isBusted) return; 
 
     playBustedSound();
+    stopAllSirens();
     setIsBusted(true);
     toast({
       title: "You Got Busted!",
@@ -139,7 +175,7 @@ export default function Home() {
         setGameState(createInitialState());
         setIsBusted(false);
     }, 2000);
-  }, [isBusted, toast]);
+  }, [isBusted, toast, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -224,13 +260,7 @@ export default function Home() {
 
       if (!hasInteractedRef.current) {
         hasInteractedRef.current = true;
-        if (typeof window !== 'undefined' && !audioContextRef.current) {
-          try {
-            audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-          } catch (e) {
-            console.error("Web Audio API is not supported in this browser");
-          }
-        }
+        initAudio();
       }
 
       if (e.key === 'ArrowUp') movePlayer(0, -1, 'up');
@@ -244,7 +274,7 @@ export default function Home() {
   }, [movePlayer]);
 
   useEffect(() => {
-    if (isBusted) return;
+    if (isBusted || !gameState) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
@@ -274,8 +304,71 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [resetGame, isBusted]);
+  }, [resetGame, isBusted, gameState]);
   
+  // Siren audio proximity effect
+  useEffect(() => {
+    if (isBusted || !gameState || !audioContextRef.current) return;
+    const { player, enemies } = gameState;
+    const audioCtx = audioContextRef.current;
+
+    enemies.forEach((enemy, index) => {
+        const distance = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+        let siren = sirenAudioNodes.current.get(index);
+
+        if (distance <= SIREN_PROXIMITY_THRESHOLD) {
+            if (!siren) {
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+
+                const osc1 = audioCtx.createOscillator();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(780, audioCtx.currentTime); 
+                osc1.connect(gainNode);
+                
+                const osc2 = audioCtx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(660, audioCtx.currentTime);
+                osc2.connect(gainNode);
+
+                const lfo = audioCtx.createOscillator();
+                lfo.type = 'square';
+                lfo.frequency.setValueAtTime(2, audioCtx.currentTime);
+
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.setValueAtTime(60, audioCtx.currentTime);
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc1.frequency);
+                lfoGain.connect(osc2.frequency);
+
+                gainNode.connect(audioCtx.destination);
+                
+                osc1.start();
+                osc2.start();
+                lfo.start();
+                
+                siren = { gainNode, osc1, osc2, isPlaying: true };
+                sirenAudioNodes.current.set(index, siren);
+            }
+            // Fade in
+            siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1);
+        } else if (siren) {
+            // Fade out and stop
+            siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+            setTimeout(() => {
+                if (sirenAudioNodes.current.has(index)) {
+                  siren!.osc1.stop();
+                  siren!.osc2.stop();
+                  sirenAudioNodes.current.delete(index);
+                }
+            }, 1000);
+        }
+    });
+
+  }, [gameState, isBusted]);
+
+
   useEffect(() => {
     if (isBusted) return;
 
@@ -292,6 +385,16 @@ export default function Home() {
   useEffect(() => {
     setGameState(createInitialState());
   }, []);
+
+  // Cleanup audio on component unmount
+  useEffect(() => {
+    return () => {
+      stopAllSirens();
+      if(audioContextRef.current && audioContextRef.current.state !== 'closed') {
+          audioContextRef.current.close();
+      }
+    }
+  }, [stopAllSirens]);
 
   if (!gameState) {
     return (

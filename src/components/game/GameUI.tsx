@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BrainCircuit, Coins, DiscAlbum, FileText, Sparkles, Gamepad2, Timer, Fuel, Siren } from "lucide-react";
+import { BrainCircuit, Coins, DiscAlbum, FileText, Pill, Gamepad2, Timer, Fuel, Siren } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
 import type { GameState, Level, CollectibleType } from "@/lib/types";
@@ -90,12 +90,12 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
                   </div>
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.flyers}</span>
                 </div>
-                <div className={inventoryItemClasses('glowstick')}>
+                <div className={inventoryItemClasses('pills')}>
                   <div className="flex items-center gap-3">
-                    <Sparkles className="w-6 h-6 text-accent" />
-                    <span className="font-medium">Glowsticks</span>
+                    <Pill className="w-6 h-6 text-accent" />
+                    <span className="font-medium">Pills</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.glowsticks}</span>
+                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.pills}</span>
                 </div>
                 <div className={inventoryItemClasses('vinyl')}>
                   <div className="flex items-center gap-3">
@@ -132,7 +132,7 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
               </h2>
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
-                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Sparkles className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-primary" />.</li>
+                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-primary" />.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
                   <li>Watch your fuel, it depletes as you move!</li>

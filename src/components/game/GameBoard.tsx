@@ -4,7 +4,7 @@
 import PlayerIcon from "@/components/icons/PlayerIcon";
 import GhostIcon from "@/components/icons/GhostIcon";
 import { GameState, Item } from "@/lib/types";
-import { DiscAlbum, FileText, Sparkles, Zap } from "lucide-react";
+import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { cn } from "@/lib/utils";
 
@@ -14,8 +14,8 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
             return <FileText className="w-full h-full text-primary/80 animate-pulse" />;
-        case 'glowstick':
-            return <Sparkles className="w-full h-full text-accent animate-pulse" />;
+        case 'pills':
+            return <Pill className="w-full h-full text-accent animate-pulse" />;
         case 'vinyl':
             return <DiscAlbum className="w-full h-full text-primary animate-pulse" />;
         case 'fuel_station':

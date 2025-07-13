@@ -1,4 +1,4 @@
-export type CollectibleType = 'flyer' | 'glowstick' | 'vinyl' | 'fuel_station';
+export type CollectibleType = 'flyer' | 'pills' | 'vinyl' | 'fuel_station';
 
 export type Position = {
   x: number;
@@ -23,7 +23,7 @@ export type GameState = {
   bustedCount: number;
   collectibles: {
     flyers: number;
-    glowsticks: number;
+    pills: number;
     vinyls: number;
   };
   level: number;

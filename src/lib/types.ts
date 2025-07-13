@@ -1,3 +1,4 @@
+
 export type CollectibleType = 'flyer' | 'pills' | 'vinyl' | 'fuel_station';
 
 export type Position = {
@@ -41,3 +42,5 @@ export type Level = {
   artist: string;
   theme: string;
 };
+
+    

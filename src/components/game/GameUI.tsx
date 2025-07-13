@@ -155,3 +155,5 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
     </>
   );
 }
+
+    

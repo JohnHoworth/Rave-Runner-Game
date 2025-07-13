@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import GameBoard from '@/components/game/GameBoard';
 import GameUI from '@/components/game/GameUI';
+import MusicPlayer from "@/components/game/MusicPlayer";
 import Header from '@/components/layout/Header';
 import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection } from "@/lib/types";
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
@@ -82,6 +83,9 @@ export default function Home() {
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const sirenAudioNode = useRef<SirenAudio | null>(null);
   const isResettingRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [volume, setVolume] = useState(50);
+
 
   const initAudio = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
@@ -455,6 +459,13 @@ export default function Home() {
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>
+        <MusicPlayer
+          level={levels[gameState.level - 1]}
+          isPlaying={isPlaying}
+          onPlayPause={() => setIsPlaying(!isPlaying)}
+          volume={volume}
+          onVolumeChange={(v) => setVolume(v[0])}
+        />
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
                 <div className="p-8 rounded-lg animate-flash">

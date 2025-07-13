@@ -15,7 +15,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'flyer':
             return <FileText className="w-full h-full text-primary/80 animate-pulse" />;
         case 'pills':
-            return <Pill className="w-full h-full text-accent animate-pulse" />;
+            return <Pill className="w-full h-full text-accent animate-pulse -rotate-45" />;
         case 'vinyl':
             return <DiscAlbum className="w-full h-full text-primary animate-pulse" />;
         case 'fuel_station':

@@ -195,12 +195,6 @@ export default function Home() {
       setIsBustedAnimating(true);
       setTimeout(() => setIsBustedAnimating(false), 2100);
 
-      toast({
-        title: "You Got Busted!",
-        description: "The party busters caught you. Try again!",
-        variant: "destructive",
-      });
-
       setTimeout(() => {
           setGameState(prevState => {
               const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
@@ -218,7 +212,7 @@ export default function Home() {
 
       return true;
     });
-  }, [toast, playBustedSound, stopAllSirens]);
+  }, [playBustedSound, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -464,9 +458,11 @@ export default function Home() {
         </div>
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
-                <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red">
-                    BUSTED
-                </h1>
+                <div className="p-8 rounded-lg animate-flash">
+                    <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red">
+                        BUSTED
+                    </h1>
+                </div>
             </div>
         )}
       </main>

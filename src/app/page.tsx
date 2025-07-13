@@ -186,35 +186,39 @@ export default function Home() {
   }, []);
 
   const resetGame = useCallback(() => {
-    if (isBusted) return;
+    setIsBusted(isBustedNow => {
+      if (isBustedNow) return true;
 
-    playBustedSound();
-    stopAllSirens();
-    setIsBusted(true);
-    setIsBustedAnimating(true);
-    setTimeout(() => setIsBustedAnimating(false), 2100);
+      playBustedSound();
+      stopAllSirens();
+      
+      setIsBustedAnimating(true);
+      setTimeout(() => setIsBustedAnimating(false), 2100);
 
-    toast({
-      title: "You Got Busted!",
-      description: "The party busters caught you. Try again!",
-      variant: "destructive",
+      toast({
+        title: "You Got Busted!",
+        description: "The party busters caught you. Try again!",
+        variant: "destructive",
+      });
+
+      setTimeout(() => {
+          setGameState(prevState => {
+              const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
+              const newLevelState = createInitialState();
+              return {
+                  ...newLevelState,
+                  bustedCount: newBustedCount,
+                  score: prevState?.score ?? 0,
+                  raveBucks: prevState?.raveBucks ?? 0,
+                  time: prevState?.time ?? 0,
+              };
+          });
+          setIsBusted(false);
+      }, 2000);
+
+      return true;
     });
-
-    setTimeout(() => {
-        setGameState(prevState => {
-            const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
-            const newLevelState = createInitialState();
-            return {
-                ...newLevelState,
-                bustedCount: newBustedCount,
-                score: prevState?.score ?? 0,
-                raveBucks: prevState?.raveBucks ?? 0,
-                time: prevState?.time ?? 0,
-            };
-        });
-        setIsBusted(false);
-    }, 2000);
-  }, [isBusted, toast, playBustedSound, stopAllSirens]);
+  }, [toast, playBustedSound, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
     if (isBusted) return;
@@ -412,7 +416,7 @@ export default function Home() {
             }
         }, 300);
     }
-  }, [gameState?.player, gameState?.enemies, isBusted, stopAllSirens]);
+  }, [gameState, isBusted, stopAllSirens]);
 
 
   useEffect(() => {

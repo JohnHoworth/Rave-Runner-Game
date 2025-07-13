@@ -85,6 +85,7 @@ export default function Home() {
   const isResettingRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(50);
+  const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
 
 
   const initAudio = () => {
@@ -434,6 +435,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+      if (gameState) {
+          setCurrentTrack(levels[gameState.level - 1]);
+      }
+  }, [gameState?.level, levels, gameState]);
+
+  useEffect(() => {
     return () => {
       stopAllSirens();
       if(audioContextRef.current && audioContextRef.current.state !== 'closed') {
@@ -455,12 +462,18 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
-        <GameUI gameState={gameState} levels={levels} lastCollected={lastCollected} isBustedAnimating={isBustedAnimating} />
+        <GameUI 
+            gameState={gameState} 
+            levels={levels} 
+            lastCollected={lastCollected} 
+            isBustedAnimating={isBustedAnimating}
+            onSelectTrack={setCurrentTrack}
+        />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>
         <MusicPlayer
-          level={levels[gameState.level - 1]}
+          level={currentTrack}
           isPlaying={isPlaying}
           onPlayPause={() => setIsPlaying(!isPlaying)}
           volume={volume}

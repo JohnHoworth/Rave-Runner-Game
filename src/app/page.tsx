@@ -8,7 +8,6 @@ import Header from '@/components/layout/Header';
 import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection } from "@/lib/types";
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { findPath } from "@/lib/pathfinding";
 
 const INITIAL_LEVELS: Level[] = [
@@ -78,11 +77,11 @@ export default function Home() {
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
   const [isBusted, setIsBusted] = useState(false);
   const [isBustedAnimating, setIsBustedAnimating] = useState(false);
-  const { toast } = useToast();
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasInteractedRef = useRef(false);
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const sirenAudioNode = useRef<SirenAudio | null>(null);
+  const isResettingRef = useRef(false);
 
   const initAudio = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
@@ -186,32 +185,32 @@ export default function Home() {
   }, []);
 
   const resetGame = useCallback(() => {
-    setIsBusted(isBustedNow => {
-      if (isBustedNow) return true;
+    if (isResettingRef.current) return;
+    isResettingRef.current = true;
 
-      playBustedSound();
-      stopAllSirens();
-      
-      setIsBustedAnimating(true);
-      setTimeout(() => setIsBustedAnimating(false), 2100);
+    setIsBusted(true);
+    playBustedSound();
+    stopAllSirens();
+    
+    setIsBustedAnimating(true);
+    setTimeout(() => setIsBustedAnimating(false), 2100);
 
-      setTimeout(() => {
-          setGameState(prevState => {
-              const newBustedCount = (prevState?.bustedCount ?? 0) + 1;
-              const newLevelState = createInitialState();
-              return {
-                  ...newLevelState,
-                  bustedCount: newBustedCount,
-                  score: prevState?.score ?? 0,
-                  raveBucks: prevState?.raveBucks ?? 0,
-                  time: prevState?.time ?? 0,
-              };
-          });
-          setIsBusted(false);
-      }, 2000);
-
-      return true;
-    });
+    setTimeout(() => {
+      setGameState(prevState => {
+        if (!prevState) return null;
+        const newBustedCount = prevState.bustedCount + 1;
+        const newLevelState = createInitialState();
+        return {
+          ...newLevelState,
+          bustedCount: newBustedCount,
+          score: prevState.score,
+          raveBucks: prevState.raveBucks,
+          time: prevState.time,
+        };
+      });
+      setIsBusted(false);
+      isResettingRef.current = false;
+    }, 2000);
   }, [playBustedSound, stopAllSirens]);
 
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {

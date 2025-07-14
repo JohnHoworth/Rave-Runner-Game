@@ -59,6 +59,8 @@ export default function MusicPlayer({
         if (isPlaying) {
             playerRef.current.loadVideoById(videoId);
             playerRef.current.playVideo();
+        } else {
+            playerRef.current.pauseVideo();
         }
     }
   }, [videoId, isPlaying]);

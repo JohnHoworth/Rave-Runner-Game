@@ -21,7 +21,7 @@ export default function AnimatedScore({ score }: { score: number }) {
     if (score > prevScore) {
       setAnimationKey(prevKey => prevKey + 1);
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 800); // 0.4s * 2 iterations
+      const timer = setTimeout(() => setIsAnimating(false), 800); 
       setPrevScore(score);
       return () => clearTimeout(timer);
     } else if (score === 0 && prevScore !== 0) {

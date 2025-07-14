@@ -234,6 +234,37 @@
   animation: glow-red-text 0.8s ease-in-out infinite;
 }
 
+@keyframes glow-red-flash {
+  0%, 100% {
+    color: hsl(var(--primary));
+    text-shadow: none;
+  }
+  50% {
+    color: hsl(var(--destructive));
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px hsl(var(--destructive)),
+        0 0 20px hsl(var(--destructive));
+  }
+}
+
+.animate-glow-red-flash {
+    animation: glow-red-flash 0.4s ease-in-out 2;
+}
+
+@keyframes squash-and-stretch {
+  0%, 100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 0.8);
+  }
+}
+
+.animate-squash-stretch {
+    animation: squash-and-stretch 0.4s ease-in-out 1;
+}
+
 @keyframes glow-red-border {
   from {
     border-color: #ef4444; /* red-500 */

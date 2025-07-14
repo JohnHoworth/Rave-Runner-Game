@@ -48,8 +48,11 @@ export default function MusicPlayer({
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   useEffect(() => {
-      setVideoId(level ? getYouTubeVideoId(level.youtubeUrl) : null);
-  }, [level]);
+      const newVideoId = level ? getYouTubeVideoId(level.youtubeUrl) : null;
+      if (newVideoId !== videoId) {
+          setVideoId(newVideoId);
+      }
+  }, [level, videoId]);
 
   useEffect(() => {
     if (playerRef.current && videoId) {

@@ -7,6 +7,15 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Music, Play, Pause, SkipBack, SkipForward, Volume1, Volume2, VolumeX } from "lucide-react";
 import type { Level } from "@/lib/types";
+import YouTube from 'react-youtube';
+import { useState, useEffect, useRef } from "react";
+import type { YouTubePlayer } from "react-youtube";
+
+const getYouTubeVideoId = (url: string): string | null => {
+    if (!url) return null;
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get('v');
+}
 
 export default function MusicPlayer({
   level,
@@ -22,9 +31,44 @@ export default function MusicPlayer({
   onVolumeChange: (value: number[]) => void;
 }) {
   const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
+  const videoId = level ? getYouTubeVideoId(level.youtubeUrl) : null;
+  const playerRef = useRef<YouTubePlayer | null>(null);
+
+  useEffect(() => {
+    if (playerRef.current) {
+        playerRef.current.setVolume(volume);
+    }
+  }, [volume]);
+  
+  useEffect(() => {
+    if (!playerRef.current) return;
+    if (isPlaying) {
+        playerRef.current.playVideo();
+    } else {
+        playerRef.current.pauseVideo();
+    }
+  }, [isPlaying]);
+
+  const onPlayerReady = (event: { target: YouTubePlayer }) => {
+    playerRef.current = event.target;
+    event.target.setVolume(volume);
+    if (isPlaying) {
+      event.target.playVideo();
+    }
+  };
+
+  const opts = {
+    height: '0',
+    width: '0',
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+    },
+  };
 
   return (
     <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex-col gap-6 hidden lg:flex">
+      {videoId && <YouTube videoId={videoId} opts={opts} onReady={onPlayerReady} className="hidden" />}
       <div className="space-y-4 text-center flex-1 flex flex-col justify-center">
         <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2">
             <Music className="w-5 h-5" />
@@ -33,7 +77,7 @@ export default function MusicPlayer({
         
         <div className="aspect-square w-full rounded-lg overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_hsl(var(--primary)/0.5)] mt-4">
           <Image
-            src="https://placehold.co/400x400.png"
+            src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "https://placehold.co/400x400.png"}
             width={400}
             height={400}
             alt={level?.name || "Album Art"}
@@ -81,5 +125,3 @@ export default function MusicPlayer({
     </aside>
   );
 }
-
-    

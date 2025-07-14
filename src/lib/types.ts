@@ -41,6 +41,5 @@ export type Level = {
   name: string;
   artist: string;
   theme: string;
+  youtubeUrl: string;
 };
-
-    

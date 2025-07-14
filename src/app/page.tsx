@@ -12,13 +12,13 @@ import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
 
 const INITIAL_LEVELS: Level[] = [
-    { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse" },
-    { name: "Strings of Life", artist: "Rhythim is Rhythim", theme: "Detroit Underground" },
-    { name: "Pacific State", artist: "808 State", theme: "UK Open Field Rave" },
-    { name: "Can You Feel It?", artist: "Mr. Fingers", theme: "European Warehouse" },
-    { name: "Energy Flash", artist: "Joey Beltram", theme: "Bass-Heavy Techno Bunker" },
-    { name: "Acid Tracks", artist: "Phuture", theme: "Chicago Acid House" },
-    { name: "Music Sounds Better With You", artist: "Stardust", theme: "French House Rooftop" },
+    { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=OG4NHr77hfU" },
+    { name: "Strings of Life", artist: "Rhythim is Rhythim", theme: "Detroit Underground", youtubeUrl: "https://www.youtube.com/watch?v=JIK9UjS3800" },
+    { name: "Pacific State", artist: "808 State", theme: "UK Open Field Rave", youtubeUrl: "https://www.youtube.com/watch?v=GIyNtdQW9t0" },
+    { name: "Can You Feel It?", artist: "Mr. Fingers", theme: "European Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=DPjth5oEM3M" },
+    { name: "Energy Flash", artist: "Joey Beltram", theme: "Bass-Heavy Techno Bunker", youtubeUrl: "https://www.youtube.com/watch?v=nQbOMdoqsL4" },
+    { name: "Acid Tracks", artist: "Phuture", theme: "Chicago Acid House", youtubeUrl: "https://www.youtube.com/watch?v=5pEuZaCknvs" },
+    { name: "Music Sounds Better With You", artist: "Stardust", theme: "French House Rooftop", youtubeUrl: "https://www.youtube.com/watch?v=HVD1XXBGdDU" },
 ];
 
 const MAX_FUEL = 100;
@@ -83,7 +83,7 @@ export default function Home() {
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const sirenAudioNode = useRef<SirenAudio | null>(null);
   const isResettingRef = useRef(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
 
@@ -458,6 +458,13 @@ export default function Home() {
     );
   }
 
+  const handleSelectTrack = (track: Level) => {
+    setCurrentTrack(track);
+    if (!isPlaying) {
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
@@ -468,7 +475,7 @@ export default function Home() {
             lastCollected={lastCollected} 
             isBustedAnimating={isBustedAnimating}
             currentTrack={currentTrack}
-            onSelectTrack={setCurrentTrack}
+            onSelectTrack={handleSelectTrack}
         />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />

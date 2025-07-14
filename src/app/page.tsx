@@ -402,7 +402,7 @@ export default function Home() {
             siren = { gainNode, osc1, osc2, lfo, isPlaying: true };
             sirenAudioNode.current = siren;
         }
-        siren.gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
+        siren.gainNode.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.3);
     } else if (siren) {
         siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
         setTimeout(() => {

@@ -13,8 +13,13 @@ import type { YouTubePlayer } from "react-youtube";
 
 const getYouTubeVideoId = (url: string): string | null => {
     if (!url) return null;
-    const urlObj = new URL(url);
-    return urlObj.searchParams.get('v');
+    try {
+      const urlObj = new URL(url);
+      return urlObj.searchParams.get('v');
+    } catch (e) {
+      console.error("Invalid YouTube URL:", url);
+      return null;
+    }
 }
 
 export default function MusicPlayer({
@@ -31,8 +36,18 @@ export default function MusicPlayer({
   onVolumeChange: (value: number[]) => void;
 }) {
   const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
-  const videoId = level ? getYouTubeVideoId(level.youtubeUrl) : null;
+  const [videoId, setVideoId] = useState<string | null>(null);
   const playerRef = useRef<YouTubePlayer | null>(null);
+
+  useEffect(() => {
+      setVideoId(level ? getYouTubeVideoId(level.youtubeUrl) : null);
+  }, [level]);
+
+  useEffect(() => {
+    if (playerRef.current && videoId) {
+        playerRef.current.loadVideoById(videoId);
+    }
+  }, [videoId]);
 
   useEffect(() => {
     if (playerRef.current) {
@@ -52,10 +67,19 @@ export default function MusicPlayer({
   const onPlayerReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     event.target.setVolume(volume);
-    if (isPlaying) {
+    if (isPlaying && videoId) {
+      event.target.loadVideoById(videoId);
       event.target.playVideo();
     }
   };
+  
+  const onPlayerStateChange = (event: { target: YouTubePlayer, data: number }) => {
+    if (event.data === YouTube.PlayerState.PLAYING && !isPlaying) {
+        onPlayPause(); // Sync state if video plays externally
+    } else if (event.data === YouTube.PlayerState.PAUSED && isPlaying) {
+        onPlayPause(); // Sync state if video pauses externally
+    }
+  }
 
   const opts = {
     height: '0',
@@ -68,7 +92,7 @@ export default function MusicPlayer({
 
   return (
     <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex-col gap-6 hidden lg:flex">
-      {videoId && <YouTube videoId={videoId} opts={opts} onReady={onPlayerReady} className="hidden" />}
+      {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
       <div className="space-y-4 text-center flex-1 flex flex-col justify-center">
         <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2">
             <Music className="w-5 h-5" />

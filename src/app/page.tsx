@@ -460,9 +460,7 @@ export default function Home() {
 
   const handleSelectTrack = (track: Level) => {
     setCurrentTrack(track);
-    if (!isPlaying) {
-      setIsPlaying(true);
-    }
+    setIsPlaying(true);
   };
 
   return (

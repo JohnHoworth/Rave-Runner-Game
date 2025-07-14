@@ -33,7 +33,7 @@ export default function MusicPlayer({
   currentTrack: Level;
   onSelectTrack: (level: Level) => void;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(50);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const videoId = getYouTubeVideoId(currentTrack.youtubeUrl);
@@ -42,9 +42,7 @@ export default function MusicPlayer({
   
   useEffect(() => {
     if (playerRef.current && videoId) {
-        setIsPlaying(true);
         playerRef.current.loadVideoById(videoId);
-        playerRef.current.playVideo();
     }
   }, [videoId]);
 
@@ -67,12 +65,17 @@ export default function MusicPlayer({
   const onPlayerReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     event.target.setVolume(volume);
+    if (isPlaying) {
+      event.target.playVideo();
+    }
   };
   
-  const onPlayerStateChange = (event: { target: YouTubePlayer, data: number }) => {
+  const onPlayerStateChange = (event: { data: number }) => {
      if (event.data === YouTube.PlayerState.PLAYING && !isPlaying) {
         setIsPlaying(true);
     } else if (event.data === YouTube.PlayerState.PAUSED && isPlaying) {
+        setIsPlaying(false);
+    } else if (event.data === YouTube.PlayerState.ENDED) {
         setIsPlaying(false);
     }
   }
@@ -81,7 +84,7 @@ export default function MusicPlayer({
     height: '0',
     width: '0',
     playerVars: {
-      autoplay: 0,
+      autoplay: 1, // Autoplay enabled
       controls: 0,
     },
   };

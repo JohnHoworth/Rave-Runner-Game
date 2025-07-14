@@ -16,8 +16,8 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
             return <FileText className="w-full h-full text-primary/80 animate-pulse" />;
         case 'pills':
             return <Pill className="w-full h-full text-accent animate-pulse -rotate-45" />;
-        case 'vinyl':
-            return <DiscAlbum className="w-full h-full text-primary animate-pulse" />;
+        case 'tunes':
+            return <DiscAlbum className="w-full h-full text-yellow-300 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />;
         case 'fuel_station':
             return <Zap className="w-full h-full text-blue-400 animate-flash-blue-bolt" />;
         default:
@@ -124,5 +124,3 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
-
-    

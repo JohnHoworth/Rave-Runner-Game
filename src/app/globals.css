@@ -174,12 +174,12 @@
 
 @keyframes flash-yellow-glow {
   0%, 100% {
-    color: hsl(var(--primary));
-    filter: none;
+    border-color: hsl(var(--border));
+    box-shadow: none;
   }
   50% {
-    color: #DFFF00; /* Acid Yellow */
-    filter: drop-shadow(0 0 10px #DFFF00);
+    border-color: #DFFF00; /* Acid Yellow */
+    box-shadow: 0 0 20px 5px #DFFF00;
   }
 }
 

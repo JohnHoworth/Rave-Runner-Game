@@ -26,7 +26,8 @@ export default function GameUI({
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
     "flex items-center justify-between p-2 rounded-lg transition-all duration-300",
-    lastCollected === type && "animate-flash"
+    lastCollected === type && type !== 'tunes' && "animate-flash",
+    lastCollected === 'tunes' && type === 'tunes' && "animate-flash-yellow-glow"
   );
 
   const formatTime = (seconds: number) => {
@@ -105,12 +106,12 @@ export default function GameUI({
                   </div>
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.pills}</span>
                 </div>
-                <div className={inventoryItemClasses('vinyl')}>
+                <div className={inventoryItemClasses('tunes')}>
                   <div className="flex items-center gap-3">
-                    <DiscAlbum className="w-6 h-6 text-primary" />
-                    <span className="font-medium">Vinyls</span>
+                    <DiscAlbum className="w-6 h-6 text-yellow-300" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />
+                    <span className="font-medium">Tunes</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.vinyls}</span>
+                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.tunes}</span>
                 </div>
               </div>
             </div>
@@ -125,7 +126,7 @@ export default function GameUI({
               </h2>
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
-                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-primary" />.</li>
+                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
                   <li>Watch your fuel, it depletes as you move!</li>

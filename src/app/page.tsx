@@ -37,7 +37,7 @@ const createInitialState = (): GameState => {
   const itemTypes: CollectibleType[] = [
     ...Array(5).fill('flyer'),
     ...Array(5).fill('pills'),
-    ...Array(3).fill('vinyl'),
+    ...Array(3).fill('tunes'),
     ...Array(2).fill('fuel_station')
   ];
 
@@ -52,7 +52,7 @@ const createInitialState = (): GameState => {
     score: 0,
     raveBucks: 0,
     bustedCount: 0,
-    collectibles: { flyers: 0, pills: 0, vinyls: 0 },
+    collectibles: { flyers: 0, pills: 0, tunes: 0 },
     level: 1,
     player: { ...playerPos, direction: 'down' },
     enemies: enemyPositions,
@@ -260,12 +260,12 @@ export default function Home() {
           playCollectSound();
           newScore += 20;
           newCollectibles.pills++;
-        } else if (collectedItem.type === 'vinyl') {
+        } else if (collectedItem.type === 'tunes') {
           newItems.splice(itemIndex, 1);
           playCollectSound();
           newScore += 50;
           newRaveBucks += 5;
-          newCollectibles.vinyls++;
+          newCollectibles.tunes++;
         } else if (collectedItem.type === 'fuel_station') {
             playRefuelSound();
             newFuel = newState.maxFuel;

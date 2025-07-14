@@ -1,5 +1,5 @@
 
-export type CollectibleType = 'flyer' | 'pills' | 'vinyl' | 'fuel_station';
+export type CollectibleType = 'flyer' | 'pills' | 'tunes' | 'fuel_station';
 
 export type Position = {
   x: number;
@@ -25,7 +25,7 @@ export type GameState = {
   collectibles: {
     flyers: number;
     pills: number;
-    vinyls: number;
+    tunes: number;
   };
   level: number;
   player: PlayerState;

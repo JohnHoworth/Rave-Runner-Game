@@ -435,7 +435,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-      if (gameState) {
+      if (gameState && levels[gameState.level - 1]) {
           setCurrentTrack(levels[gameState.level - 1]);
       }
   }, [gameState?.level]);
@@ -492,5 +492,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

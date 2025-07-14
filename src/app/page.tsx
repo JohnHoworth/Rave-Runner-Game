@@ -83,8 +83,6 @@ export default function Home() {
   const [lastCollected, setLastCollected] = useState<CollectibleType | null>(null);
   const sirenAudioNode = useRef<SirenAudio | null>(null);
   const isResettingRef = useRef(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(50);
   const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
 
 
@@ -435,7 +433,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (gameState && levels[gameState.level - 1]) {
+    if (gameState?.level && levels[gameState.level - 1]) {
         setCurrentTrack(levels[gameState.level - 1]);
     }
   }, [gameState?.level, levels]);
@@ -458,11 +456,6 @@ export default function Home() {
     );
   }
 
-  const handleSelectTrack = (track: Level) => {
-    setCurrentTrack(track);
-    setIsPlaying(true);
-  };
-
   return (
     <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
       <Header />
@@ -476,14 +469,9 @@ export default function Home() {
           <GameBoard gameState={gameState} />
         </div>
         <MusicPlayer
-          level={currentTrack}
           levels={levels}
           currentTrack={currentTrack}
-          onSelectTrack={handleSelectTrack}
-          isPlaying={isPlaying}
-          onPlayPause={() => setIsPlaying(!isPlaying)}
-          volume={volume}
-          onVolumeChange={(v) => setVolume(v[0])}
+          onSelectTrack={setCurrentTrack}
         />
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">

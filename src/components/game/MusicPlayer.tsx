@@ -25,45 +25,28 @@ const getYouTubeVideoId = (url: string): string | null => {
 }
 
 export default function MusicPlayer({
-  level,
   levels,
   currentTrack,
   onSelectTrack,
-  isPlaying,
-  volume,
-  onPlayPause,
-  onVolumeChange,
 }: {
-  level?: Level;
   levels: Level[];
   currentTrack: Level;
   onSelectTrack: (level: Level) => void;
-  isPlaying: boolean;
-  volume: number;
-  onPlayPause: () => void;
-  onVolumeChange: (value: number[]) => void;
 }) {
-  const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
-  const [videoId, setVideoId] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(50);
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const videoId = getYouTubeVideoId(currentTrack.youtubeUrl);
 
-  useEffect(() => {
-      const newVideoId = level ? getYouTubeVideoId(level.youtubeUrl) : null;
-      if (newVideoId !== videoId) {
-          setVideoId(newVideoId);
-      }
-  }, [level, videoId]);
-
+  const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
+  
   useEffect(() => {
     if (playerRef.current && videoId) {
-        if (isPlaying) {
-            playerRef.current.loadVideoById(videoId);
-            playerRef.current.playVideo();
-        } else {
-            playerRef.current.pauseVideo();
-        }
+        setIsPlaying(true);
+        playerRef.current.loadVideoById(videoId);
+        playerRef.current.playVideo();
     }
-  }, [videoId, isPlaying]);
+  }, [videoId]);
 
   useEffect(() => {
     if (playerRef.current) {
@@ -71,29 +54,26 @@ export default function MusicPlayer({
     }
   }, [volume]);
   
-  useEffect(() => {
+  const handlePlayPause = () => {
     if (!playerRef.current) return;
     if (isPlaying) {
-        playerRef.current.playVideo();
-    } else {
         playerRef.current.pauseVideo();
+    } else {
+        playerRef.current.playVideo();
     }
-  }, [isPlaying]);
+    setIsPlaying(!isPlaying);
+  }
 
   const onPlayerReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     event.target.setVolume(volume);
-    if (isPlaying && videoId) {
-      event.target.loadVideoById(videoId);
-      event.target.playVideo();
-    }
   };
   
   const onPlayerStateChange = (event: { target: YouTubePlayer, data: number }) => {
-    if (event.data === YouTube.PlayerState.PLAYING && !isPlaying) {
-        onPlayPause(); // Sync state if video plays externally
+     if (event.data === YouTube.PlayerState.PLAYING && !isPlaying) {
+        setIsPlaying(true);
     } else if (event.data === YouTube.PlayerState.PAUSED && isPlaying) {
-        onPlayPause(); // Sync state if video pauses externally
+        setIsPlaying(false);
     }
   }
 
@@ -123,14 +103,14 @@ export default function MusicPlayer({
                 src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "https://placehold.co/400x400.png"}
                 width={100}
                 height={100}
-                alt={level?.name || "Album Art"}
+                alt={currentTrack?.name || "Album Art"}
                 className="w-full h-full object-cover"
                 data-ai-hint="techno album cover"
               />
             </div>
             <div className="min-w-0">
-                <h3 className="text-lg font-bold text-primary truncate">{level?.name || 'Track Name'}</h3>
-                <p className="text-sm text-muted-foreground truncate">{level?.artist || 'Artist Name'}</p>
+                <h3 className="text-lg font-bold text-primary truncate">{currentTrack?.name || 'Track Name'}</h3>
+                <p className="text-sm text-muted-foreground truncate">{currentTrack?.artist || 'Artist Name'}</p>
             </div>
         </div>
 
@@ -140,7 +120,7 @@ export default function MusicPlayer({
                     <SkipBack className="w-6 h-6"/>
                 </Button>
                 <Button 
-                    onClick={onPlayPause}
+                    onClick={handlePlayPause}
                     variant="outline" 
                     size="icon" 
                     className="w-16 h-16 rounded-full border-4 border-primary bg-primary/10 text-primary hover:bg-primary/20"
@@ -156,7 +136,7 @@ export default function MusicPlayer({
                 <VolumeIcon className="w-5 h-5 text-primary/70" />
                 <Slider
                     value={[volume]}
-                    onValueChange={onVolumeChange}
+                    onValueChange={(v) => setVolume(v[0])}
                     max={100}
                     step={1}
                 />

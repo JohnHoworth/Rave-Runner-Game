@@ -132,7 +132,7 @@ export default function GameUI({
                     key={index} 
                     onClick={() => onSelectTrack(level)}
                     className={cn(
-                      'p-3 rounded-md transition-colors border-2 cursor-pointer',
+                      'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
                       currentTrack.name === level.name 
                         ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
                         : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'

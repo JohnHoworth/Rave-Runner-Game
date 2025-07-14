@@ -150,7 +150,7 @@
   animation: flash-yellow-glow 0.5s ease-in-out 2;
 }
 
-@keyframes glow-red {
+@keyframes glow-red-text {
   0%, 100% {
     text-shadow:
       0 0 5px #fff,
@@ -163,8 +163,38 @@
   }
 }
 
-.animate-glow-red {
-  animation: glow-red 0.8s ease-in-out infinite;
+.animate-glow-red-text {
+  animation: glow-red-text 0.8s ease-in-out infinite;
+}
+
+@keyframes glow-red-border {
+  from {
+    border-color: #ef4444; /* red-500 */
+    box-shadow: 0 0 8px 1px #ef4444;
+  }
+  to {
+    border-color: #ef4444;
+    box-shadow: 0 0 15px 4px #ef4444;
+  }
+}
+
+.animate-glow-red-border {
+  animation: glow-red-border 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow-green-border {
+  from {
+    border-color: #22c55e; /* green-500 */
+    box-shadow: 0 0 8px 1px #22c55e;
+  }
+  to {
+    border-color: #22c55e;
+    box-shadow: 0 0 15px 4px #22c55e;
+  }
+}
+
+.animate-glow-green-border {
+  animation: glow-green-border 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {

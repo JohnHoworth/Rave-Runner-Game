@@ -435,9 +435,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-      if (gameState && levels[gameState.level - 1]) {
-          setCurrentTrack(levels[gameState.level - 1]);
-      }
+    if (gameState && levels[gameState.level - 1]) {
+        setCurrentTrack(levels[gameState.level - 1]);
+    }
   }, [gameState?.level]);
 
   useEffect(() => {
@@ -467,6 +467,7 @@ export default function Home() {
             levels={levels} 
             lastCollected={lastCollected} 
             isBustedAnimating={isBustedAnimating}
+            currentTrack={currentTrack}
             onSelectTrack={setCurrentTrack}
         />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
@@ -482,7 +483,7 @@ export default function Home() {
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
                 <div className="p-8 rounded-lg animate-flash">
-                    <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red">
+                    <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red-text">
                         BUSTED
                     </h1>
                 </div>

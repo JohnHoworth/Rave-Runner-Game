@@ -13,7 +13,21 @@ import { ScrollArea } from "../ui/scroll-area";
 import AnimatedScore from './AnimatedScore';
 
 
-export default function GameUI({ gameState, levels, lastCollected, isBustedAnimating, onSelectTrack }: { gameState: GameState, levels: Level[], lastCollected: CollectibleType | null, isBustedAnimating: boolean, onSelectTrack: (level: Level) => void }) {
+export default function GameUI({ 
+    gameState, 
+    levels, 
+    lastCollected, 
+    isBustedAnimating, 
+    currentTrack,
+    onSelectTrack 
+}: { 
+    gameState: GameState, 
+    levels: Level[], 
+    lastCollected: CollectibleType | null, 
+    isBustedAnimating: boolean, 
+    currentTrack: Level,
+    onSelectTrack: (level: Level) => void 
+}) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
@@ -117,7 +131,13 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
                   <li 
                     key={index} 
                     onClick={() => onSelectTrack(level)}
-                    className={`p-3 rounded-md transition-colors border cursor-pointer ${gameState.level === index + 1 ? 'bg-primary/20 border-primary shadow-[0_0_10px_hsl(var(--primary))]' : 'border-transparent hover:bg-primary/10'}`}>
+                    className={cn(
+                      'p-3 rounded-md transition-colors border-2 cursor-pointer',
+                      currentTrack.name === level.name 
+                        ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
+                        : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
+                    )}
+                  >
                     <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
                     <p className="text-sm text-muted-foreground">{level.artist}</p>
                   </li>
@@ -155,5 +175,3 @@ export default function GameUI({ gameState, levels, lastCollected, isBustedAnima
     </>
   );
 }
-
-    

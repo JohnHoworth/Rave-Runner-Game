@@ -107,48 +107,51 @@ export default function MusicPlayer({
   return (
     <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex">
       {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
-      <div className="space-y-4 text-center">
-        <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2">
+      
+      {/* Now Playing Section */}
+      <div className="shrink-0">
+        <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2 mb-4">
             <Music className="w-5 h-5" />
             NOW PLAYING
         </h2>
         
-        <div className="aspect-square w-full rounded-lg overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_hsl(var(--primary)/0.5)] mt-4">
-          <Image
-            src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "https://placehold.co/400x400.png"}
-            width={400}
-            height={400}
-            alt={level?.name || "Album Art"}
-            className="w-full h-full object-cover"
-            data-ai-hint="techno album cover"
-          />
-        </div>
-        
-        <div className="mt-4">
-            <h3 className="text-2xl font-bold text-primary truncate">{level?.name || 'Track Name'}</h3>
-            <p className="text-md text-muted-foreground">{level?.artist || 'Artist Name'}</p>
+        <div className="flex gap-4 items-center">
+            <div className="w-24 h-24 shrink-0 rounded-md overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_hsl(var(--primary)/0.5)]">
+              <Image
+                src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "https://placehold.co/400x400.png"}
+                width={100}
+                height={100}
+                alt={level?.name || "Album Art"}
+                className="w-full h-full object-cover"
+                data-ai-hint="techno album cover"
+              />
+            </div>
+            <div className="min-w-0">
+                <h3 className="text-lg font-bold text-primary truncate">{level?.name || 'Track Name'}</h3>
+                <p className="text-sm text-muted-foreground truncate">{level?.artist || 'Artist Name'}</p>
+            </div>
         </div>
 
-        <div className="pt-4 space-y-6">
-            <div className="flex justify-center items-center gap-6">
+        <div className="pt-4 space-y-4">
+            <div className="flex justify-center items-center gap-4">
                 <Button variant="ghost" size="icon" className="text-primary/70 hover:text-primary">
-                    <SkipBack className="w-8 h-8"/>
+                    <SkipBack className="w-6 h-6"/>
                 </Button>
                 <Button 
                     onClick={onPlayPause}
                     variant="outline" 
                     size="icon" 
-                    className="w-20 h-20 rounded-full border-4 border-primary bg-primary/10 text-primary hover:bg-primary/20"
+                    className="w-16 h-16 rounded-full border-4 border-primary bg-primary/10 text-primary hover:bg-primary/20"
                 >
-                    {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10" />}
+                    {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
                 </Button>
                 <Button variant="ghost" size="icon" className="text-primary/70 hover:text-primary">
-                    <SkipForward className="w-8 h-8"/>
+                    <SkipForward className="w-6 h-6"/>
                 </Button>
             </div>
             
-            <div className="flex items-center gap-4 px-4">
-                <VolumeIcon className="w-6 h-6 text-primary/70" />
+            <div className="flex items-center gap-3 px-2">
+                <VolumeIcon className="w-5 h-5 text-primary/70" />
                 <Slider
                     value={[volume]}
                     onValueChange={onVolumeChange}
@@ -161,28 +164,27 @@ export default function MusicPlayer({
       
       <Separator />
 
+      {/* Levels Section */}
       <ScrollArea className="flex-1 -mx-6">
-        <div className="px-6 flex flex-col gap-6">
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">LEVELS</h2>
-            <ul className="space-y-2">
-              {levels.map((level, index) => (
-                <li 
-                  key={index} 
-                  onClick={() => onSelectTrack(level)}
-                  className={cn(
-                    'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
-                    currentTrack.name === level.name 
-                      ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
-                      : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
-                  )}
-                >
-                  <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
-                  <p className="text-sm text-muted-foreground">{level.artist}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="px-6 flex flex-col gap-4">
+          <h2 className="text-lg font-semibold text-accent font-headline tracking-widest text-center">LEVELS</h2>
+          <ul className="space-y-2">
+            {levels.map((level, index) => (
+              <li 
+                key={index} 
+                onClick={() => onSelectTrack(level)}
+                className={cn(
+                  'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
+                  currentTrack.name === level.name 
+                    ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
+                    : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
+                )}
+              >
+                <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
+                <p className="text-sm text-muted-foreground">{level.artist}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </ScrollArea>
     </aside>

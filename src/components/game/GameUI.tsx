@@ -15,18 +15,12 @@ import AnimatedScore from './AnimatedScore';
 
 export default function GameUI({ 
     gameState, 
-    levels, 
     lastCollected, 
     isBustedAnimating, 
-    currentTrack,
-    onSelectTrack 
 }: { 
     gameState: GameState, 
-    levels: Level[], 
     lastCollected: CollectibleType | null, 
     isBustedAnimating: boolean, 
-    currentTrack: Level,
-    onSelectTrack: (level: Level) => void 
 }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
@@ -119,30 +113,6 @@ export default function GameUI({
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.vinyls}</span>
                 </div>
               </div>
-            </div>
-            
-            <Separator />
-            
-            {/* Levels */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">LEVELS</h2>
-              <ul className="space-y-2">
-                {levels.map((level, index) => (
-                  <li 
-                    key={index} 
-                    onClick={() => onSelectTrack(level)}
-                    className={cn(
-                      'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
-                      currentTrack.name === level.name 
-                        ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
-                        : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
-                    )}
-                  >
-                    <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
-                    <p className="text-sm text-muted-foreground">{level.artist}</p>
-                  </li>
-                ))}
-              </ul>
             </div>
             
             <Separator />

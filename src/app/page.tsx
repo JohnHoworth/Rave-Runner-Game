@@ -438,7 +438,7 @@ export default function Home() {
     if (gameState && levels[gameState.level - 1]) {
         setCurrentTrack(levels[gameState.level - 1]);
     }
-  }, [gameState?.level]);
+  }, [gameState?.level, levels]);
 
   useEffect(() => {
     return () => {
@@ -469,17 +469,17 @@ export default function Home() {
       <main className="flex flex-1 overflow-hidden relative">
         <GameUI 
             gameState={gameState} 
-            levels={levels} 
             lastCollected={lastCollected} 
             isBustedAnimating={isBustedAnimating}
-            currentTrack={currentTrack}
-            onSelectTrack={handleSelectTrack}
         />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
           <GameBoard gameState={gameState} />
         </div>
         <MusicPlayer
           level={currentTrack}
+          levels={levels}
+          currentTrack={currentTrack}
+          onSelectTrack={handleSelectTrack}
           isPlaying={isPlaying}
           onPlayPause={() => setIsPlaying(!isPlaying)}
           volume={volume}

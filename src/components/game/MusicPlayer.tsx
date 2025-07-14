@@ -10,6 +10,8 @@ import type { Level } from "@/lib/types";
 import YouTube from 'react-youtube';
 import { useState, useEffect, useRef } from "react";
 import type { YouTubePlayer } from "react-youtube";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "../ui/scroll-area";
 
 const getYouTubeVideoId = (url: string): string | null => {
     if (!url) return null;
@@ -24,12 +26,18 @@ const getYouTubeVideoId = (url: string): string | null => {
 
 export default function MusicPlayer({
   level,
+  levels,
+  currentTrack,
+  onSelectTrack,
   isPlaying,
   volume,
   onPlayPause,
   onVolumeChange,
 }: {
   level?: Level;
+  levels: Level[];
+  currentTrack: Level;
+  onSelectTrack: (level: Level) => void;
   isPlaying: boolean;
   volume: number;
   onPlayPause: () => void;
@@ -45,9 +53,12 @@ export default function MusicPlayer({
 
   useEffect(() => {
     if (playerRef.current && videoId) {
-        playerRef.current.loadVideoById(videoId);
+        if (isPlaying) {
+            playerRef.current.loadVideoById(videoId);
+            playerRef.current.playVideo();
+        }
     }
-  }, [videoId]);
+  }, [videoId, isPlaying]);
 
   useEffect(() => {
     if (playerRef.current) {
@@ -91,9 +102,9 @@ export default function MusicPlayer({
   };
 
   return (
-    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex-col gap-6 hidden lg:flex">
+    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex">
       {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
-      <div className="space-y-4 text-center flex-1 flex flex-col justify-center">
+      <div className="space-y-4 text-center">
         <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center justify-center gap-2">
             <Music className="w-5 h-5" />
             NOW PLAYING
@@ -133,8 +144,6 @@ export default function MusicPlayer({
                 </Button>
             </div>
             
-            <Separator />
-            
             <div className="flex items-center gap-4 px-4">
                 <VolumeIcon className="w-6 h-6 text-primary/70" />
                 <Slider
@@ -146,6 +155,33 @@ export default function MusicPlayer({
             </div>
         </div>
       </div>
+      
+      <Separator />
+
+      <ScrollArea className="flex-1 -mx-6">
+        <div className="px-6 flex flex-col gap-6">
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">LEVELS</h2>
+            <ul className="space-y-2">
+              {levels.map((level, index) => (
+                <li 
+                  key={index} 
+                  onClick={() => onSelectTrack(level)}
+                  className={cn(
+                    'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
+                    currentTrack.name === level.name 
+                      ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
+                      : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
+                  )}
+                >
+                  <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
+                  <p className="text-sm text-muted-foreground">{level.artist}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </ScrollArea>
     </aside>
   );
 }

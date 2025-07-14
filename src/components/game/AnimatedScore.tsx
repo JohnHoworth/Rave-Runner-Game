@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -14,17 +15,21 @@ const AnimatedDigit = ({ digit, style }: { digit: string; style: React.CSSProper
 export default function AnimatedScore({ score }: { score: number }) {
   const [animationKey, setAnimationKey] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [prevScore, setPrevScore] = useState(score);
 
   useEffect(() => {
-    if (score > 0) {
+    if (score > prevScore) {
       setAnimationKey(prevKey => prevKey + 1);
       setIsAnimating(true);
       const timer = setTimeout(() => setIsAnimating(false), 1000); // Animation duration is 0.5s * 2 iterations
+      setPrevScore(score);
       return () => clearTimeout(timer);
+    } else if (score === 0 && prevScore !== 0) {
+      setPrevScore(0);
     }
-  }, [score]);
+  }, [score, prevScore]);
 
-  const scoreString = score.toString().padStart(8, '0');
+  const scoreString = score.toString();
 
   return (
     <div

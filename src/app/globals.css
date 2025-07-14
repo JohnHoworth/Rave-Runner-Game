@@ -187,6 +187,36 @@
   animation: flash-yellow-glow 0.5s ease-in-out 2;
 }
 
+@keyframes flash-green-glow {
+  0%, 100% {
+    border-color: hsl(var(--border));
+    box-shadow: none;
+  }
+  50% {
+    border-color: #39FF14; /* Neon Green */
+    box-shadow: 0 0 20px 5px #39FF14;
+  }
+}
+
+.animate-flash-green-glow {
+  animation: flash-green-glow 0.5s ease-in-out 2;
+}
+
+@keyframes flash-pink-glow {
+  0%, 100% {
+    border-color: hsl(var(--border));
+    box-shadow: none;
+  }
+  50% {
+    border-color: hsl(var(--accent)); /* Hot Pink */
+    box-shadow: 0 0 20px 5px hsl(var(--accent));
+  }
+}
+
+.animate-flash-pink-glow {
+  animation: flash-pink-glow 0.5s ease-in-out 2;
+}
+
 @keyframes glow-red-text {
   0%, 100% {
     text-shadow:

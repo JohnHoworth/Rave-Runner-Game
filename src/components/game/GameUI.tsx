@@ -26,7 +26,8 @@ export default function GameUI({
 
   const inventoryItemClasses = (type: CollectibleType) => cn(
     "flex items-center justify-between p-2 rounded-lg transition-all duration-300",
-    lastCollected === type && type !== 'tunes' && "animate-flash",
+    lastCollected === 'flyer' && type === 'flyer' && "animate-flash-green-glow",
+    lastCollected === 'pills' && type === 'pills' && "animate-flash-pink-glow",
     lastCollected === 'tunes' && type === 'tunes' && "animate-flash-yellow-glow"
   );
 
@@ -94,14 +95,14 @@ export default function GameUI({
               <div className="space-y-3">
                 <div className={inventoryItemClasses('flyer')}>
                   <div className="flex items-center gap-3">
-                    <FileText className="w-6 h-6 text-primary/80" />
+                    <FileText className="w-6 h-6 text-green-400" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}}/>
                     <span className="font-medium">Flyers</span>
                   </div>
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.flyers}</span>
                 </div>
                 <div className={inventoryItemClasses('pills')}>
                   <div className="flex items-center gap-3">
-                    <Pill className="w-6 h-6 text-accent" />
+                    <Pill className="w-6 h-6 text-accent" style={{filter: 'drop-shadow(0 0 5px hsl(var(--accent)))'}} />
                     <span className="font-medium">Pills</span>
                   </div>
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.pills}</span>

@@ -88,6 +88,43 @@
   animation: flash-border 0.5s ease-in-out 3;
 }
 
+@keyframes police-lights {
+  0%, 100% {
+    border-color: #ef4444; /* red-500 */
+    box-shadow: 0 0 20px 10px rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    border-color: #3b82f6; /* blue-500 */
+    box-shadow: 0 0 20px 10px rgba(59, 130, 246, 0.7);
+  }
+}
+
+.animate-police-lights {
+  animation: police-lights 0.5s ease-in-out infinite;
+}
+
+@keyframes police-text {
+  0%, 49% {
+    color: #ef4444; /* red-500 */
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #ef4444,
+      0 0 20px #ef4444;
+  }
+  50%, 100% {
+    color: #3b82f6; /* blue-500 */
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #3b82f6,
+      0 0 20px #3b82f6;
+  }
+}
+
+.animate-police-text {
+  animation: police-text 0.5s step-end infinite;
+}
+
+
 @keyframes roll-up {
   from {
     transform: translateY(1.2em);

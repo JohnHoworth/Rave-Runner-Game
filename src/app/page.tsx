@@ -436,7 +436,7 @@ export default function Home() {
     if (gameState?.level && levels[gameState.level - 1]) {
         setCurrentTrack(levels[gameState.level - 1]);
     }
-  }, [gameState?.level]);
+  }, [gameState?.level, levels]);
 
   useEffect(() => {
     return () => {
@@ -475,8 +475,8 @@ export default function Home() {
         />
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
-                <div className="p-8 rounded-lg animate-flash">
-                    <h1 className="text-9xl font-extrabold text-destructive tracking-widest font-headline animate-glow-red-text">
+                <div className="p-8 rounded-lg border-4 animate-police-lights">
+                    <h1 className="text-9xl font-extrabold tracking-widest font-headline animate-police-text">
                         BUSTED
                     </h1>
                 </div>

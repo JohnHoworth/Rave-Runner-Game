@@ -517,7 +517,7 @@ export default function Home() {
             lastCollected={lastCollected} 
             isBustedAnimating={isBustedAnimating}
         />
-        <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-black/50">
+        <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
           <GameBoard gameState={gameState} />
         </div>
         <MusicPlayer

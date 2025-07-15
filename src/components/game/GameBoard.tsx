@@ -37,7 +37,12 @@ const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: 
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full bg-destructive/20 border border-destructive/50 shadow-[0_0_10px_theme(colors.destructive.DEFAULT)]"></div>
+        <div 
+            className="w-full h-full animate-animated-gradient"
+            style={{
+                backgroundImage: 'linear-gradient(45deg, hsl(var(--destructive)), hsl(260, 50%, 20%), hsl(var(--destructive)))'
+            }}
+        ></div>
     )
 }
 

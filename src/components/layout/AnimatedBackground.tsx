@@ -1,28 +1,44 @@
 
 "use client";
 
-const blueprintBackgroundStyle: React.CSSProperties = {
-    backgroundColor: '#fdf6e3', // A parchment/aged paper color
+const holographicBackgroundStyle: React.CSSProperties = {
+    backgroundColor: 'hsl(var(--background))',
     backgroundImage: `
-        linear-gradient(rgba(0, 110, 255, 0.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 110, 255, 0.15) 1px, transparent 1px),
-        radial-gradient(circle at 10% 10%, rgba(0, 0, 0, 0.05), transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.05), transparent 25%)
+        linear-gradient(90deg, hsla(var(--primary) / 0.05) 1px, transparent 1px),
+        linear-gradient(hsla(var(--primary) / 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 10% 10%, hsla(var(--accent) / 0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, hsla(var(--primary) / 0.08), transparent 40%)
     `,
-    backgroundSize: '20px 20px, 20px 20px, 100% 100%, 100% 100%',
+    backgroundSize: '25px 25px, 25px 25px, 100% 100%, 100% 100%',
+    animation: 'move-grid 3s linear infinite',
 };
 
+const scanlineEffect: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    backgroundImage: 'linear-gradient(to bottom, transparent 50%, hsla(var(--primary) / 0.1) 51%)',
+    backgroundSize: '100% 4px',
+    opacity: 0.4,
+    pointerEvents: 'none',
+};
 
-const vignetteEffect = {
-    backgroundImage: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.1) 95%)',
+const vignetteEffect: React.CSSProperties = {
+    backgroundImage: 'radial-gradient(ellipse at center, transparent 30%, hsl(var(--background)) 100%)',
 };
 
 export default function AnimatedBackground() {
     return (
-        <div className="fixed inset-0 -z-10 overflow-hidden" data-ai-hint="aged blueprint paper">
+        <div className="fixed inset-0 -z-10 overflow-hidden" data-ai-hint="nightclub background">
             <div 
                 className="absolute inset-0" 
-                style={blueprintBackgroundStyle}
+                style={holographicBackgroundStyle}
+            />
+            <div
+                style={scanlineEffect}
             />
             <div 
                 className="absolute inset-0"

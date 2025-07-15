@@ -227,6 +227,7 @@ export default function Home() {
           bustedCount: newBustedCount,
           score: prevState.score,
           raveBucks: prevState.raveBucks,
+          collectibles: prevState.collectibles,
           time: prevState.time,
         };
       });

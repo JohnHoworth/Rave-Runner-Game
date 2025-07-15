@@ -146,7 +146,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 20,
-                transform: `translateZ(${TILE_HEIGHT}px)`
+                transform: `translateZ(${TILE_HEIGHT}px)`,
+                transition: 'all 0.4s linear',
             }}>
                 <GhostIcon className="w-full h-full" />
             </div>

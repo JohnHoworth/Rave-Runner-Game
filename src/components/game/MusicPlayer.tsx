@@ -68,6 +68,24 @@ export default function MusicPlayer({
     });
   }
 
+  const startProgressInterval = () => {
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    progressIntervalRef.current = setInterval(() => {
+        if (playerRef.current) {
+            const currentTime = playerRef.current.getCurrentTime() || 0;
+            const duration = playerRef.current.getDuration() || 0;
+            onTrackStateChange({ currentTime, duration });
+        }
+    }, 1000);
+  };
+
+  const stopProgressInterval = () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+  };
+
   const onPlayerReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     event.target.setVolume(volume);
@@ -79,29 +97,20 @@ export default function MusicPlayer({
   const onPlayerStateChange = (event: { data: number }) => {
      if (event.data === YouTube.PlayerState.PLAYING) {
         if (!isPlaying) setIsPlaying(true);
-        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-        progressIntervalRef.current = setInterval(() => {
-            if (playerRef.current) {
-                const currentTime = playerRef.current.getCurrentTime();
-                const duration = playerRef.current.getDuration();
-                onTrackStateChange({ currentTime, duration });
-            }
-        }, 1000);
-    } else if (event.data === YouTube.PlayerState.PAUSED && isPlaying) {
-        setIsPlaying(false);
-        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    } else if (event.data === YouTube.PlayerState.ENDED) {
-        setIsPlaying(false);
-        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-        onTrackStateChange({ currentTime: 0, duration: 0 });
+        startProgressInterval();
+    } else if (event.data === YouTube.PlayerState.PAUSED || event.data === YouTube.PlayerState.ENDED) {
+        if (isPlaying) setIsPlaying(false);
+        stopProgressInterval();
+        if(event.data === YouTube.PlayerState.ENDED) {
+          const duration = playerRef.current?.getDuration() || 0;
+          onTrackStateChange({ currentTime: duration, duration: duration });
+        }
     }
   }
 
   useEffect(() => {
     return () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
+      stopProgressInterval();
     };
   }, []);
 

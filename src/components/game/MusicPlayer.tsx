@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Music, Play, Pause, SkipBack, SkipForward, Volume1, Volume2, VolumeX } from "lucide-react";
-import type { Level } from "@/lib/types";
+import type { Level, TrackState } from "@/lib/types";
 import YouTube from 'react-youtube';
 import { useState, useEffect, useRef } from "react";
 import type { YouTubePlayer } from "react-youtube";
@@ -28,15 +28,18 @@ export default function MusicPlayer({
   levels,
   currentTrack,
   onSelectTrack,
+  onTrackStateChange,
 }: {
   levels: Level[];
   currentTrack: Level;
   onSelectTrack: (level: Level) => void;
+  onTrackStateChange: (state: TrackState) => void;
 }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(50);
   const playerRef = useRef<YouTubePlayer | null>(null);
   const videoId = getYouTubeVideoId(currentTrack.youtubeUrl);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
   
@@ -74,14 +77,33 @@ export default function MusicPlayer({
   };
   
   const onPlayerStateChange = (event: { data: number }) => {
-     if (event.data === YouTube.PlayerState.PLAYING && !isPlaying) {
-        setIsPlaying(true);
+     if (event.data === YouTube.PlayerState.PLAYING) {
+        if (!isPlaying) setIsPlaying(true);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = setInterval(() => {
+            if (playerRef.current) {
+                const currentTime = playerRef.current.getCurrentTime();
+                const duration = playerRef.current.getDuration();
+                onTrackStateChange({ currentTime, duration });
+            }
+        }, 1000);
     } else if (event.data === YouTube.PlayerState.PAUSED && isPlaying) {
         setIsPlaying(false);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     } else if (event.data === YouTube.PlayerState.ENDED) {
         setIsPlaying(false);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        onTrackStateChange({ currentTime: 0, duration: 0 });
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, []);
 
   const opts = {
     height: '0',

@@ -84,6 +84,7 @@ export default function Home() {
   const sirenAudioNode = useRef<SirenAudio | null>(null);
   const isResettingRef = useRef(false);
   const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
+  const [trackState, setTrackState] = useState({ duration: 0, currentTime: 0 });
 
 
   const initAudio = () => {
@@ -228,7 +229,7 @@ export default function Home() {
           score: prevState.score,
           raveBucks: prevState.raveBucks,
           collectibles: prevState.collectibles,
-          time: prevState.time,
+          time: 0,
         };
       });
       setIsBusted(false);
@@ -453,17 +454,21 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (isBusted) return;
+    if (isBusted || trackState.duration === 0) return;
 
     const timer = setInterval(() => {
       setGameState(prev => {
         if (!prev) return null;
-        return { ...prev, time: prev.time + 1 };
+        const remainingTime = Math.max(0, Math.floor(trackState.duration - trackState.currentTime));
+        if (remainingTime === 0) {
+          // You could advance to the next level here
+        }
+        return { ...prev, time: remainingTime };
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted]);
+  }, [isBusted, trackState]);
 
   useEffect(() => {
     setGameState(createInitialState());
@@ -509,6 +514,7 @@ export default function Home() {
           levels={levels}
           currentTrack={currentTrack}
           onSelectTrack={setCurrentTrack}
+          onTrackStateChange={setTrackState}
         />
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">

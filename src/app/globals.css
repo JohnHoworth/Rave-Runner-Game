@@ -219,6 +219,7 @@
 
 @keyframes glow-red-text {
   0%, 100% {
+    color: hsl(var(--destructive));
     text-shadow:
       0 0 5px #fff,
       0 0 10px hsl(var(--destructive)),
@@ -226,6 +227,7 @@
       0 0 30px hsl(var(--destructive));
   }
   50% {
+    color: hsl(var(--primary));
     text-shadow: none;
   }
 }

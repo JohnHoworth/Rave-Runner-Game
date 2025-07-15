@@ -43,3 +43,8 @@ export type Level = {
   theme: string;
   youtubeUrl: string;
 };
+
+export type TrackState = {
+    currentTime: number;
+    duration: number;
+};

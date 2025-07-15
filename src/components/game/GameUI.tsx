@@ -44,6 +44,7 @@ export default function GameUI({
   const fuelColor = `hsl(${fuelColorHue}, 100%, 50%)`;
 
   const glowClass = fuelPercentage < 25 ? 'animate-glow' : '';
+  const timerFlashingClass = gameState.time > 0 && gameState.time <= 10 ? 'animate-glow-red-text' : '';
 
   return (
     <>
@@ -55,7 +56,9 @@ export default function GameUI({
           <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-accent">
             <div className="flex items-center gap-2">
                 <Timer className="w-7 h-7" />
-                <span className="text-primary tabular-nums font-mono">{formatTime(gameState.time)}</span>
+                <span className={cn("text-primary tabular-nums font-mono", timerFlashingClass)}>
+                  {formatTime(gameState.time)}
+                </span>
             </div>
             <div className="flex items-center gap-2">
                 <Siren className={cn("w-7 h-7 text-destructive", isBustedAnimating && "animate-flash-blue-glow")} />
@@ -130,7 +133,7 @@ export default function GameUI({
                   <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
-                  <li>Watch your fuel, it depletes as you move!</li>
+                  <li>Watch your fuel, it depleles as you move!</li>
               </ul>
             </div>
           </div>

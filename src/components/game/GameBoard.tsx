@@ -30,15 +30,30 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
+    const FLOOR_HEIGHT = 5;
     return (
-        <div 
-            className={cn(
-                "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2",
-                isPlayerOnTile && "bg-orange-900/50 border-orange-500",
-                (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
-            )}
-            style={{ transform: 'translateZ(5px)' }}
-        >
+        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+            <div 
+                className={cn(
+                    "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2 absolute",
+                    isPlayerOnTile && "bg-orange-900/50 border-orange-500",
+                    (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
+                )}
+                style={{ transform: `translateZ(${FLOOR_HEIGHT}px)` }}
+            >
+            </div>
+             {/* Front Face */}
+             <div className="absolute w-full bg-slate-700" style={{ 
+                height: `${FLOOR_HEIGHT}px`,
+                transform: `rotateX(-90deg)`,
+                transformOrigin: 'top' 
+            }}></div>
+             {/* Left Face */}
+            <div className="absolute h-full bg-slate-900" style={{ 
+                width: `${FLOOR_HEIGHT}px`,
+                transform: `rotateY(90deg)`,
+                transformOrigin: 'right' 
+            }}></div>
         </div>
     )
 }
@@ -163,7 +178,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
-                transform: `translateZ(${TILE_HEIGHT + 5}px)`
+                transform: `translateZ(${TILE_HEIGHT}px)`
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

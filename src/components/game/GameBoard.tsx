@@ -82,8 +82,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const centerY = containerHeight / 2;
 
   // Center the view on the player's tile
-  const translateX = centerX - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
-  const translateY = centerY - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
+  const translateX = centerX - (player.x * TILE_SIZE + TILE_SIZE / 2);
+  const translateY = centerY - (player.y * TILE_SIZE + TILE_SIZE / 2);
 
   return (
     <div
@@ -101,7 +101,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: boardWidth,
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
-                transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
+                transform: `rotateX(55deg) rotateZ(-45deg) translate(${translateX}px, ${translateY}px) scale(${scale})`,
             }}
         >
             {/* Maze Floor and Walls */}

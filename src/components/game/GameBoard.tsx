@@ -11,7 +11,7 @@ import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
 const TILE_HEIGHT = 40;
-const FLOOR_HEIGHT = 10;
+const FLOOR_HEIGHT = 35;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -59,9 +59,6 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 }
 
 const WallTile = () => {
-    const panelGradient = (color: string) => `
-        linear-gradient(hsla(var(--primary-darker), 0.5) 0 0)
-    `;
     const sidePanelStyle: React.CSSProperties = {
         backgroundColor: 'hsl(220 40% 12%)',
         backgroundImage: `
@@ -173,7 +170,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 10,
-                transform: `translateZ(${TILE_HEIGHT}px)`
+                transform: `translateZ(${FLOOR_HEIGHT}px)`
             }}>
                 <ItemIcon type={item.type} />
             </div>
@@ -187,7 +184,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 20,
-                transform: `translateZ(${TILE_HEIGHT}px)`,
+                transform: `translateZ(${FLOOR_HEIGHT}px)`,
                 transition: 'all 0.4s linear',
             }}>
                 <GhostIcon className="w-full h-full" />
@@ -201,7 +198,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
-                transform: `translateZ(${TILE_HEIGHT}px)`
+                transform: `translateZ(${FLOOR_HEIGHT}px)`
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

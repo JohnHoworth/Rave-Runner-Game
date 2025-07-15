@@ -478,7 +478,7 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted]);
+  }, [isBusted, playerRef.current]);
 
   useEffect(() => {
     setGameState(createInitialState());

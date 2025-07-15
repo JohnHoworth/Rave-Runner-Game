@@ -71,9 +71,7 @@ export default function MusicPlayer({
     localPlayerRef.current = event.target;
     onPlayerReady(event.target);
     event.target.setVolume(volume);
-    if (isPlaying) {
-      event.target.playVideo();
-    }
+    event.target.playVideo();
   };
   
   const onPlayerStateChange = (event: { data: number }) => {
@@ -88,7 +86,7 @@ export default function MusicPlayer({
     height: '0',
     width: '0',
     playerVars: {
-      autoplay: 1, // Autoplay enabled
+      autoplay: 1,
       controls: 0,
     },
   };

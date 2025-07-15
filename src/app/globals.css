@@ -303,3 +303,22 @@
 .animate-glow {
     animation: glow 2s ease-in-out infinite;
 }
+
+/* Holographic Background Animations */
+@keyframes move-grid {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -100px;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}

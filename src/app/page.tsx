@@ -107,7 +107,7 @@ export default function Home() {
     oscillator.connect(gainNode);
     gainNode.connect(audioContextRef.current.destination);
 
-    gainNode.gain.setValueAtTime(0.1, audioContextRef.current.currentTime);
+    gainNode.gain.setValueAtTime(0.05, audioContextRef.current.currentTime);
     oscillator.frequency.setValueAtTime(440, audioContextRef.current.currentTime);
     oscillator.type = 'sine';
 

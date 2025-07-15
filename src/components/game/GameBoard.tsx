@@ -31,11 +31,14 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     return (
-        <div className={cn(
-            "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2",
-            isPlayerOnTile && "bg-orange-900/50 border-orange-500",
-            (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
-        )}>
+        <div 
+            className={cn(
+                "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2",
+                isPlayerOnTile && "bg-orange-900/50 border-orange-500",
+                (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
+            )}
+            style={{ transform: 'translateZ(5px)' }}
+        >
         </div>
     )
 }

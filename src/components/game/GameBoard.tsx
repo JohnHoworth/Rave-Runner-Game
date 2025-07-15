@@ -132,7 +132,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 10,
-                transform: `translateZ(5px)`
+                transform: `translateZ(${TILE_HEIGHT / 2}px)`
             }}>
                 <ItemIcon type={item.type} />
             </div>

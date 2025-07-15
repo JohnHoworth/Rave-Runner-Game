@@ -125,7 +125,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 left: `${enemy.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transition: 'all 0.4s linear',
                 zIndex: 20,
             }}>
                 <GhostIcon className="w-full h-full" />
@@ -146,5 +145,3 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
-
-    

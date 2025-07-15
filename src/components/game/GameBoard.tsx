@@ -7,6 +7,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { cn } from "@/lib/utils";
+import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 32; 
 
@@ -21,7 +22,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'fuel_station':
             return <Zap className="w-full h-full text-blue-400 animate-flash-blue-bolt" />;
         case 'dropped_pill':
-            return <Pill className="w-full h-full text-purple-400 animate-pulse -rotate-45" style={{filter: 'drop-shadow(0 0 5px #a855f7)'}} />;
+            return <FlashingPillIcon className="w-full h-full -rotate-45" />;
         default:
             return null;
     }
@@ -136,5 +137,3 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
-
-    

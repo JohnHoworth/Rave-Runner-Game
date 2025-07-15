@@ -56,8 +56,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
   
   const scale = 1.5;
-  const containerWidth = 48 * 16;
-  const containerHeight = 48 * 16;
+  const containerWidth = 48 * 16; // 768px
+  const containerHeight = 48 * 16; // 768px
 
   const translateX = containerWidth / 2 - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
   const translateY = containerHeight / 2 - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
@@ -66,8 +66,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     <div
       className="border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
       style={{
-        width: '48rem',
-        height: '48rem',
+        width: `${containerWidth}px`,
+        height: `${containerHeight}px`,
       }}
       data-ai-hint="maze puzzle"
     >
@@ -77,6 +77,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: boardWidth,
                 height: boardHeight,
                 transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
+                transition: 'transform 0.2s linear',
             }}
         >
             {/* Maze Floor and Walls */}

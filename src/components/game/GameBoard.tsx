@@ -28,7 +28,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean }) => {
+const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     return (
         <div className={cn(
             "w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-700 to-slate-800",
@@ -36,7 +36,7 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile }: { isPlayerOnTile: bo
             "border-b border-b-slate-900 border-r border-r-slate-900",
             "shadow-inner shadow-black/50",
             isPlayerOnTile && "animate-glow-orange-border",
-            isDroppedPillOnTile && "animate-glow-blue-border"
+            (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
         )}>
         </div>
     )
@@ -83,6 +83,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             {maze.map((row, y) =>
                 row.map((cell, x) => {
                   const isDroppedPillOnTile = items.some(item => item.x === x && item.y === y && item.type === 'dropped_pill');
+                  const isEnemyOnTile = enemies.some(enemy => enemy.x === x && enemy.y === y);
                   return (
                     <div
                         key={`${x}-${y}`}
@@ -94,7 +95,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             left: `${x * TILE_SIZE}px`,
                         }}
                     >
-                        {cell === 0 ? <FloorTile isPlayerOnTile={player.x === x && player.y === y} isDroppedPillOnTile={isDroppedPillOnTile} /> : <WallTile />}
+                        {cell === 0 ? <FloorTile 
+                            isPlayerOnTile={player.x === x && player.y === y} 
+                            isDroppedPillOnTile={isDroppedPillOnTile}
+                            isEnemyOnTile={isEnemyOnTile}
+                             /> : <WallTile />}
                     </div>
                   )
                 })

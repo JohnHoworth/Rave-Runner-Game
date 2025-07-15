@@ -140,7 +140,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
-                transition: 'all 0.4s linear',
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

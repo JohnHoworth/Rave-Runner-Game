@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
-const TILE_HEIGHT = 20;
+const TILE_HEIGHT = 40;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -32,7 +32,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-slate-800/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)] border-t-2 border-slate-700/50",
+            "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2",
             isPlayerOnTile && "bg-orange-900/50 border-orange-500",
             (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
         )}>
@@ -43,28 +43,20 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 const WallTile = () => {
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Main Block */}
-            <div className="absolute w-full h-full bg-slate-700" style={{ transform: `translateZ(${TILE_HEIGHT/2}px)` }}></div>
             {/* Top Face */}
-            <div className="absolute w-full h-full bg-slate-600" 
-                 style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}>
-            </div>
+            <div className="absolute w-full h-full bg-slate-600" style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}
-            <div className="absolute w-full bg-slate-800/70" 
-                 style={{ 
-                    height: `${TILE_HEIGHT}px`,
-                    transform: `rotateX(-90deg)`,
-                    transformOrigin: 'top' 
-                }}>
-            </div>
+            <div className="absolute w-full bg-slate-800" style={{ 
+                height: `${TILE_HEIGHT}px`,
+                transform: `rotateX(-90deg)`,
+                transformOrigin: 'top' 
+            }}></div>
              {/* Left Face */}
-            <div className="absolute h-full bg-slate-900/70" 
-                 style={{ 
-                    width: `${TILE_HEIGHT}px`,
-                    transform: `rotateY(90deg)`,
-                    transformOrigin: 'right' 
-                }}>
-            </div>
+            <div className="absolute h-full bg-slate-900" style={{ 
+                width: `${TILE_HEIGHT}px`,
+                transform: `rotateY(90deg)`,
+                transformOrigin: 'right' 
+            }}></div>
         </div>
     )
 }
@@ -148,7 +140,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
             {/* Enemies */}
             {enemies.map((enemy, i) => (
-            <div key={`enemy-${i}`} className="absolute transition-all duration-400 linear" style={{
+            <div key={`enemy-${i}`} className="absolute" style={{
                 top: `${enemy.y * TILE_SIZE}px`,
                 left: `${enemy.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
@@ -167,7 +159,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
-                transform: `translateZ(${TILE_HEIGHT}px)`
+                transform: `translateZ(${TILE_HEIGHT + 5}px)`
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

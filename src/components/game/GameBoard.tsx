@@ -53,15 +53,15 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
   
   const scale = 1.5;
-  const containerWidth = 48 * 16; // 48rem
-  const containerHeight = 48 * 16; // 48rem
+  const containerWidth = 48 * 16;
+  const containerHeight = 48 * 16;
 
   const translateX = containerWidth / 2 - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
   const translateY = containerHeight / 2 - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
 
   return (
     <div
-      className="bg-black border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
+      className="border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
       style={{
         width: '48rem',
         height: '48rem',

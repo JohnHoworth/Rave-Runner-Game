@@ -32,10 +32,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-white/50",
-            "border border-blue-200/70",
-            isPlayerOnTile && "bg-orange-300/50 border-orange-500",
-            (isDroppedPillOnTile || isEnemyOnTile) && "bg-blue-300/50 border-blue-500"
+            "w-full h-full bg-slate-800",
+            "border-t-slate-600 border-l-slate-600 border-r-slate-900 border-b-slate-900 border-2 shadow-inner",
+            isPlayerOnTile && "bg-orange-900/50 border-orange-500",
+            (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
         )}>
         </div>
     )
@@ -45,11 +45,11 @@ const WallTile = () => {
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top face */}
-            <div className="absolute w-full h-full bg-blue-500 border border-blue-700" 
+            <div className="absolute w-full h-full bg-slate-600 border border-slate-500" 
                  style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}>
             </div>
             {/* Front face */}
-            <div className="absolute w-full h-full bg-blue-600 border-b border-blue-800" 
+            <div className="absolute w-full h-full bg-slate-700 border-b border-slate-800" 
                  style={{ 
                     height: `${TILE_HEIGHT}px`,
                     transform: `rotateX(-90deg) translateY(${TILE_HEIGHT}px)`,
@@ -57,7 +57,7 @@ const WallTile = () => {
                 }}>
             </div>
              {/* Side face */}
-            <div className="absolute w-full h-full bg-blue-700 border-r border-blue-900" 
+            <div className="absolute w-full h-full bg-slate-800 border-r border-slate-900" 
                  style={{ 
                     width: `${TILE_HEIGHT}px`,
                     transform: `rotateY(90deg) translateX(-${TILE_HEIGHT}px)`,
@@ -87,7 +87,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="overflow-hidden rounded-lg"
+      className="overflow-hidden rounded-lg bg-slate-900/50"
       style={{
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
@@ -96,12 +96,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze puzzle"
     >
         <div
-            className="relative transition-transform duration-200 ease-in-out"
+            className="relative transition-transform duration-200 ease-linear"
             style={{
                 width: boardWidth,
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
-                transform: `translate(${translateX}px, ${translateY}px) scale(${scale}) rotateX(60deg) rotateZ(-45deg)`,
+                transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
             }}
         >
             {/* Maze Floor and Walls */}
@@ -132,7 +132,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className={cn("absolute p-1.5")} style={{
+            <div key={`item-${i}`} className={cn("absolute", item.type !== 'dropped_pill' && "p-1.5")} style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
@@ -152,7 +152,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 20,
-                transition: 'all 0.4s linear',
                 transform: `translateZ(${TILE_HEIGHT}px)`
             }}>
                 <GhostIcon className="w-full h-full" />

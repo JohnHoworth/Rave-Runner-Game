@@ -312,6 +312,20 @@
   animation: glow-orange-border 1.2s ease-in-out infinite alternate;
 }
 
+@keyframes glow-blue-border {
+  from {
+    border-color: #3b82f6; /* blue-500 */
+    box-shadow: 0 0 8px 1px #3b82f6;
+  }
+  to {
+    border-color: #3b82f6;
+    box-shadow: 0 0 15px 4px #3b82f6;
+  }
+}
+
+.animate-glow-blue-border {
+  animation: glow-blue-border 1.5s ease-in-out infinite alternate;
+}
 
 @keyframes glow {
     0%, 100% { box-shadow: 0 0 2px 1px currentColor; }
@@ -396,5 +410,7 @@
 .animate-caught {
   animation: caught-animation 1s ease-in-out forwards;
 }
+
+    
 
     

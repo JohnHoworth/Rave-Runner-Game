@@ -28,14 +28,15 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = ({ isPlayerOnTile }: { isPlayerOnTile: boolean }) => {
+const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean }) => {
     return (
         <div className={cn(
             "w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-700 to-slate-800",
             "border-t border-slate-600 border-l border-l-slate-600",
             "border-b border-b-slate-900 border-r border-r-slate-900",
             "shadow-inner shadow-black/50",
-            isPlayerOnTile && "animate-glow-orange-border"
+            isPlayerOnTile && "animate-glow-orange-border",
+            isDroppedPillOnTile && "animate-glow-blue-border"
         )}>
         </div>
     )
@@ -80,20 +81,23 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         >
             {/* Maze Floor and Walls */}
             {maze.map((row, y) =>
-                row.map((cell, x) => (
-                <div
-                    key={`${x}-${y}`}
-                    className="absolute"
-                    style={{
-                        width: `${TILE_SIZE}px`,
-                        height: `${TILE_SIZE}px`,
-                        top: `${y * TILE_SIZE}px`,
-                        left: `${x * TILE_SIZE}px`,
-                    }}
-                >
-                    {cell === 0 ? <FloorTile isPlayerOnTile={player.x === x && player.y === y} /> : <WallTile />}
-                </div>
-                ))
+                row.map((cell, x) => {
+                  const isDroppedPillOnTile = items.some(item => item.x === x && item.y === y && item.type === 'dropped_pill');
+                  return (
+                    <div
+                        key={`${x}-${y}`}
+                        className="absolute"
+                        style={{
+                            width: `${TILE_SIZE}px`,
+                            height: `${TILE_SIZE}px`,
+                            top: `${y * TILE_SIZE}px`,
+                            left: `${x * TILE_SIZE}px`,
+                        }}
+                    >
+                        {cell === 0 ? <FloorTile isPlayerOnTile={player.x === x && player.y === y} isDroppedPillOnTile={isDroppedPillOnTile} /> : <WallTile />}
+                    </div>
+                  )
+                })
             )}
             
             {/* Items */}
@@ -137,3 +141,5 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
+
+    

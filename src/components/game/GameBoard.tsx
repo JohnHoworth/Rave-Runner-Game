@@ -11,6 +11,7 @@ import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
 const TILE_HEIGHT = 40;
+const FLOOR_HEIGHT = 10;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -30,7 +31,6 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
-    const FLOOR_HEIGHT = 5;
     return (
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div 
@@ -60,7 +60,7 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
+        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${FLOOR_HEIGHT}px)` }}>
             {/* Top Face */}
             <div className="absolute w-full h-full bg-slate-600" style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}

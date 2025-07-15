@@ -229,7 +229,7 @@ export default function Home() {
           bustedCount: newBustedCount,
           score: prevState.score,
           raveBucks: prevState.raveBucks,
-          collectibles: prevState.collectibles,
+          collectibles: prevState.collectibles, // This was the fix
           time: 0,
         };
       });
@@ -529,8 +529,8 @@ export default function Home() {
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-end justify-center z-50 pb-20">
                 <div className="p-8 rounded-lg border-4 animate-police-lights">
-                    <h1 className="text-7xl font-extrabold tracking-widest font-headline animate-police-text">
-                        BUSTED
+                    <h1 className="text-7xl font-extrabold tracking-widest font-headline animate-caught">
+                        CAUGHT!
                     </h1>
                 </div>
             </div>

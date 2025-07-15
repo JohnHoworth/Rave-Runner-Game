@@ -27,13 +27,14 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = () => {
+const FloorTile = ({ isPlayerOnTile }: { isPlayerOnTile: boolean }) => {
     return (
         <div className={cn(
             "w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-700 to-slate-800",
             "border-t border-slate-600 border-l border-l-slate-600",
             "border-b border-b-slate-900 border-r border-r-slate-900",
-            "shadow-inner shadow-black/50"
+            "shadow-inner shadow-black/50",
+            isPlayerOnTile && "animate-glow-orange-border"
         )}>
         </div>
     )
@@ -89,7 +90,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         left: `${x * TILE_SIZE}px`,
                     }}
                 >
-                    {cell === 0 ? <FloorTile /> : <WallTile />}
+                    {cell === 0 ? <FloorTile isPlayerOnTile={player.x === x && player.y === y} /> : <WallTile />}
                 </div>
                 ))
             )}
@@ -135,3 +136,5 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
+
+    

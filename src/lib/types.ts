@@ -1,4 +1,5 @@
 
+
 export type CollectibleType = 'flyer' | 'pills' | 'tunes' | 'fuel_station' | 'dropped_pill';
 
 export type Position = {
@@ -42,9 +43,4 @@ export type Level = {
   artist: string;
   theme: string;
   youtubeUrl: string;
-};
-
-export type TrackState = {
-    currentTime: number;
-    duration: number;
 };

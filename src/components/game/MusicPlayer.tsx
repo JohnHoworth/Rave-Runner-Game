@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Music, Play, Pause, SkipBack, SkipForward, Volume1, Volume2, VolumeX } from "lucide-react";
-import type { Level, TrackState } from "@/lib/types";
+import type { Level } from "@/lib/types";
 import YouTube from 'react-youtube';
 import { useState, useEffect, useRef } from "react";
 import type { YouTubePlayer } from "react-youtube";
@@ -28,66 +28,48 @@ export default function MusicPlayer({
   levels,
   currentTrack,
   onSelectTrack,
-  onTrackStateChange,
+  onPlayerReady,
 }: {
   levels: Level[];
   currentTrack: Level;
   onSelectTrack: (level: Level) => void;
-  onTrackStateChange: (state: TrackState) => void;
+  onPlayerReady: (player: YouTubePlayer) => void;
 }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(50);
-  const playerRef = useRef<YouTubePlayer | null>(null);
+  const localPlayerRef = useRef<YouTubePlayer | null>(null);
   const videoId = getYouTubeVideoId(currentTrack.youtubeUrl);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
   
   useEffect(() => {
-    if (playerRef.current && videoId) {
-        playerRef.current.loadVideoById(videoId);
+    if (localPlayerRef.current && videoId) {
+        localPlayerRef.current.loadVideoById(videoId);
     }
   }, [videoId]);
 
   useEffect(() => {
-    if (playerRef.current) {
-        playerRef.current.setVolume(volume);
+    if (localPlayerRef.current) {
+        localPlayerRef.current.setVolume(volume);
     }
   }, [volume]);
   
   const handlePlayPause = () => {
-    if (!playerRef.current) return;
+    if (!localPlayerRef.current) return;
     setIsPlaying(prev => {
         const shouldPlay = !prev;
         if(shouldPlay) {
-            playerRef.current?.playVideo();
+            localPlayerRef.current?.playVideo();
         } else {
-            playerRef.current?.pauseVideo();
+            localPlayerRef.current?.pauseVideo();
         }
         return shouldPlay;
     });
   }
 
-  const startProgressInterval = () => {
-    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    progressIntervalRef.current = setInterval(() => {
-        if (playerRef.current) {
-            const currentTime = playerRef.current.getCurrentTime() || 0;
-            const duration = playerRef.current.getDuration() || 0;
-            onTrackStateChange({ currentTime, duration });
-        }
-    }, 1000);
-  };
-
-  const stopProgressInterval = () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-        progressIntervalRef.current = null;
-      }
-  };
-
-  const onPlayerReady = (event: { target: YouTubePlayer }) => {
-    playerRef.current = event.target;
+  const handlePlayerReady = (event: { target: YouTubePlayer }) => {
+    localPlayerRef.current = event.target;
+    onPlayerReady(event.target);
     event.target.setVolume(volume);
     if (isPlaying) {
       event.target.playVideo();
@@ -97,22 +79,10 @@ export default function MusicPlayer({
   const onPlayerStateChange = (event: { data: number }) => {
      if (event.data === YouTube.PlayerState.PLAYING) {
         if (!isPlaying) setIsPlaying(true);
-        startProgressInterval();
     } else if (event.data === YouTube.PlayerState.PAUSED || event.data === YouTube.PlayerState.ENDED) {
         if (isPlaying) setIsPlaying(false);
-        stopProgressInterval();
-        if(event.data === YouTube.PlayerState.ENDED) {
-          const duration = playerRef.current?.getDuration() || 0;
-          onTrackStateChange({ currentTime: duration, duration: duration });
-        }
     }
   }
-
-  useEffect(() => {
-    return () => {
-      stopProgressInterval();
-    };
-  }, []);
 
   const opts = {
     height: '0',
@@ -125,7 +95,7 @@ export default function MusicPlayer({
 
   return (
     <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex">
-      {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
+      {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={handlePlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
       
       {/* Now Playing Section */}
       <div className="shrink-0">

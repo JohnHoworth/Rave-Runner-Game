@@ -10,6 +10,7 @@ import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection
 import { generateMaze, findEmptySpots, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
+import type { YouTubePlayer } from "react-youtube";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=OG4NHr77hfU" },
@@ -84,7 +85,7 @@ export default function Home() {
   const sirenAudioNode = useRef<SirenAudio | null>(null);
   const isResettingRef = useRef(false);
   const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
-  const [trackState, setTrackState] = useState({ duration: 0, currentTime: 0 });
+  const playerRef = useRef<YouTubePlayer | null>(null);
 
 
   const initAudio = () => {
@@ -454,21 +455,30 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (isBusted || trackState.duration === 0) return;
+    if (isBusted || !playerRef.current) return;
 
     const timer = setInterval(() => {
-      setGameState(prev => {
-        if (!prev) return null;
-        const remainingTime = Math.max(0, Math.floor(trackState.duration - trackState.currentTime));
-        if (remainingTime === 0) {
-          // You could advance to the next level here
+      const player = playerRef.current;
+      if (player && typeof player.getDuration === 'function') {
+        const duration = player.getDuration();
+        const currentTime = player.getCurrentTime();
+
+        if (duration > 0) {
+          setGameState(prev => {
+            if (!prev) return null;
+            const remainingTime = Math.max(0, Math.floor(duration - currentTime));
+            
+            if (prev.time !== remainingTime) {
+              return { ...prev, time: remainingTime };
+            }
+            return prev;
+          });
         }
-        return { ...prev, time: remainingTime };
-      });
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted, trackState]);
+  }, [isBusted]);
 
   useEffect(() => {
     setGameState(createInitialState());
@@ -514,7 +524,7 @@ export default function Home() {
           levels={levels}
           currentTrack={currentTrack}
           onSelectTrack={setCurrentTrack}
-          onTrackStateChange={setTrackState}
+          onPlayerReady={(player) => { playerRef.current = player; }}
         />
         {isBusted && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">

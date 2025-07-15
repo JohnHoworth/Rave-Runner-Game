@@ -56,8 +56,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const scale = 2.5;
   const translateX = `calc(50% - ${(player.x * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;
   const translateY = `calc(50% - ${(player.y * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;
-  
-  const enemyPositions = new Set(enemies.map(e => `${e.x},${e.y}`));
 
   return (
     <div
@@ -74,7 +72,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             style={{
                 width: boardWidth,
                 height: boardHeight,
-                transform: `translate(${translateX}, ${translateY}) scale(${scale}) rotateX(60deg)`,
+                transform: `translate(${translateX}, ${translateY}) rotateX(60deg) scale(${scale})`,
                 transformStyle: 'preserve-3d',
             }}
         >
@@ -98,11 +96,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className="absolute p-1 z-10" style={{
+            <div key={`item-${i}`} className="absolute p-1" style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
+                transform: 'translateZ(1px)',
+                zIndex: 10,
             }}>
                 <ItemIcon type={item.type} />
             </div>
@@ -110,23 +110,27 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
             {/* Enemies */}
             {enemies.map((enemy, i) => (
-            <div key={`enemy-${i}`} className="absolute z-20" style={{
+            <div key={`enemy-${i}`} className="absolute" style={{
                 top: `${enemy.y * TILE_SIZE}px`,
                 left: `${enemy.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 transition: 'all 0.4s linear',
+                transform: 'translateZ(1px)',
+                zIndex: 20,
             }}>
                 <GhostIcon className="w-full h-full" />
             </div>
             ))}
 
             {/* Player Icon */}
-            <div className="absolute z-30" style={{
+            <div className="absolute" style={{
                 top: `${player.y * TILE_SIZE}px`,
                 left: `${player.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
+                transform: 'translateZ(1px)',
+                zIndex: 30,
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

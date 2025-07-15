@@ -20,6 +20,8 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
             return <DiscAlbum className="w-full h-full text-yellow-300 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />;
         case 'fuel_station':
             return <Zap className="w-full h-full text-blue-400 animate-flash-blue-bolt" />;
+        case 'dropped_pill':
+            return <Pill className="w-full h-full text-purple-400 animate-pulse -rotate-45" style={{filter: 'drop-shadow(0 0 5px #a855f7)'}} />;
         default:
             return null;
     }

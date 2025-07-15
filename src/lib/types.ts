@@ -1,5 +1,5 @@
 
-export type CollectibleType = 'flyer' | 'pills' | 'tunes' | 'fuel_station';
+export type CollectibleType = 'flyer' | 'pills' | 'tunes' | 'fuel_station' | 'dropped_pill';
 
 export type Position = {
   x: number;

@@ -171,6 +171,25 @@ export default function Home() {
     oscillator.start(audioCtx.currentTime);
     oscillator.stop(audioCtx.currentTime + 0.5);
   }, []);
+
+  const playDropPillSound = useCallback(() => {
+    if (!audioContextRef.current) return;
+    const oscillator = audioContextRef.current.createOscillator();
+    const gainNode = audioContextRef.current.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
+    
+    gainNode.gain.setValueAtTime(0.1, audioContextRef.current.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + 0.3);
+    
+    oscillator.frequency.setValueAtTime(660, audioContextRef.current.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(220, audioContextRef.current.currentTime + 0.3);
+    oscillator.type = 'sine';
+
+    oscillator.start(audioContextRef.current.currentTime);
+    oscillator.stop(audioContextRef.current.currentTime + 0.3);
+  }, []);
   
   const stopAllSirens = useCallback(() => {
     const siren = sirenAudioNode.current;
@@ -284,6 +303,22 @@ export default function Home() {
     });
   }, [isBusted, playMoveSound, playCollectSound, playRefuelSound]);
 
+  const dropPill = useCallback(() => {
+    if (isBusted) return;
+    setGameState(prev => {
+      if (!prev || prev.collectibles.pills <= 0) {
+        return prev;
+      }
+      
+      playDropPillSound();
+      
+      const newItems = [...prev.items, { type: 'dropped_pill', x: prev.player.x, y: prev.player.y }];
+      const newCollectibles = { ...prev.collectibles, pills: prev.collectibles.pills - 1 };
+
+      return { ...prev, items: newItems, collectibles: newCollectibles };
+    });
+  }, [isBusted, playDropPillSound]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
@@ -297,11 +332,12 @@ export default function Home() {
       if (e.key === 'ArrowDown') movePlayer(0, 1, 'down');
       if (e.key === 'ArrowLeft') movePlayer(-1, 0, 'left');
       if (e.key === 'ArrowRight') movePlayer(1, 0, 'right');
+      if (e.key === ' ' || e.key === 'Spacebar') dropPill();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [movePlayer]);
+  }, [movePlayer, dropPill]);
 
   useEffect(() => {
     if (isBusted) return;

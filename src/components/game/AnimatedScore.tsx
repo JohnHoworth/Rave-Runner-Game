@@ -35,8 +35,8 @@ export default function AnimatedScore({ score }: { score: number }) {
     <div
       key={animationKey}
       className={cn(
-        "text-5xl font-bold tabular-nums font-mono overflow-hidden h-[1.2em] transition-colors",
-        isAnimating ? "animate-glow-red-flash animate-squash-stretch" : "text-primary"
+        "text-5xl font-bold tabular-nums font-mono overflow-hidden h-[1.2em] transition-colors text-orange-400",
+        isAnimating && "animate-glow-orange-flash animate-pop-burst"
       )}
     >
       {scoreString.split('').map((digit, index) => (

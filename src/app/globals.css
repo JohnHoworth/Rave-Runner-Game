@@ -267,6 +267,20 @@
     animation: squash-and-stretch 0.4s ease-in-out 1;
 }
 
+@keyframes pop-burst {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-pop-burst {
+    animation: pop-burst 0.3s ease-in-out 1;
+}
+
+
 @keyframes glow-red-border {
   from {
     border-color: #ef4444; /* red-500 */
@@ -310,6 +324,24 @@
 
 .animate-glow-orange-border {
   animation: glow-orange-border 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-orange-flash {
+  0%, 100% {
+    color: #fb923c; /* orange-400 */
+    text-shadow: none;
+  }
+  50% {
+    color: #f97316; /* orange-500 */
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #f97316,
+        0 0 20px #f97316;
+  }
+}
+
+.animate-glow-orange-flash {
+    animation: glow-orange-flash 0.8s ease-in-out 1;
 }
 
 @keyframes glow-blue-border {
@@ -414,3 +446,4 @@
     
 
     
+

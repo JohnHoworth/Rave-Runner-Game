@@ -72,7 +72,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze puzzle"
     >
         <div
-            className="relative transition-transform duration-300 ease-linear"
+            className="relative"
             style={{
                 width: boardWidth,
                 height: boardHeight,

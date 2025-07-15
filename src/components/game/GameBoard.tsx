@@ -35,6 +35,12 @@ const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: 
     )
 }
 
+const WallTile = () => {
+    return (
+        <div className="w-full h-full bg-destructive/20 border border-destructive/50 shadow-[0_0_10px_theme(colors.destructive.DEFAULT)]"></div>
+    )
+}
+
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
@@ -65,7 +71,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 transform: `translate(${translateX}, ${translateY}) scale(${scale})`,
             }}
         >
-            {/* Maze Floor */}
+            {/* Maze Floor and Walls */}
             {maze.map((row, y) =>
                 row.map((cell, x) => (
                 <div
@@ -78,10 +84,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         left: `${x * TILE_SIZE}px`,
                     }}
                 >
-                    {cell === 0 && <FloorTile 
+                    {cell === 0 ? <FloorTile 
                         isPlayerOn={player.x === x && player.y === y} 
                         isEnemyOn={enemyPositions.has(`${x},${y}`)}
-                    />}
+                    /> : <WallTile />}
                 </div>
                 ))
             )}

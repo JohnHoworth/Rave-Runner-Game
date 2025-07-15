@@ -28,7 +28,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-primary/10 border border-primary/50",
+            "w-full h-full bg-primary/20 border-t border-primary/30 shadow-inner shadow-black/50",
             isPlayerOn && "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]",
             isEnemyOn && "border-2 border-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.7)]"
         )}></div>

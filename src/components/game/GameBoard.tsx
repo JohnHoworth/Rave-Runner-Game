@@ -52,7 +52,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
-  // Center the board and zoom in slightly
+  // Center the board and zoom in
   const scale = 2.5;
   const translateX = `calc(50% - ${(player.x * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;
   const translateY = `calc(50% - ${(player.y * TILE_SIZE + TILE_SIZE / 2) * scale}px)`;

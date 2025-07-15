@@ -39,7 +39,7 @@ const FloorTile = () => {
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full overflow-hidden animate-fire-particles">
+        <div className="w-full h-full bg-[#0a0a14]">
         </div>
     )
 }

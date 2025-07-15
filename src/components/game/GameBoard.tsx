@@ -28,10 +28,12 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-blue-500/20 border-t border-blue-400/30 shadow-[0_0_10px_theme(colors.blue.500/50),inset_0_1px_1px_rgba(0,0,0,0.5)]",
+            "w-full h-full overflow-hidden animate-fire-particles",
+            "border-t border-orange-400/20",
             isPlayerOn && "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]",
             isEnemyOn && "border-2 border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.7)]"
-        )}></div>
+        )}>
+        </div>
     )
 }
 

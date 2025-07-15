@@ -340,3 +340,31 @@
   animation: animated-gradient 6s ease infinite;
   background-size: 200% 200%;
 }
+
+/* Fire Particle Animation for Floor Tiles */
+@keyframes fire-particles {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% -200%; }
+}
+
+.animate-fire-particles {
+  position: relative;
+  background-color: #1a1a2e; /* Dark base for the floor */
+}
+
+.animate-fire-particles::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(ellipse at center, rgba(255, 100, 0, 0.4) 0%, transparent 40%),
+    /* Noise layer */
+    repeating-linear-gradient(transparent, transparent 1px, rgba(255,165,0,0.1) 1px, rgba(255,165,0,0.1) 2px);
+  background-size: 100% 100%, 50px 50px;
+  animation: fire-particles 5s linear infinite;
+  opacity: 0.8;
+  mix-blend-mode: hard-light;
+}

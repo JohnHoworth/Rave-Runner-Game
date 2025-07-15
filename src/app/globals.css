@@ -355,7 +355,7 @@
   }
 }
 
-@keyframes caught-animation {
+@keyframes arrested-animation {
   0% {
     transform: scale(0.8) translate(0, 0);
     opacity: 0;
@@ -407,8 +407,8 @@
   }
 }
 
-.animate-caught {
-  animation: caught-animation 1s ease-in-out forwards;
+.animate-arrested {
+  animation: arrested-animation 1s ease-in-out forwards;
 }
 
     

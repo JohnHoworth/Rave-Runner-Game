@@ -109,7 +109,7 @@ export default function Home() {
     oscillator.connect(gainNode);
     gainNode.connect(audioContextRef.current.destination);
 
-    gainNode.gain.setValueAtTime(0.05, audioContextRef.current.currentTime);
+    gainNode.gain.setValueAtTime(0.02, audioContextRef.current.currentTime);
     oscillator.frequency.setValueAtTime(440, audioContextRef.current.currentTime);
     oscillator.type = 'sine';
 
@@ -439,7 +439,7 @@ export default function Home() {
             siren = { gainNode, osc1, osc2, lfo, isPlaying: true };
             sirenAudioNode.current = siren;
         }
-        siren.gainNode.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.3);
+        siren.gainNode.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 0.3);
     } else if (siren) {
         siren.gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
         setTimeout(() => {
@@ -478,7 +478,7 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted, playerRef.current]);
+  }, [isBusted, playerRef, playerRef.current]);
 
   useEffect(() => {
     setGameState(createInitialState());

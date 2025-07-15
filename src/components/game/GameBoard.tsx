@@ -25,15 +25,13 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: boolean }) => {
+const FloorTile = () => {
     return (
         <div className={cn(
-            "w-full h-full bg-blue-500/20",
-            "border-t-2 border-blue-400/50",
-            "shadow-[0_0_12px_rgba(59,130,246,0.6)]",
-            "shadow-inner",
-            isPlayerOn && "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]",
-            isEnemyOn && "border-2 border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.7)]"
+            "w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-700 to-slate-800",
+            "border-t border-slate-600 border-l border-l-slate-600",
+            "border-b border-b-slate-900 border-r border-r-slate-900",
+            "shadow-inner shadow-black/50"
         )}>
         </div>
     )
@@ -89,10 +87,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         left: `${x * TILE_SIZE}px`,
                     }}
                 >
-                    {cell === 0 ? <FloorTile 
-                        isPlayerOn={player.x === x && player.y === y} 
-                        isEnemyOn={enemyPositions.has(`${x},${y}`)}
-                    /> : <WallTile />}
+                    {cell === 0 ? <FloorTile /> : <WallTile />}
                 </div>
                 ))
             )}

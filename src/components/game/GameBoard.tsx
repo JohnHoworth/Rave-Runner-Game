@@ -65,6 +65,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       style={{
         width: '48rem',
         height: '48rem',
+        perspective: '1000px',
       }}
       data-ai-hint="maze puzzle"
     >
@@ -73,7 +74,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             style={{
                 width: boardWidth,
                 height: boardHeight,
-                transform: `translate(${translateX}, ${translateY}) scale(${scale})`,
+                transform: `translate(${translateX}, ${translateY}) scale(${scale}) rotateX(60deg)`,
+                transformStyle: 'preserve-3d',
             }}
         >
             {/* Maze Floor and Walls */}

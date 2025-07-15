@@ -9,18 +9,19 @@ import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
-const TILE_SIZE = 32; 
+const TILE_SIZE = 40; 
+const TILE_HEIGHT = 20;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
-            return <FileText className="w-full h-full text-green-400 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}} />;
+            return <FileText className="w-full h-full text-green-500 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}} />;
         case 'pills':
-            return <Pill className="w-full h-full text-accent animate-pulse -rotate-45" style={{filter: 'drop-shadow(0 0 5px hsl(var(--accent)))'}} />;
+            return <Pill className="w-full h-full text-pink-500 animate-pulse -rotate-45" style={{filter: 'drop-shadow(0 0 5px #f472b6)'}} />;
         case 'tunes':
-            return <DiscAlbum className="w-full h-full text-yellow-300 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />;
+            return <DiscAlbum className="w-full h-full text-yellow-400 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #facc15)'}} />;
         case 'fuel_station':
-            return <Zap className="w-full h-full text-blue-400 animate-flash-blue-bolt" />;
+            return <Zap className="w-full h-full text-cyan-400 animate-flash-blue-bolt" />;
         case 'dropped_pill':
             return <FlashingPillIcon className="w-full h-full -rotate-45" />;
         default:
@@ -31,12 +32,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-700 to-slate-800",
-            "border-t border-slate-600 border-l border-l-slate-600",
-            "border-b border-b-slate-900 border-r border-r-slate-900",
-            "shadow-inner shadow-black/50",
-            isPlayerOnTile && "animate-glow-orange-border",
-            (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
+            "w-full h-full bg-white/50",
+            "border border-blue-200/70",
+            isPlayerOnTile && "bg-orange-300/50 border-orange-500",
+            (isDroppedPillOnTile || isEnemyOnTile) && "bg-blue-300/50 border-blue-500"
         )}>
         </div>
     )
@@ -44,7 +43,27 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full bg-slate-900/50">
+        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
+            {/* Top face */}
+            <div className="absolute w-full h-full bg-blue-500 border border-blue-700" 
+                 style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}>
+            </div>
+            {/* Front face */}
+            <div className="absolute w-full h-full bg-blue-600 border-b border-blue-800" 
+                 style={{ 
+                    height: `${TILE_HEIGHT}px`,
+                    transform: `rotateX(-90deg) translateY(${TILE_HEIGHT}px)`,
+                    transformOrigin: 'top center' 
+                }}>
+            </div>
+             {/* Side face */}
+            <div className="absolute w-full h-full bg-blue-700 border-r border-blue-900" 
+                 style={{ 
+                    width: `${TILE_HEIGHT}px`,
+                    transform: `rotateY(90deg) translateX(-${TILE_HEIGHT}px)`,
+                    transformOrigin: 'top right' 
+                }}>
+            </div>
         </div>
     )
 }
@@ -55,29 +74,34 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
   
-  const scale = 1.5;
-  const containerWidth = 48 * 16; // 768px
-  const containerHeight = 48 * 16; // 768px
+  const scale = 1.8;
+  const containerWidth = 48 * 16; 
+  const containerHeight = 48 * 16; 
 
-  const translateX = containerWidth / 2 - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
-  const translateY = containerHeight / 2 - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
+  const centerX = containerWidth / 2;
+  const centerY = containerHeight / 2;
+
+  // Center the view on the player's tile
+  const translateX = centerX - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
+  const translateY = centerY - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
 
   return (
     <div
-      className="border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
+      className="overflow-hidden rounded-lg"
       style={{
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
+        perspective: '1200px',
       }}
       data-ai-hint="maze puzzle"
     >
         <div
-            className="relative"
+            className="relative transition-transform duration-200 ease-in-out"
             style={{
                 width: boardWidth,
                 height: boardHeight,
-                transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
-                transition: 'transform 0.2s linear',
+                transformStyle: 'preserve-3d',
+                transform: `translate(${translateX}px, ${translateY}px) scale(${scale}) rotateX(60deg) rotateZ(-45deg)`,
             }}
         >
             {/* Maze Floor and Walls */}
@@ -108,12 +132,13 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className={cn("absolute", item.type !== 'dropped_pill' && "p-1")} style={{
+            <div key={`item-${i}`} className={cn("absolute p-1.5")} style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 10,
+                transform: `translateZ(5px)`
             }}>
                 <ItemIcon type={item.type} />
             </div>
@@ -128,6 +153,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: `${TILE_SIZE}px`,
                 zIndex: 20,
                 transition: 'all 0.4s linear',
+                transform: `translateZ(${TILE_HEIGHT}px)`
             }}>
                 <GhostIcon className="w-full h-full" />
             </div>
@@ -140,6 +166,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
+                transform: `translateZ(${TILE_HEIGHT}px)`
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

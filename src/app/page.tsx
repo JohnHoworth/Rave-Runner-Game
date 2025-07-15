@@ -457,7 +457,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden">
+    <div className="flex flex-col h-screen bg-transparent font-body text-foreground overflow-hidden">
       <Header />
       <main className="flex flex-1 overflow-hidden relative">
         <GameUI 

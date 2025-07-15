@@ -54,12 +54,15 @@ export default function MusicPlayer({
   
   const handlePlayPause = () => {
     if (!playerRef.current) return;
-    if (isPlaying) {
-        playerRef.current.pauseVideo();
-    } else {
-        playerRef.current.playVideo();
-    }
-    setIsPlaying(!isPlaying);
+    setIsPlaying(prev => {
+        const shouldPlay = !prev;
+        if(shouldPlay) {
+            playerRef.current?.playVideo();
+        } else {
+            playerRef.current?.pauseVideo();
+        }
+        return shouldPlay;
+    });
   }
 
   const onPlayerReady = (event: { target: YouTubePlayer }) => {

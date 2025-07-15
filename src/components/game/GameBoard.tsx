@@ -74,7 +74,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
   
-  const scale = 1.8;
+  const scale = 1.4;
   const containerWidth = 48 * 16; 
   const containerHeight = 48 * 16; 
 

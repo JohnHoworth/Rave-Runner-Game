@@ -28,8 +28,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: boolean }) => {
     return (
         <div className={cn(
-            "w-full h-full overflow-hidden animate-fire-particles",
-            "border-t border-orange-400/20",
+            "w-full h-full bg-blue-500/20",
+            "border-t-2 border-blue-400/50",
+            "shadow-[0_0_12px_rgba(59,130,246,0.6)]",
+            "shadow-inner",
             isPlayerOn && "border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.7)]",
             isEnemyOn && "border-2 border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.7)]"
         )}>
@@ -39,12 +41,8 @@ const FloorTile = ({ isPlayerOn, isEnemyOn }: { isPlayerOn: boolean, isEnemyOn: 
 
 const WallTile = () => {
     return (
-        <div 
-            className="w-full h-full animate-animated-gradient"
-            style={{
-                backgroundImage: 'linear-gradient(45deg, hsl(var(--destructive)), hsl(260, 50%, 20%), hsl(var(--destructive)))'
-            }}
-        ></div>
+        <div className="w-full h-full overflow-hidden animate-fire-particles">
+        </div>
     )
 }
 

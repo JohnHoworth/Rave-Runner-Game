@@ -41,7 +41,7 @@ const FloorTile = () => {
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full bg-black">
+        <div className="w-full h-full bg-slate-900/50">
         </div>
     )
 }
@@ -51,10 +51,17 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
+  
+  const scale = 1.5;
+  const containerWidth = 48 * 16; // 48rem
+  const containerHeight = 48 * 16; // 48rem
+
+  const translateX = containerWidth / 2 - (player.x * TILE_SIZE + TILE_SIZE / 2) * scale;
+  const translateY = containerHeight / 2 - (player.y * TILE_SIZE + TILE_SIZE / 2) * scale;
 
   return (
     <div
-      className="bg-black border-4 border-secondary shadow-2xl rounded-lg overflow-hidden flex items-center justify-center"
+      className="bg-black border-4 border-secondary shadow-2xl rounded-lg overflow-hidden"
       style={{
         width: '48rem',
         height: '48rem',
@@ -62,10 +69,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       data-ai-hint="maze puzzle"
     >
         <div
-            className="relative"
+            className="relative transition-transform duration-300 ease-linear"
             style={{
                 width: boardWidth,
                 height: boardHeight,
+                transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
             }}
         >
             {/* Maze Floor and Walls */}
@@ -85,7 +93,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 </div>
                 ))
             )}
-
+            
             {/* Items */}
             {items.map((item, i) => (
             <div key={`item-${i}`} className="absolute p-1" style={{

@@ -59,18 +59,41 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 }
 
 const WallTile = () => {
+    const panelGradient = (color: string) => `
+        linear-gradient(hsla(var(--primary-darker), 0.5) 0 0)
+    `;
+    const sidePanelStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(220 40% 12%)',
+        backgroundImage: `
+            linear-gradient(to right, hsl(var(--primary) / 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--primary) / 0.2) 1px, transparent 1px),
+            radial-gradient(circle at 70% 20%, hsl(var(--accent) / 0.1) 0%, transparent 30%),
+            radial-gradient(circle at 30% 80%, hsl(var(--primary) / 0.1) 0%, transparent 30%)
+        `,
+        backgroundSize: '10px 10px, 10px 10px, 100% 100%, 100% 100%',
+    };
+
+    const topPanelStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(220 40% 20%)',
+        backgroundImage: `
+            linear-gradient(hsl(220 40% 25%), hsl(220 40% 18%))
+        `
+    }
+
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top Face */}
-            <div className="absolute w-full h-full bg-slate-600" style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
+            <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}
-            <div className="absolute w-full bg-slate-800" style={{ 
+            <div className="absolute w-full" style={{ 
+                ...sidePanelStyle,
                 height: `${TILE_HEIGHT}px`,
                 transform: `rotateX(-90deg)`,
                 transformOrigin: 'top' 
             }}></div>
              {/* Left Face */}
-            <div className="absolute h-full bg-slate-900" style={{ 
+            <div className="absolute h-full" style={{ 
+                ...sidePanelStyle,
                 width: `${TILE_HEIGHT}px`,
                 transform: `rotateY(90deg)`,
                 transformOrigin: 'right' 

@@ -60,7 +60,7 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 
 const WallTile = () => {
     return (
-        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${FLOOR_HEIGHT}px)` }}>
+        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top Face */}
             <div className="absolute w-full h-full bg-slate-600" style={{ transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}
@@ -112,7 +112,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: boardWidth,
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
-                transform: `rotateX(55deg) rotateZ(-45deg) translate(${translateX}px, ${translateY}px) scale(${scale})`,
+                transform: `rotateX(55deg) rotateZ(-45deg) translate(${translateX}px, ${translateY}px) scale(${scale}) translateZ(20px)`,
             }}
         >
             {/* Maze Floor and Walls */}
@@ -144,7 +144,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className={cn("absolute", item.type !== 'dropped_pill' && "p-1.5")} style={{
+            <div key={`item-${i}`} className="absolute" style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,

@@ -35,7 +35,7 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div 
                 className={cn(
-                    "w-full h-full bg-slate-800/50 shadow-inner border-t-slate-600 border-l-slate-600 border-b-slate-900 border-r-slate-900 border-2 absolute",
+                    "w-full h-full bg-slate-900/50 shadow-inner border-t-slate-700 border-l-slate-700 border-b-black/50 border-r-black/50 border-2 absolute",
                     isPlayerOnTile && "bg-orange-900/50 border-orange-500",
                     (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
                 )}
@@ -43,13 +43,13 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
             >
             </div>
              {/* Front Face */}
-             <div className="absolute w-full bg-slate-700" style={{ 
+             <div className="absolute w-full bg-slate-800" style={{ 
                 height: `${FLOOR_HEIGHT}px`,
                 transform: `rotateX(-90deg)`,
                 transformOrigin: 'top' 
             }}></div>
              {/* Left Face */}
-            <div className="absolute h-full bg-slate-900" style={{ 
+            <div className="absolute h-full bg-slate-950" style={{ 
                 width: `${FLOOR_HEIGHT}px`,
                 transform: `rotateY(90deg)`,
                 transformOrigin: 'right' 
@@ -164,7 +164,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className="absolute" style={{
+            <div key={`item-${i}`} className="absolute p-1" style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,

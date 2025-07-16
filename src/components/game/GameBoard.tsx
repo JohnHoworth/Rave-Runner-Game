@@ -34,10 +34,9 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
     const topPanelStyle: React.CSSProperties = {
         backgroundImage: `
             linear-gradient(hsl(var(--primary)/0.2) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--primary)/0.2) 1px, transparent 1px),
-            radial-gradient(hsl(var(--primary)/0.1) 15%, transparent 16%)
+            linear-gradient(90deg, hsl(var(--primary)/0.2) 1px, transparent 1px)
         `,
-        backgroundSize: '20px 20px, 20px 20px, 100% 100%',
+        backgroundSize: '20px 20px, 20px 20px',
         backgroundColor: 'hsl(var(--background))'
     };
 

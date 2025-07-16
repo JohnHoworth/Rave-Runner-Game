@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
-const TILE_HEIGHT = 42; // Increased height for rooftop geometry
+const TILE_HEIGHT = 42;
 const FLOOR_HEIGHT = 35;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -32,15 +32,20 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
     const topPanelStyle: React.CSSProperties = {
-        backgroundImage: 'linear-gradient(45deg, hsl(var(--primary) / 0.5), hsl(var(--background) / 0.8) 50%, hsl(var(--primary) / 0.5))',
-        backgroundSize: '100% 200%',
+        backgroundImage: `
+            linear-gradient(hsl(var(--primary)/0.2) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(var(--primary)/0.2) 1px, transparent 1px),
+            radial-gradient(hsl(var(--primary)/0.1) 15%, transparent 16%)
+        `,
+        backgroundSize: '20px 20px, 20px 20px, 100% 100%',
+        backgroundColor: 'hsl(var(--background))'
     };
 
     return (
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div 
                 className={cn(
-                    "w-full h-full shadow-inner border-t-cyan-700 border-l-cyan-700 border-b-blue-900/50 border-r-blue-900/50 border-2 absolute animate-flow-water",
+                    "w-full h-full shadow-inner border-t-cyan-700 border-l-cyan-700 border-b-blue-900/50 border-r-blue-900/50 border-2 absolute",
                     isPlayerOnTile && "bg-orange-900/50 border-orange-500",
                     (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
                 )}
@@ -218,7 +223,3 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
-
-    
-
-    

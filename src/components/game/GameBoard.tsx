@@ -32,12 +32,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
-        backgroundImage: `
-            linear-gradient(hsl(var(--primary)/0.2) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--primary)/0.2) 1px, transparent 1px)
-        `,
-        backgroundSize: '20px 20px',
-        backgroundColor: 'hsl(35, 50%, 90%)',
+        backgroundColor: 'hsl(0, 0%, 95%)',
     };
 
     return (
@@ -53,25 +48,11 @@ const FloorTile = () => {
 
 const WallTile = () => {
     const sidePanelStyle: React.CSSProperties = {
-        backgroundImage: `
-            linear-gradient(45deg, hsl(210, 50%, 45%) 25%, transparent 25%), 
-            linear-gradient(-45deg, hsl(210, 50%, 45%) 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, hsl(210, 50%, 45%) 75%),
-            linear-gradient(-45deg, transparent 75%, hsl(210, 50%, 45%) 75%),
-            linear-gradient(hsl(210, 50%, 40%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(210, 50%, 40%) 1px, transparent 1px)
-        `,
-        backgroundSize: '10px 10px, 10px 10px, 10px 10px, 10px 10px, 5px 5px, 5px 5px',
-        backgroundColor: 'hsl(210, 50%, 50%)'
+        backgroundColor: 'hsl(0, 0%, 85%)',
     };
     
     const topPanelStyle: React.CSSProperties = {
-        backgroundImage: `
-            linear-gradient(hsl(210, 40%, 70%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(210, 40%, 70%) 1px, transparent 1px)
-        `,
-        backgroundSize: '10px 10px',
-        backgroundColor: 'hsl(210, 50%, 60%)'
+        backgroundColor: 'hsl(0, 0%, 100%)',
     }
 
     return (
@@ -81,7 +62,7 @@ const WallTile = () => {
             {/* Front Face */}
             <div className="absolute w-full" style={{ ...sidePanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(-90deg)`, transformOrigin: 'top' }}></div>
             {/* Left Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, backgroundColor: 'hsl(210, 50%, 40%)', width: `${TILE_HEIGHT}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, backgroundColor: 'hsl(0, 0%, 80%)', width: `${TILE_HEIGHT}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
         </div>
     )
 }

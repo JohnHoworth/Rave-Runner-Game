@@ -90,7 +90,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
         perspective: '1200px',
-        background: 'hsl(35, 50%, 85%)' 
+        background: 'hsl(var(--background))' 
       }}
       data-ai-hint="maze puzzle"
     >
@@ -163,3 +163,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
+
+
+    

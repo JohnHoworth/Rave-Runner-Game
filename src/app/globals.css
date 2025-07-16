@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 220 40% 10%; /* Deep Space Blue */
+    --background: 0 0% 20%; /* Dark Desaturated Gray */
     --foreground: 220 15% 95%;
     --card: 220 40% 15%;
     --card-foreground: 220 15% 95%;
     --popover: 220 40% 10%;
     --popover-foreground: 220 15% 95%;
-    --primary: 180 100% 50%; /* Vibrant Cyan */
-    --primary-foreground: 180 25% 10%;
+    --primary: 181 100% 74%; /* Electric Blue */
+    --primary-foreground: 181 25% 10%;
     --secondary: 220 40% 25%;
     --secondary-foreground: 220 15% 98%;
     --muted: 220 40% 25%;
     --muted-foreground: 220 15% 65%;
-    --accent: 330 100% 55%; /* Hot Pink */
-    --accent-foreground: 330 25% 10%;
+    --accent: 67 100% 44%; /* Acid Yellow */
+    --accent-foreground: 67 25% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 40% 25%;
     --input: 220 40% 25%;
-    --ring: 180 100% 50%;
+    --ring: 181 100% 74%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 220 40% 10%; /* Deep Space Blue */
+    --background: 0 0% 13%; /* Darker Gray */
     --foreground: 220 15% 95%;
     --card: 220 40% 15%;
     --card-foreground: 220 15% 95%;
     --popover: 220 40% 10%;
     --popover-foreground: 220 15% 95%;
-    --primary: 180 100% 50%; /* Vibrant Cyan */
-    --primary-foreground: 180 25% 10%;
+    --primary: 181 100% 74%; /* Electric Blue */
+    --primary-foreground: 181 25% 10%;
     --secondary: 220 40% 25%;
     --secondary-foreground: 220 15% 98%;
     --muted: 220 40% 25%;
     --muted-foreground: 220 15% 65%;
-    --accent: 330 100% 55%; /* Hot Pink */
-    --accent-foreground: 330 25% 10%;
+    --accent: 67 100% 44%; /* Acid Yellow */
+    --accent-foreground: 67 25% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 40% 25%;
     --input: 220 40% 25%;
-    --ring: 180 100% 50%;
+    --ring: 181 100% 74%;
   }
 }
 
@@ -457,5 +457,7 @@
 
 
 
+
+    
 
     

@@ -4,13 +4,13 @@
 const holographicBackgroundStyle: React.CSSProperties = {
     backgroundColor: 'hsl(var(--background))',
     backgroundImage: `
-        linear-gradient(90deg, hsla(var(--primary) / 0.05) 1px, transparent 1px),
-        linear-gradient(hsla(var(--primary) / 0.05) 1px, transparent 1px),
-        radial-gradient(circle at 10% 10%, hsla(var(--accent) / 0.08), transparent 40%),
-        radial-gradient(circle at 90% 80%, hsla(var(--primary) / 0.08), transparent 40%)
+        linear-gradient(90deg, hsla(var(--primary) / 0.03) 1px, transparent 1px),
+        linear-gradient(hsla(var(--primary) / 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 10% 10%, hsla(var(--accent) / 0.05), transparent 40%),
+        radial-gradient(circle at 90% 80%, hsla(var(--primary) / 0.05), transparent 40%)
     `,
-    backgroundSize: '25px 25px, 25px 25px, 100% 100%, 100% 100%',
-    animation: 'move-grid 3s linear infinite',
+    backgroundSize: '30px 30px, 30px 30px, 100% 100%, 100% 100%',
+    animation: 'move-grid 4s linear infinite',
 };
 
 const scanlineEffect: React.CSSProperties = {
@@ -20,14 +20,14 @@ const scanlineEffect: React.CSSProperties = {
     right: 0,
     bottom: 0,
     backgroundColor: 'transparent',
-    backgroundImage: 'linear-gradient(to bottom, transparent 50%, hsla(var(--primary) / 0.1) 51%)',
+    backgroundImage: 'linear-gradient(to bottom, transparent 50%, hsla(var(--primary) / 0.05) 51%)',
     backgroundSize: '100% 4px',
-    opacity: 0.4,
+    opacity: 0.2,
     pointerEvents: 'none',
 };
 
 const vignetteEffect: React.CSSProperties = {
-    backgroundImage: 'radial-gradient(ellipse at center, transparent 30%, hsl(var(--background)) 100%)',
+    backgroundImage: 'radial-gradient(ellipse at center, transparent 30%, hsl(var(--background)) 90%)',
 };
 
 export default function AnimatedBackground() {
@@ -47,3 +47,5 @@ export default function AnimatedBackground() {
         </div>
     );
 }
+
+    

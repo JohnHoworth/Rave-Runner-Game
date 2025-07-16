@@ -12,9 +12,12 @@ export default function PlayerIcon({ className }: { className?: string }) {
                     0%, 100% { transform: translateY(0); }
                     50% { transform: translateY(-3px); }
                 }
-                .player { animation: player-bob 1.5s ease-in-out infinite; }
+                .player { 
+                    animation: player-bob 1.5s ease-in-out infinite;
+                    transform-origin: center;
+                }
             `}} />
-            <g className="player" transform={`translate(0, -${extrusion})`}>
+            <g className="player" transform={`translate(0, -${extrusion}) rotateY(90deg)`}>
                 {/* Body Extrusion */}
                 <path d="M 40 90 L 40 50 L 60 50 L 60 90 Z" fill="#1e293b" transform={`translate(0, ${extrusion})`} />
                 <path d="M 40 90 L 60 90 L 60 ${90 + extrusion} L 40 ${90 + extrusion} Z" fill="#29364a" />

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
-const TILE_HEIGHT = 40;
+const TILE_HEIGHT = 42; // Increased height for rooftop geometry
 const FLOOR_HEIGHT = 35;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -73,25 +73,35 @@ const WallTile = () => {
         backgroundColor: '#1a1111',
         backgroundImage: `linear-gradient(#2a2121, #1a1111)`
     }
+    
+    const insetHeight = 4;
+    const extrusionHeight = TILE_HEIGHT - insetHeight;
+    const insetWidth = 4;
 
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Top Face */}
-            <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
-            {/* Front Face */}
-            <div className="absolute w-full" style={{ 
-                ...sidePanelStyle,
-                height: `${TILE_HEIGHT}px`,
-                transform: `rotateX(-90deg)`,
-                transformOrigin: 'top' 
-            }}></div>
-             {/* Left Face */}
-            <div className="absolute h-full" style={{ 
-                ...sidePanelStyle,
-                width: `${TILE_HEIGHT}px`,
-                transform: `rotateY(90deg)`,
-                transformOrigin: 'right' 
-            }}></div>
+            {/* Main Wall Faces */}
+            <div className="absolute w-full" style={{ ...sidePanelStyle, height: `${extrusionHeight}px`, transform: `rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${extrusionHeight}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
+
+            {/* Inset Top Surface */}
+            <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${extrusionHeight}px)` }}></div>
+
+            {/* Inset Walls */}
+            <div className="absolute bg-[#110a0a]" style={{ width: `${TILE_SIZE}px`, height: `${insetHeight}px`, transform: `translateY(${TILE_SIZE - insetWidth}px) translateZ(${extrusionHeight}px) rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            <div className="absolute bg-[#110a0a]" style={{ width: `${TILE_SIZE}px`, height: `${insetHeight}px`, transform: `translateY(0px) translateZ(${extrusionHeight}px) rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            <div className="absolute bg-[#0f0909]" style={{ height: `${TILE_SIZE}px`, width: `${insetHeight}px`, transform: `translateX(${insetWidth}px) translateZ(${extrusionHeight}px) rotateY(90deg)`, transformOrigin: 'right' }}></div>
+            <div className="absolute bg-[#0f0909]" style={{ height: `${TILE_SIZE}px`, width: `${insetHeight}px`, transform: `translateX(0px) translateZ(${extrusionHeight}px) rotateY(90deg)`, transformOrigin: 'right' }}></div>
+
+
+            {/* Central Extrusion */}
+            <div className="absolute" style={{ transform: `translateX(${insetWidth}px) translateY(${insetWidth}px) translateZ(${extrusionHeight}px)`, width: `${TILE_SIZE - insetWidth*2}px`, height: `${TILE_SIZE - insetWidth*2}px`, transformStyle: 'preserve-3d' }}>
+                 {/* Top */}
+                <div className="absolute w-full h-full bg-[#3a3131]" style={{ transform: `translateZ(${insetHeight}px)` }}></div>
+                {/* Sides */}
+                <div className="absolute w-full bg-[#2a2121]" style={{ height: `${insetHeight}px`, transform: 'rotateX(-90deg)', transformOrigin: 'top'}}></div>
+                <div className="absolute h-full bg-[#1a1111]" style={{ width: `${insetHeight}px`, transform: 'rotateY(90deg)', transformOrigin: 'right'}}></div>
+            </div>
         </div>
     )
 }
@@ -203,3 +213,5 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
+
+    

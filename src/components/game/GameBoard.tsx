@@ -11,7 +11,7 @@ import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
 const TILE_HEIGHT = 40;
-const FLOOR_HEIGHT = 0;
+const FLOOR_HEIGHT = 4;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -32,37 +32,71 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(0, 0%, 95%)',
+        backgroundColor: 'hsl(220, 10%, 12%)',
+        backgroundImage: `
+            linear-gradient(hsl(220, 10%, 18%) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(220, 10%, 18%) 1px, transparent 1px),
+            radial-gradient(ellipse at 50% 0%, hsla(0, 0%, 100%, 0.05), transparent 60%)
+        `,
+        backgroundSize: '100% 100%, 100% 100%, 120% 120%',
+        backgroundPosition: 'center center',
+    };
+    const sidePanelStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(220, 10%, 8%)'
+    };
+    const frontPanelStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(220, 10%, 10%)'
     };
 
     return (
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            <div 
-                className="w-full h-full absolute"
-                style={{ ...topPanelStyle, transform: `translateZ(${FLOOR_HEIGHT}px)` }}
-            >
-            </div>
+            <div className="w-full h-full absolute" style={{ ...topPanelStyle, transform: `translateZ(${FLOOR_HEIGHT}px)` }}></div>
+            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${FLOOR_HEIGHT}px`, transform: 'rotateX(-90deg)', transformOrigin: 'top' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${FLOOR_HEIGHT}px`, transform: 'rotateY(90deg)', transformOrigin: 'right' }}></div>
         </div>
     )
 }
 
 const WallTile = () => {
-    const sidePanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(0, 0%, 85%)',
-    };
-    
     const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(0, 0%, 100%)',
-    }
+        backgroundColor: 'hsl(220, 15%, 25%)',
+        backgroundImage: 'linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1))'
+    };
+    const sidePanelStyle: React.CSSProperties = {
+        backgroundImage: `
+            /* Main metallic texture */
+            linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%)),
+            /* Cyan glow */
+            linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
+            /* Orange lights */
+            repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
+        `,
+        backgroundSize: '100% 100%, 100% 100%, 20% 100%',
+        backgroundPosition: 'center, center, 5% center, 95% center',
+        backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+    };
+    const frontPanelStyle: React.CSSProperties = {
+        backgroundImage: `
+            /* Main metallic texture */
+            linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%)),
+            /* Cyan glow */
+            linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
+            /* Orange lights */
+            repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
+        `,
+        backgroundSize: '100% 100%, 100% 100%, 20% 100%',
+        backgroundPosition: 'center, center, 5% center, 95% center',
+        backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+    };
 
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top Surface */}
             <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}
-            <div className="absolute w-full" style={{ ...sidePanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(-90deg)`, transformOrigin: 'top' }}></div>
             {/* Left Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, backgroundColor: 'hsl(0, 0%, 80%)', width: `${TILE_HEIGHT}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
         </div>
     )
 }
@@ -85,12 +119,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="overflow-hidden rounded-lg bg-slate-900/50"
+      className="overflow-hidden rounded-lg"
       style={{
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
         perspective: '1200px',
-        background: 'hsl(var(--background))' 
+        background: 'hsl(220, 15%, 10%)' 
       }}
       data-ai-hint="maze puzzle"
     >
@@ -163,6 +197,3 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
-
-
-    

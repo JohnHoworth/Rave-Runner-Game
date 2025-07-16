@@ -164,7 +164,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {/* Items */}
             {items.map((item, i) => (
-            <div key={`item-${i}`} className="absolute p-1" style={{
+            <div key={`item-${i}`} className="absolute" style={{
                 top: `${item.y * TILE_SIZE}px`,
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,

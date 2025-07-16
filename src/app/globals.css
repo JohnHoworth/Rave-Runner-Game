@@ -443,8 +443,19 @@
   animation: arrested-animation 1s ease-in-out forwards;
 }
 
+@keyframes flow-water {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+.animate-flow-water {
+  animation: flow-water 3s linear infinite;
+}
     
 
     
 
 
+
+
+    

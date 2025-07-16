@@ -31,25 +31,30 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isPlayerOnTile: boolean, isDroppedPillOnTile: boolean, isEnemyOnTile: boolean }) => {
+    const topPanelStyle: React.CSSProperties = {
+        backgroundImage: 'linear-gradient(45deg, hsl(var(--primary) / 0.5), hsl(var(--background) / 0.8) 50%, hsl(var(--primary) / 0.5))',
+        backgroundSize: '100% 200%',
+    };
+
     return (
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div 
                 className={cn(
-                    "w-full h-full bg-slate-900/50 shadow-inner border-t-slate-700 border-l-slate-700 border-b-black/50 border-r-black/50 border-2 absolute",
+                    "w-full h-full shadow-inner border-t-cyan-700 border-l-cyan-700 border-b-blue-900/50 border-r-blue-900/50 border-2 absolute animate-flow-water",
                     isPlayerOnTile && "bg-orange-900/50 border-orange-500",
                     (isDroppedPillOnTile || isEnemyOnTile) && "animate-glow-blue-border"
                 )}
-                style={{ transform: `translateZ(${FLOOR_HEIGHT}px)` }}
+                style={{ ...topPanelStyle, transform: `translateZ(${FLOOR_HEIGHT}px)` }}
             >
             </div>
              {/* Front Face */}
-             <div className="absolute w-full bg-slate-800" style={{ 
+             <div className="absolute w-full bg-blue-900" style={{ 
                 height: `${FLOOR_HEIGHT}px`,
                 transform: `rotateX(-90deg)`,
                 transformOrigin: 'top' 
             }}></div>
              {/* Left Face */}
-            <div className="absolute h-full bg-slate-950" style={{ 
+            <div className="absolute h-full bg-blue-950" style={{ 
                 width: `${FLOOR_HEIGHT}px`,
                 transform: `rotateY(90deg)`,
                 transformOrigin: 'right' 
@@ -213,5 +218,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
     </div>
   );
 }
+
+    
 
     

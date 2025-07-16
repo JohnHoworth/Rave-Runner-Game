@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40; 
-const TILE_HEIGHT = 40;
+const TILE_HEIGHT = 20;
 const FLOOR_HEIGHT = 4;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {

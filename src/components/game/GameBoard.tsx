@@ -60,21 +60,18 @@ const FloorTile = ({ isPlayerOnTile, isDroppedPillOnTile, isEnemyOnTile }: { isP
 
 const WallTile = () => {
     const sidePanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220 40% 12%)',
+        backgroundColor: '#2d2222', // Dark brick/concrete color
         backgroundImage: `
-            linear-gradient(to right, hsl(var(--primary) / 0.2) 1px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--primary) / 0.2) 1px, transparent 1px),
-            radial-gradient(circle at 70% 20%, hsl(var(--accent) / 0.1) 0%, transparent 30%),
-            radial-gradient(circle at 30% 80%, hsl(var(--primary) / 0.1) 0%, transparent 30%)
+            repeating-radial-gradient(circle at 50% 50%, #facc1555 0, #facc1555 1px, transparent 1px, transparent 10px),
+            linear-gradient(to right, #3d3232 1px, transparent 1px),
+            linear-gradient(to bottom, #3d3232 1px, transparent 1px)
         `,
-        backgroundSize: '10px 10px, 10px 10px, 100% 100%, 100% 100%',
+        backgroundSize: '10px 12px, 10px 10px, 10px 10px'
     };
 
     const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220 40% 20%)',
-        backgroundImage: `
-            linear-gradient(hsl(220 40% 25%), hsl(220 40% 18%))
-        `
+        backgroundColor: '#1a1111',
+        backgroundImage: `linear-gradient(#2a2121, #1a1111)`
     }
 
     return (

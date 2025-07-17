@@ -35,10 +35,9 @@ const FloorTile = () => {
         backgroundColor: 'hsl(220, 10%, 12%)',
         backgroundImage: `
             linear-gradient(hsl(220, 10%, 18%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(220, 10%, 18%) 1px, transparent 1px),
-            radial-gradient(ellipse at 50% 0%, hsla(0, 0%, 100%, 0.05), transparent 60%)
+            linear-gradient(90deg, hsl(220, 10%, 18%) 1px, transparent 1px)
         `,
-        backgroundSize: '100% 100%, 100% 100%, 120% 120%',
+        backgroundSize: '100% 100%, 100% 100%',
         backgroundPosition: 'center center',
     };
     const sidePanelStyle: React.CSSProperties = {
@@ -71,7 +70,7 @@ const WallTile = () => {
             /* Orange lights */
             repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
         `,
-        backgroundSize: '100% 100%, 100% 100%, 20% 100%',
+        backgroundSize: '100% 100%, 100% 100%, 100% 100%',
         backgroundPosition: 'center, center, 5% center, 95% center',
         backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
     };
@@ -84,7 +83,7 @@ const WallTile = () => {
             /* Orange lights */
             repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
         `,
-        backgroundSize: '100% 100%, 100% 100%, 20% 100%',
+        backgroundSize: '100% 100%, 100% 100%, 100% 100%',
         backgroundPosition: 'center, center, 5% center, 95% center',
         backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
     };

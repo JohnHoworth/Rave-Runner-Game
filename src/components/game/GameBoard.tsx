@@ -61,41 +61,44 @@ const WallTile = () => {
         backgroundColor: 'hsl(220, 15%, 25%)',
         backgroundImage: 'linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1))'
     };
+    
+    const sharedSideStyles: React.CSSProperties = {
+      backgroundSize: '100% 100%, 100% 100%, 100% 100%',
+      backgroundPosition: 'center, center, 5% center, 95% center',
+      backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+    };
+
     const sidePanelStyle: React.CSSProperties = {
+        ...sharedSideStyles,
         backgroundImage: `
-            /* Main metallic texture */
             linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%)),
-            /* Cyan glow */
             linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
-            /* Orange lights */
             repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
-        `,
-        backgroundSize: '100% 100%, 100% 100%, 100% 100%',
-        backgroundPosition: 'center, center, 5% center, 95% center',
-        backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+        `
     };
     const frontPanelStyle: React.CSSProperties = {
+        ...sharedSideStyles,
         backgroundImage: `
-            /* Main metallic texture */
             linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%)),
-            /* Cyan glow */
             linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
-            /* Orange lights */
             repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
-        `,
-        backgroundSize: '100% 100%, 100% 100%, 100% 100%',
-        backgroundPosition: 'center, center, 5% center, 95% center',
-        backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+        `
     };
 
     return (
         <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top Surface */}
             <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
+            
             {/* Front Face */}
-            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(90deg)`, transformOrigin: 'bottom' }}></div>
+            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `translateY(${TILE_SIZE - TILE_HEIGHT}px) rotateX(90deg)`, transformOrigin: 'bottom' }}></div>
+            {/* Back Face */}
+            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `translateY(0px) rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            
             {/* Left Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `rotateY(-90deg)`, transformOrigin: 'left' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `translateX(0px) rotateY(90deg)`, transformOrigin: 'right' }}></div>
+            {/* Right Face */}
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `translateX(${TILE_SIZE - TILE_HEIGHT}px) rotateY(-90deg)`, transformOrigin: 'left' }}></div>
         </div>
     )
 }

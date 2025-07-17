@@ -93,9 +93,9 @@ const WallTile = () => {
             {/* Top Surface */}
             <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
             {/* Front Face */}
-            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(-90deg)`, transformOrigin: 'top' }}></div>
+            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `rotateX(90deg)`, transformOrigin: 'bottom' }}></div>
             {/* Left Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `rotateY(90deg)`, transformOrigin: 'right' }}></div>
+            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `rotateY(-90deg)`, transformOrigin: 'left' }}></div>
         </div>
     )
 }

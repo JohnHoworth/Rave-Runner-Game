@@ -19,13 +19,60 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'tunes':
             return <DiscAlbum className="w-full h-full text-cyan-200" />;
         case 'fuel_station':
-            return <Zap className="w-full h-full text-cyan-200" />;
+            return <Zap className="w-full h-full text-yellow-300" />;
         case 'dropped_pill':
             return <FlashingPillIcon className="w-full h-full -rotate-45" />;
         default:
             return null;
     }
 }
+
+const Building = ({ x, y }: { x: number, y: number }) => {
+    const seed = (x * 13 + y * 29) % 100;
+    
+    // Building Colors
+    const roofColors = ['#4a4a4a', '#5a5a5a', '#6a6a6a', '#7a7a7a'];
+    const buildingColors = ['#a9a9a9', '#bdc3c7', '#95a5a6'];
+
+    const roofColor = roofColors[seed % roofColors.length];
+    const buildingColor = buildingColors[seed % buildingColors.length];
+    
+    // Building style
+    const styleType = seed % 3;
+
+    return (
+        <div style={{
+            width: TILE_SIZE,
+            height: TILE_SIZE,
+            backgroundColor: buildingColor,
+            border: `1px solid ${roofColor}`,
+            position: 'relative',
+            boxSizing: 'border-box',
+        }}>
+            {styleType === 0 && ( // Simple Flat
+                 <div style={{ width: '80%', height: '80%', backgroundColor: roofColor, margin: '10%' }} />
+            )}
+            {styleType === 1 && ( // House with pitched roof illusion
+                <>
+                    <div style={{ width: '100%', height: '50%', backgroundColor: roofColor, position: 'absolute', top: 0 }} />
+                    <div style={{ width: '100%', height: '50%', backgroundColor: `rgba(0,0,0,0.1)`, position: 'absolute', bottom: 0 }} />
+                </>
+            )}
+            {styleType === 2 && ( // Building with details
+                 <div style={{
+                    width: '20%',
+                    height: '20%',
+                    backgroundColor: '#333',
+                    position: 'absolute',
+                    top: '20%',
+                    left: '40%',
+                    boxShadow: '0 0 2px black',
+                }} />
+            )}
+        </div>
+    );
+};
+
 
 const boardWidth = MAZE_WIDTH * TILE_SIZE;
 const boardHeight = MAZE_HEIGHT * TILE_SIZE;
@@ -35,12 +82,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="overflow-hidden rounded-lg bg-background"
+      className="overflow-hidden rounded-lg bg-gray-800"
       style={{
         width: `800px`,
         height: `600px`,
       }}
-      data-ai-hint="maze puzzle"
+      data-ai-hint="top down city view"
     >
         <div
             className="relative transition-transform duration-200 ease-linear"
@@ -64,10 +111,20 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             height: TILE_SIZE,
                             left: x * TILE_SIZE,
                             top: y * TILE_SIZE,
-                            backgroundColor: cell === 1 ? 'hsl(var(--primary))' : 'hsl(var(--background))',
-                            boxShadow: cell === 1 ? '0 0 8px hsl(var(--primary) / 0.7)' : 'none',
                         }}
-                    />
+                    >
+                        {cell === 1 ? (
+                            <Building x={x} y={y} />
+                        ) : (
+                            <div className="w-full h-full" style={{ 
+                                backgroundColor: '#3d3d3d',
+                                backgroundImage: `
+                                    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)
+                                `,
+                                backgroundSize: '5px 5px'
+                            }}/>
+                        )}
+                    </div>
                 ))
             )}
             

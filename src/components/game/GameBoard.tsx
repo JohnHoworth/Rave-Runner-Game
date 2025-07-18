@@ -31,7 +31,12 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
-        background: 'hsl(220, 40%, 15%)',
+        background: `
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+            hsl(220, 20%, 20%)
+        `,
+        backgroundSize: '20px 20px',
         boxShadow: 'inset 0 1px 1px hsla(220, 40%, 5%, 0.5), inset 0 -1px 1px hsla(220, 40%, 70%, 0.1)',
     };
     const sidePanelStyle: React.CSSProperties = { backgroundColor: 'hsl(220, 40%, 10%)' };
@@ -47,7 +52,6 @@ const FloorTile = () => {
         </div>
     );
 };
-
 
 const WallTile = () => {
     const faceStyle: React.CSSProperties = {
@@ -92,7 +96,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         width: `${48 * 16}px`,
         height: `${48 * 16}px`,
         background: 'hsl(215, 35%, 12%)',
-        perspective: '1000px',
+        perspective: '1200px',
       }}
       data-ai-hint="maze puzzle"
     >
@@ -104,10 +108,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 transformStyle: 'preserve-3d',
                 transform: `
                     translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
-                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 180}px)
-                    rotateX(50deg)
+                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 220}px)
+                    rotateX(60deg)
                     rotateZ(45deg)
-                    translateZ(100px)
+                    translateZ(250px)
                 `,
             }}
         >

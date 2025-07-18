@@ -23,6 +23,7 @@ const INITIAL_LEVELS: Level[] = [
 ];
 
 const MAX_FUEL = 100;
+const PILL_EFFECT_DURATION = 10;
 
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
@@ -62,6 +63,8 @@ const createInitialState = (): GameState => {
     time: 0,
     fuel: MAX_FUEL,
     maxFuel: MAX_FUEL,
+    pillEffectActive: false,
+    pillEffectTimer: 0,
   };
 }
 
@@ -318,7 +321,13 @@ export default function Home() {
       const newItems = [...prev.items, { type: 'dropped_pill', x: prev.player.x, y: prev.player.y }];
       const newCollectibles = { ...prev.collectibles, pills: prev.collectibles.pills - 1 };
 
-      return { ...prev, items: newItems, collectibles: newCollectibles };
+      return { 
+        ...prev, 
+        items: newItems, 
+        collectibles: newCollectibles,
+        pillEffectActive: true,
+        pillEffectTimer: PILL_EFFECT_DURATION,
+      };
     });
   }, [isBusted, playDropPillSound]);
 
@@ -347,7 +356,7 @@ export default function Home() {
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
-        if (!prev) return prev;
+        if (!prev || prev.pillEffectActive) return prev;
 
         const newState = { ...prev };
         const { player, maze } = newState;
@@ -372,7 +381,7 @@ export default function Home() {
   
   // Centralized collision detection hook
   useEffect(() => {
-    if (!gameState || isBusted) return;
+    if (!gameState || isBusted || gameState.pillEffectActive) return;
 
     const { player, enemies } = gameState;
     for (const enemy of enemies) {
@@ -479,6 +488,29 @@ export default function Home() {
 
     return () => clearInterval(timer);
   }, [isBusted, playerRef, playerRef.current]);
+
+  useEffect(() => {
+    if (!gameState?.pillEffectActive) return;
+
+    const timer = setInterval(() => {
+      setGameState(prev => {
+        if (!prev || !prev.pillEffectActive) return prev;
+
+        const newTime = prev.pillEffectTimer - 1;
+        if (newTime <= 0) {
+          return {
+            ...prev,
+            pillEffectActive: false,
+            pillEffectTimer: 0,
+            items: prev.items.filter(item => item.type !== 'dropped_pill')
+          };
+        }
+        return { ...prev, pillEffectTimer: newTime };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameState?.pillEffectActive]);
 
   useEffect(() => {
     setGameState(createInitialState());

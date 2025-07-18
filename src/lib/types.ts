@@ -36,6 +36,8 @@ export type GameState = {
   time: number;
   fuel: number;
   maxFuel: number;
+  pillEffectActive: boolean;
+  pillEffectTimer: number;
 };
 
 export type Level = {

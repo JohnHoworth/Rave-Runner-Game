@@ -47,6 +47,8 @@ export default function GameUI({
   const glowClass = fuelPercentage < 25 ? 'animate-glow' : '';
   const timerFlashingClass = gameState.time > 0 && gameState.time <= 10 ? 'animate-glow-red-text' : '';
 
+  const pillEffectPercentage = (gameState.pillEffectTimer / 10) * 100;
+
   return (
     <>
       <aside className="w-80 bg-card/30 border-r border-border/50 p-6 flex flex-col gap-6 hidden lg:flex">
@@ -113,9 +115,16 @@ export default function GameUI({
                      <AnimatedScore score={gameState.collectibles.pills} />
                   </div>
                   {gameState.collectibles.pills > 0 && (
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2 pl-3">
-                      <FlashingPillIcon className="w-4 h-4" />
-                      <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
+                    <div className="flex items-start flex-col gap-2 text-xs text-muted-foreground mt-2 pl-3">
+                      <div className="flex items-center gap-2">
+                         <FlashingPillIcon className="w-4 h-4" />
+                         <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
+                      </div>
+                       {gameState.pillEffectActive && (
+                        <div className="w-full pr-3 mt-1">
+                          <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="bg-blue-400" />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

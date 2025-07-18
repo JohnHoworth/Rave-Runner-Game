@@ -164,3 +164,18 @@
 .animate-glow-red-text {
     animation: glow-red-text 1.5s infinite ease-in-out;
 }
+
+@keyframes glow-red-bar {
+    0%, 100% {
+        background-color: #ef4444; /* red-500 */
+        box-shadow: 0 0 8px #ef4444;
+    }
+    50% {
+        background-color: #f87171; /* red-400 */
+        box-shadow: 0 0 12px #ef4444;
+    }
+}
+
+.animate-glow-red-bar {
+    animation: glow-red-bar 1.5s infinite ease-in-out;
+}

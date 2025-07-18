@@ -123,7 +123,7 @@ export default function GameUI({
                     )}
                     {gameState.pillEffectActive && (
                       <div className="w-full pr-3 mt-1">
-                        <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="bg-blue-400" />
+                        <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="animate-glow-red-bar" />
                       </div>
                     )}
                   </div>

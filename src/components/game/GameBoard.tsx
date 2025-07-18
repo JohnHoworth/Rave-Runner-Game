@@ -37,7 +37,7 @@ const FloorTile = () => {
             linear-gradient(hsl(215, 20%, 20%) 1px, transparent 1px),
             linear-gradient(90deg, hsl(215, 20%, 20%) 1px, transparent 1px)
         `,
-        backgroundSize: '100% 100%, 40px 40px, 40px 40px',
+        backgroundSize: '40px 40px, 40px 40px',
         backgroundPosition: 'center center'
     };
     const sidePanelStyle: React.CSSProperties = {
@@ -57,7 +57,15 @@ const FloorTile = () => {
 }
 
 const WallTile = () => {
-    const topPanelStyle: React.CSSProperties = {
+    const faceStyle: React.CSSProperties = {
+        position: 'absolute',
+        width: `${TILE_SIZE}px`,
+        height: `${TILE_SIZE}px`,
+    };
+
+    const topStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_SIZE}px`,
         backgroundColor: 'hsl(220, 15%, 25%)',
         backgroundImage: `
             linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1)),
@@ -65,32 +73,55 @@ const WallTile = () => {
             linear-gradient(90deg, hsl(220, 15%, 20%) 1px, transparent 1px)
         `,
         backgroundSize: '100% 100%, 8px 8px, 8px 8px',
+        transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT / 2}px)`,
+    };
+    
+    const bottomStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_SIZE}px`,
+        backgroundColor: 'hsl(220, 15%, 10%)',
+        transform: `rotateX(-90deg) translateZ(-${TILE_HEIGHT / 2}px)`,
     };
 
-    const sidePanelStyle: React.CSSProperties = {
-        backgroundImage: `linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))`
+    const frontStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_HEIGHT}px`,
+        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))',
+        transform: `translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)`,
     };
-    const frontPanelStyle: React.CSSProperties = {
-        backgroundImage: `linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))`
+    
+    const backStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_HEIGHT}px`,
+        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))',
+        transform: `translateZ(${TILE_HEIGHT / 2}px) rotateX(180deg)`,
+    };
+
+    const leftStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_HEIGHT}px`,
+        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))',
+        transform: `rotateY(90deg) translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)`,
+    };
+   
+    const rightStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: `${TILE_HEIGHT}px`,
+        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))',
+        transform: `rotateY(-90deg) translateZ(${TILE_HEIGHT/2}px)`,
     };
 
     return (
-        <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Top Surface */}
-            <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `translateZ(${TILE_HEIGHT}px)` }}></div>
-            
-            {/* Front Face */}
-            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `translateY(${TILE_SIZE - TILE_HEIGHT}px) rotateX(90deg)`, transformOrigin: 'bottom' }}></div>
-            {/* Back Face */}
-            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${TILE_HEIGHT}px`, transform: `translateY(0px) rotateX(-90deg)`, transformOrigin: 'top' }}></div>
-            
-            {/* Left Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `translateX(0px) rotateY(90deg)`, transformOrigin: 'right' }}></div>
-            {/* Right Face */}
-            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${TILE_HEIGHT}px`, transform: `translateX(${TILE_SIZE - TILE_HEIGHT}px) rotateY(-90deg)`, transformOrigin: 'left' }}></div>
+        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${TILE_HEIGHT / 2}px)` }}>
+            <div style={topStyle}></div>
+            <div style={bottomStyle}></div>
+            <div style={frontStyle}></div>
+            <div style={backStyle}></div>
+            <div style={leftStyle}></div>
+            <div style={rightStyle}></div>
         </div>
-    )
-}
+    );
+};
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;

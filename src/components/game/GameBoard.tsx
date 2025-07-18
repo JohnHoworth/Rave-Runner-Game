@@ -88,8 +88,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 transform: `
                     perspective(1200px)
                     translateX(${400 - player.x*TILE_SIZE}px)
-                    translateY(${200 - player.y*TILE_SIZE}px)
-                    translateZ(100px)
+                    translateY(${300 - player.y*TILE_SIZE}px)
                     rotateX(60deg)
                     rotateZ(-45deg)
                 `,

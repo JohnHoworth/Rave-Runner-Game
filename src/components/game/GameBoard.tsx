@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 40;
-const TILE_HEIGHT = 20;
+const TILE_HEIGHT = 20; // This is the extrusion height of the walls.
 const FLOOR_HEIGHT = 4;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -32,25 +32,21 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(215, 30%, 12%)',
+        backgroundColor: 'hsl(220, 25%, 18%)',
         backgroundImage: `
-            linear-gradient(hsl(215, 20%, 20%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(215, 20%, 20%) 1px, transparent 1px)
+            linear-gradient(hsl(220, 25%, 22%) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(220, 25%, 22%) 1px, transparent 1px)
         `,
-        backgroundSize: '40px 40px, 40px 40px',
-        backgroundPosition: 'center center'
+        backgroundSize: '40px 40px',
     };
     const sidePanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(215, 30%, 8%)'
-    };
-    const frontPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(215, 30%, 10%)'
+        backgroundColor: 'hsl(220, 25%, 14%)'
     };
 
     return (
         <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div className="w-full h-full absolute" style={{ ...topPanelStyle, transform: `translateZ(${FLOOR_HEIGHT}px)` }}></div>
-            <div className="absolute w-full" style={{ ...frontPanelStyle, height: `${FLOOR_HEIGHT}px`, transform: 'rotateX(-90deg)', transformOrigin: 'top' }}></div>
+            <div className="absolute w-full" style={{ ...sidePanelStyle, height: `${FLOOR_HEIGHT}px`, transform: 'rotateX(-90deg)', transformOrigin: 'top' }}></div>
             <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${FLOOR_HEIGHT}px`, transform: 'rotateY(90deg)', transformOrigin: 'right' }}></div>
         </div>
     )
@@ -61,64 +57,24 @@ const WallTile = () => {
         position: 'absolute',
         width: `${TILE_SIZE}px`,
         height: `${TILE_SIZE}px`,
+        background: 'hsl(220, 15%, 20%)',
+        border: '1px solid hsl(220, 15%, 30%)',
     };
 
-    const topStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_SIZE}px`,
-        backgroundColor: 'hsl(220, 15%, 25%)',
-        backgroundImage: `
-            linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1)),
-            linear-gradient(hsl(220, 15%, 20%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(220, 15%, 20%) 1px, transparent 1px)
-        `,
-        backgroundSize: '100% 100%, 8px 8px, 8px 8px',
-        transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT / 2}px)`,
-    };
-    
-    const bottomStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_SIZE}px`,
-        backgroundColor: 'hsl(220, 15%, 10%)',
-        transform: `rotateX(-90deg) translateZ(-${TILE_HEIGHT / 2}px)`,
-    };
-
-    const frontStyle: React.CSSProperties = {
+    const sideFaceStyle: React.CSSProperties = {
         ...faceStyle,
         height: `${TILE_HEIGHT}px`,
-        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))',
-        transform: `translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)`,
-    };
-    
-    const backStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_HEIGHT}px`,
-        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))',
-        transform: `translateZ(${TILE_HEIGHT / 2}px) rotateX(180deg)`,
-    };
-
-    const leftStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_HEIGHT}px`,
-        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))',
-        transform: `rotateY(90deg) translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)`,
-    };
-   
-    const rightStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_HEIGHT}px`,
-        backgroundImage: 'linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))',
-        transform: `rotateY(-90deg) translateZ(${TILE_HEIGHT/2}px)`,
+        background: 'hsl(220, 15%, 15%)',
     };
 
     return (
-        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${TILE_HEIGHT / 2}px)` }}>
-            <div style={topStyle}></div>
-            <div style={bottomStyle}></div>
-            <div style={frontStyle}></div>
-            <div style={backStyle}></div>
-            <div style={leftStyle}></div>
-            <div style={rightStyle}></div>
+        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+            <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${TILE_HEIGHT / 2}px)` }} />
+            <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)` }} />
+            <div style={{ ...sideFaceStyle, transform: `translateZ(${TILE_SIZE / 2}px)` }} />
+            <div style={{ ...sideFaceStyle, transform: `rotateX(180deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            <div style={{ ...sideFaceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            <div style={{ ...sideFaceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
         </div>
     );
 };

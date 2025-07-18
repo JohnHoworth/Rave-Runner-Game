@@ -114,19 +114,19 @@ export default function GameUI({
                     </div>
                      <AnimatedScore score={gameState.collectibles.pills} />
                   </div>
-                  {gameState.collectibles.pills > 0 && (
-                    <div className="flex items-start flex-col gap-2 text-xs text-muted-foreground mt-2 pl-3">
+                  <div className="flex items-start flex-col gap-2 text-xs text-muted-foreground mt-2 pl-3">
+                    {gameState.collectibles.pills > 0 && (
                       <div className="flex items-center gap-2">
-                         <FlashingPillIcon className="w-4 h-4" />
-                         <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
+                        <FlashingPillIcon className="w-4 h-4" />
+                        <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
                       </div>
-                       {gameState.pillEffectActive && (
-                        <div className="w-full pr-3 mt-1">
-                          <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="bg-blue-400" />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    )}
+                    {gameState.pillEffectActive && (
+                      <div className="w-full pr-3 mt-1">
+                        <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="bg-blue-400" />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className={inventoryItemClasses('tunes')}>
                   <div className="flex items-center gap-3">

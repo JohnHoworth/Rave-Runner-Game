@@ -9,9 +9,7 @@ import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
-const TILE_SIZE = 40;
-const TILE_HEIGHT = 20; // This is the extrusion height of the walls.
-const FLOOR_HEIGHT = 4;
+const TILE_SIZE = 20;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -31,52 +29,23 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = () => {
-    const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220, 25%, 18%)',
+    const floorStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(215, 30%, 25%)',
         backgroundImage: `
-            linear-gradient(hsl(220, 25%, 22%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(220, 25%, 22%) 1px, transparent 1px)
+            linear-gradient(hsl(215, 30%, 35%) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(215, 30%, 35%) 1px, transparent 1px)
         `,
-        backgroundSize: '40px 40px',
+        backgroundSize: '20px 20px',
     };
-    const sidePanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220, 25%, 14%)'
-    };
-
-    return (
-        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            <div className="w-full h-full absolute" style={{ ...topPanelStyle, transform: `translateZ(${FLOOR_HEIGHT}px)` }}></div>
-            <div className="absolute w-full" style={{ ...sidePanelStyle, height: `${FLOOR_HEIGHT}px`, transform: 'rotateX(-90deg)', transformOrigin: 'top' }}></div>
-            <div className="absolute h-full" style={{ ...sidePanelStyle, width: `${FLOOR_HEIGHT}px`, transform: 'rotateY(90deg)', transformOrigin: 'right' }}></div>
-        </div>
-    )
+    return <div className="w-full h-full" style={floorStyle} />;
 }
 
 const WallTile = () => {
-    const faceStyle: React.CSSProperties = {
-        position: 'absolute',
-        width: `${TILE_SIZE}px`,
-        height: `${TILE_SIZE}px`,
-        background: 'hsl(220, 15%, 20%)',
-        border: '1px solid hsl(220, 15%, 30%)',
+    const wallStyle: React.CSSProperties = {
+        backgroundColor: 'hsl(215, 15%, 50%)',
+        border: '1px solid hsl(215, 15%, 60%)',
     };
-
-    const sideFaceStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: `${TILE_HEIGHT}px`,
-        background: 'hsl(220, 15%, 15%)',
-    };
-
-    return (
-        <div className="w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${TILE_HEIGHT / 2}px)` }} />
-            <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(${TILE_SIZE - TILE_HEIGHT / 2}px)` }} />
-            <div style={{ ...sideFaceStyle, transform: `translateZ(${TILE_SIZE / 2}px)` }} />
-            <div style={{ ...sideFaceStyle, transform: `rotateX(180deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            <div style={{ ...sideFaceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            <div style={{ ...sideFaceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
-        </div>
-    );
+    return <div className="w-full h-full" style={wallStyle} />;
 };
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
@@ -85,15 +54,15 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
   const boardWidth = MAZE_WIDTH * TILE_SIZE;
   const boardHeight = MAZE_HEIGHT * TILE_SIZE;
   
-  const scale = 1.4;
+  const scale = 2.0;
   const containerWidth = 48 * 16; 
   const containerHeight = 48 * 16; 
 
   const centerX = containerWidth / 2;
   const centerY = containerHeight / 2;
 
-  const translateX = centerX - (player.x * TILE_SIZE + TILE_SIZE / 2);
-  const translateY = centerY - (player.y * TILE_SIZE + TILE_SIZE / 2);
+  const translateX = centerX - (player.x * TILE_SIZE * scale + (TILE_SIZE * scale) / 2);
+  const translateY = centerY - (player.y * TILE_SIZE * scale + (TILE_SIZE * scale) / 2);
 
   return (
     <div
@@ -101,8 +70,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
       style={{
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
-        perspective: '1200px',
-        background: 'hsl(220, 25%, 10%)' 
+        background: 'hsl(215, 28%, 17%)' 
       }}
       data-ai-hint="maze puzzle"
     >
@@ -111,8 +79,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             style={{
                 width: boardWidth,
                 height: boardHeight,
-                transformStyle: 'preserve-3d',
-                transform: `rotateX(55deg) rotateZ(-45deg) translate(${translateX}px, ${translateY}px) scale(${scale}) translateZ(20px)`,
+                transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
             }}
         >
             {maze.map((row, y) =>
@@ -125,7 +92,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                             height: `${TILE_SIZE}px`,
                             top: `${y * TILE_SIZE}px`,
                             left: `${x * TILE_SIZE}px`,
-                            transformStyle: 'preserve-3d'
                         }}
                     >
                         {cell === 0 ? <FloorTile /> : <WallTile />}
@@ -141,7 +107,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 10,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`
             }}>
                 <ItemIcon type={item.type} />
             </div>
@@ -154,7 +119,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 20,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`,
                 transition: 'all 0.4s linear',
             }}>
                 <GhostIcon className="w-full h-full" />
@@ -167,7 +131,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 zIndex: 30,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
             </div>

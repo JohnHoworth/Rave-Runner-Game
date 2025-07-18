@@ -48,25 +48,21 @@ const WallTile = () => {
         background: '#2c3e50',
         border: '1px solid #1a253c',
     };
-    const heightStyle: React.CSSProperties = {
-        ...faceStyle,
-        height: TILE_HEIGHT,
-    }
 
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top */}
             <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE/2}px)` }} />
             {/* Bottom */}
-            <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
+            <div style={{ ...faceStyle, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
              {/* Front */}
-            <div style={{ ...heightStyle, transform: `translateZ(${TILE_SIZE/2}px)` }} />
+            <div style={{ ...faceStyle, height: TILE_HEIGHT, transform: `translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
             {/* Back */}
-            <div style={{ ...heightStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px)` }} />
+            <div style={{ ...faceStyle, height: TILE_HEIGHT, background: '#223040', transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
             {/* Left */}
-            <div style={{ ...heightStyle, width: TILE_SIZE, transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
+            <div style={{ ...faceStyle, width: TILE_SIZE, height: TILE_HEIGHT, background: '#273646', transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
             {/* Right */}
-            <div style={{ ...heightStyle, width: TILE_SIZE, transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px)` }} />
+            <div style={{ ...faceStyle, width: TILE_SIZE, height: TILE_HEIGHT, background: '#273646', transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
         </div>
     );
 };
@@ -100,7 +96,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
                     rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(150px)
+                    translateZ(250px)
                 `,
             }}
         >

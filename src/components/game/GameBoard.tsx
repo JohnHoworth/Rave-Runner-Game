@@ -1,6 +1,7 @@
 
 "use client";
 
+import * as React from "react";
 import PlayerIcon from "@/components/icons/PlayerIcon";
 import PoliceSirenIcon from "@/components/icons/PoliceSirenIcon";
 import { GameState, Item } from "@/lib/types";
@@ -29,37 +30,50 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const Building = ({ x, y }: { x: number, y: number }) => {
-    const seed = (x * 13 + y * 29) % 100;
-    
-    // Building Colors
-    const roofColors = ['#4a4a4a', '#5a5a5a', '#6a6a6a', '#7a7a7a'];
-    const buildingColors = ['#a9a9a9', '#bdc3c7', '#95a5a6'];
+    const style = React.useMemo(() => {
+        const seed = (x * 13 + y * 29) % 100;
+        
+        // Building Colors
+        const roofColors = ['#4a4a4a', '#5a5a5a', '#6a6a6a', '#7a7a7a'];
+        const buildingColors = ['#a9a9a9', '#bdc3c7', '#95a5a6'];
 
-    const roofColor = roofColors[seed % roofColors.length];
-    const buildingColor = buildingColors[seed % buildingColors.length];
-    
-    // Building style
-    const styleType = seed % 3;
+        const roofColor = roofColors[seed % roofColors.length];
+        const buildingColor = buildingColors[seed % buildingColors.length];
+        
+        // Building style
+        const styleType = seed % 3;
 
-    return (
-        <div style={{
+        return {
             width: TILE_SIZE,
             height: TILE_SIZE,
             backgroundColor: buildingColor,
             border: `1px solid ${roofColor}`,
-            position: 'relative',
-            boxSizing: 'border-box',
+            position: 'relative' as const,
+            boxSizing: 'border-box' as const,
+            styleType,
+            roofColor,
+        };
+    }, [x, y]);
+
+    return (
+        <div style={{
+            width: style.width,
+            height: style.height,
+            backgroundColor: style.backgroundColor,
+            border: style.border,
+            position: style.position,
+            boxSizing: style.boxSizing,
         }}>
-            {styleType === 0 && ( // Simple Flat
-                 <div style={{ width: '80%', height: '80%', backgroundColor: roofColor, margin: '10%' }} />
+            {style.styleType === 0 && ( // Simple Flat
+                 <div style={{ width: '80%', height: '80%', backgroundColor: style.roofColor, margin: '10%' }} />
             )}
-            {styleType === 1 && ( // House with pitched roof illusion
+            {style.styleType === 1 && ( // House with pitched roof illusion
                 <>
-                    <div style={{ width: '100%', height: '50%', backgroundColor: roofColor, position: 'absolute', top: 0 }} />
+                    <div style={{ width: '100%', height: '50%', backgroundColor: style.roofColor, position: 'absolute', top: 0 }} />
                     <div style={{ width: '100%', height: '50%', backgroundColor: `rgba(0,0,0,0.1)`, position: 'absolute', bottom: 0 }} />
                 </>
             )}
-            {styleType === 2 && ( // Building with details
+            {style.styleType === 2 && ( // Building with details
                  <div style={{
                     width: '20%',
                     height: '20%',

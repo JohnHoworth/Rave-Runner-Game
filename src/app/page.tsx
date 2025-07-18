@@ -26,7 +26,7 @@ const MAX_FUEL = 100;
 
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
-  const emptySpots = findEmptySpots(maze, 25); 
+  const emptySpots = findEmptySpots(maze); 
 
   const playerPos = emptySpots.pop();
   if (!playerPos) throw new Error("Could not find an empty spot for the player.");
@@ -539,3 +539,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

@@ -48,12 +48,11 @@ export function generateMaze(width: number, height: number): number[][] {
 }
 
 /**
- * Finds a specified number of random empty spots (paths) in the maze.
+ * Finds all random empty spots (paths) in the maze.
  * @param maze The maze to search in.
- * @param count The number of empty spots to find.
  * @returns An array of positions.
  */
-export function findEmptySpots(maze: number[][], count: number): Position[] {
+export function findEmptySpots(maze: number[][]): Position[] {
     const emptySpots: Position[] = [];
     for(let y = 0; y < maze.length; y++) {
         for(let x = 0; x < maze[0].length; x++) {
@@ -63,6 +62,13 @@ export function findEmptySpots(maze: number[][], count: number): Position[] {
         }
     }
 
-    const shuffled = emptySpots.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+    // shuffle the array
+    for (let i = emptySpots.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [emptySpots[i], emptySpots[j]] = [emptySpots[j], emptySpots[i]];
+    }
+    
+    return emptySpots;
 }
+
+    

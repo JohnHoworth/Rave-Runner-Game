@@ -77,3 +77,18 @@
 .siren-blue {
     animation: police-siren 0.5s infinite reverse;
 }
+
+@keyframes flash-blue-glow {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px #00BFFF);
+  }
+  50% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 2px #00BFFF);
+  }
+}
+
+.animate-flash-blue-glow {
+  animation: flash-blue-glow 1.5s infinite ease-in-out;
+}

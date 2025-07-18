@@ -53,7 +53,6 @@ const FloorTile = () => {
     );
 };
 
-
 const WallTile = () => {
     const faceStyle: React.CSSProperties = {
         position: 'absolute',
@@ -105,12 +104,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
                 transform: `
-                    perspective(800px)
+                    perspective(1000px)
                     translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
                     translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
                     rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(-100px)
+                    translateZ(0px)
                 `,
             }}
         >

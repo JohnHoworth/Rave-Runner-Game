@@ -30,19 +30,15 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = () => {
-    const topPanelStyle: React.CSSProperties = {
-        background: `
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
-            hsl(220, 20%, 15%)
-        `,
-        backgroundSize: '20px 20px',
-        boxShadow: 'inset 0 1px 1px hsla(220, 40%, 5%, 0.5), inset 0 -1px 1px hsla(220, 40%, 70%, 0.1)',
-    };
-
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `rotateX(90deg) translateZ(${FLOOR_HEIGHT / 2}px)` }} />
+            <div
+                className="absolute w-full h-full"
+                style={{
+                    background: 'hsl(220, 20%, 15%)',
+                    transform: `translateZ(-${FLOOR_HEIGHT / 2}px) rotateX(90deg) translateZ(${FLOOR_HEIGHT / 2}px)`,
+                }}
+            />
         </div>
     );
 };
@@ -55,16 +51,21 @@ const WallTile = () => {
         background: 'hsl(220, 40%, 12%)',
         border: '1px solid hsl(220, 40%, 8%)',
     };
-    
-    const topFaceStyle: React.CSSProperties = { ...faceStyle, height: `${TILE_SIZE}px`, background: 'hsl(220, 40%, 20%)' };
 
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            <div style={{ ...topFaceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE / 2}px) translateY(-${TILE_SIZE / 2}px)` }} />
-            <div style={{ ...faceStyle, transform: `rotateY(0deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Top */}
+            <div style={{ ...faceStyle, height: `${TILE_SIZE}px`, background: 'hsl(220, 40%, 20%)', transform: `rotateX(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Front */}
+            <div style={{ ...faceStyle, transform: `translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Back */}
             <div style={{ ...faceStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Left */}
             <div style={{ ...faceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Right */}
             <div style={{ ...faceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            {/* Bottom */}
+            <div style={{ ...faceStyle, height: `${TILE_SIZE}px`, background: 'hsl(220, 40%, 5%)', transform: `rotateX(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
         </div>
     );
 };
@@ -96,9 +97,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     perspective(800px)
                     translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
                     translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2}px)
-                    rotateX(60deg)
+                    rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(-100px)
+                    translateZ(200px)
                 `,
             }}
         >

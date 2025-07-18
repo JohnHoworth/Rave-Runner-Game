@@ -2,7 +2,7 @@
 "use client";
 
 import PlayerIcon from "@/components/icons/PlayerIcon";
-import GhostIcon from "@/components/icons/GhostIcon";
+import PoliceSirenIcon from "@/components/icons/PoliceSirenIcon";
 import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
@@ -140,14 +140,14 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             ))}
 
             {enemies.map((enemy, i) => (
-            <div key={`enemy-${i}`} className="absolute p-1" style={{
+            <div key={`enemy-${i}`} className="absolute" style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 transform: `translateX(${enemy.x * TILE_SIZE}px) translateY(${enemy.y * TILE_SIZE}px)`,
                 zIndex: 20,
                 transition: 'all 0.4s linear',
             }}>
-                <GhostIcon className="w-full h-full" />
+                <PoliceSirenIcon className="w-full h-full" />
             </div>
             ))}
 

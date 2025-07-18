@@ -8,19 +8,19 @@ import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
-const TILE_SIZE = 20;
-const TILE_HEIGHT = 20;
+const TILE_SIZE = 40;
+const WALL_HEIGHT = 40;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
-            return <FileText className="w-full h-full text-green-500 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}} />;
+            return <FileText className="w-full h-full text-green-400" />;
         case 'pills':
-            return <Pill className="w-full h-full text-pink-500 animate-pulse -rotate-45" style={{filter: 'drop-shadow(0 0 5px #f472b6)'}} />;
+            return <Pill className="w-full h-full text-pink-500 -rotate-45" />;
         case 'tunes':
-            return <DiscAlbum className="w-full h-full text-yellow-400 animate-pulse" style={{filter: 'drop-shadow(0 0 5px #facc15)'}} />;
+            return <DiscAlbum className="w-full h-full text-yellow-400" />;
         case 'fuel_station':
-            return <Zap className="w-full h-full text-cyan-400 animate-flash-blue-bolt" />;
+            return <Zap className="w-full h-full text-cyan-400" />;
         case 'dropped_pill':
             return <FlashingPillIcon className="w-full h-full -rotate-45" />;
         default:
@@ -30,42 +30,38 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => (
     <div
+        className="bg-background"
         style={{
-            width: `${TILE_SIZE}px`,
-            height: `${TILE_SIZE}px`,
-            background: 'linear-gradient(45deg, #1a1a1a 25%, #2a2a2a 25%, #2a2a2a 50%, #1a1a1a 50%, #1a1a1a 75%, #2a2a2a 75%, #2a2a2a 100%)',
-            backgroundSize: '8px 8px',
+            position: 'absolute',
+            width: TILE_SIZE,
+            height: TILE_SIZE,
         }}
     />
 );
 
+const WallPlane = ({ orientation, color }: { orientation: 'horizontal' | 'vertical', color: string }) => {
+  const baseStyle: React.CSSProperties = {
+    position: 'absolute',
+    background: color,
+    transformOrigin: 'bottom',
+  };
 
-const WallTile = () => {
-    const faceStyle: React.CSSProperties = {
-        position: 'absolute',
+  const style = orientation === 'horizontal'
+    ? {
+        ...baseStyle,
         width: TILE_SIZE,
+        height: WALL_HEIGHT,
+        transform: `rotateX(-90deg) translateY(-${TILE_SIZE}px)`,
+      }
+    : {
+        ...baseStyle,
+        width: WALL_HEIGHT,
         height: TILE_SIZE,
-        background: '#2c3e50',
-        border: '1px solid #1a253c',
-    };
+        transform: `rotateY(90deg) translateX(-${TILE_SIZE}px)`,
+      };
 
-    return (
-        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Top */}
-            <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE/2}px)` }} />
-            {/* Bottom */}
-            <div style={{ ...faceStyle, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
-             {/* Front */}
-            <div style={{ ...faceStyle, height: TILE_HEIGHT, transform: `translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
-            {/* Back */}
-            <div style={{ ...faceStyle, height: TILE_HEIGHT, background: '#223040', transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
-            {/* Left */}
-            <div style={{ ...faceStyle, width: TILE_SIZE, height: TILE_HEIGHT, background: '#273646', transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
-            {/* Right */}
-            <div style={{ ...faceStyle, width: TILE_SIZE, height: TILE_HEIGHT, background: '#273646', transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px) translateY(${TILE_SIZE/2 - TILE_HEIGHT/2}px)` }} />
-        </div>
-    );
-};
+  return <div style={style} />;
+}
 
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
@@ -76,11 +72,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
   return (
     <div
-      className="overflow-hidden rounded-lg"
+      className="overflow-hidden rounded-lg bg-background"
       style={{
-        width: `${48 * 16}px`,
-        height: `${48 * 16}px`,
-        background: 'hsl(215, 35%, 12%)',
+        width: `800px`,
+        height: `600px`,
       }}
       data-ai-hint="maze puzzle"
     >
@@ -91,12 +86,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
                 transform: `
-                    perspective(1000px)
-                    translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
-                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
-                    rotateX(50deg)
-                    rotateZ(0deg)
-                    translateZ(250px)
+                    perspective(1200px)
+                    translateX(${400 - player.x*TILE_SIZE}px)
+                    translateY(${200 - player.y*TILE_SIZE}px)
+                    rotateX(60deg)
+                    rotateZ(-45deg)
                 `,
             }}
         >
@@ -108,12 +102,19 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         style={{
                             width: `${TILE_SIZE}px`,
                             height: `${TILE_SIZE}px`,
-                            top: `${y * TILE_SIZE}px`,
-                            left: `${x * TILE_SIZE}px`,
+                            transform: `translateX(${x * TILE_SIZE}px) translateY(${y * TILE_SIZE}px)`,
                             transformStyle: 'preserve-3d',
                         }}
                     >
-                        {cell === 0 ? <FloorTile /> : <WallTile />}
+                        {cell === 0 && <FloorTile />}
+                         {cell === 1 && (
+                          <>
+                           {/* Horizontal Wall (top) */}
+                            {y > 0 && maze[y - 1][x] === 0 && <WallPlane orientation="horizontal" color="hsl(var(--primary) / 0.7)" />}
+                            {/* Vertical Wall (left) */}
+                            {x > 0 && maze[y][x - 1] === 0 && <WallPlane orientation="vertical" color="hsl(var(--primary))" />}
+                          </>
+                        )}
                     </div>
                   )
                 )
@@ -121,11 +122,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             
             {items.map((item, i) => (
             <div key={`item-${i}`} className="absolute" style={{
-                top: `${item.y * TILE_SIZE}px`,
-                left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${TILE_HEIGHT/2}px)`,
+                transform: `translateX(${item.x * TILE_SIZE}px) translateY(${item.y * TILE_SIZE}px) translateZ(1px)`,
                 zIndex: 10,
             }}>
                 <ItemIcon type={item.type} />
@@ -134,11 +133,9 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
 
             {enemies.map((enemy, i) => (
             <div key={`enemy-${i}`} className="absolute" style={{
-                top: `${enemy.y * TILE_SIZE}px`,
-                left: `${enemy.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${TILE_HEIGHT/2}px)`,
+                transform: `translateX(${enemy.x * TILE_SIZE}px) translateY(${enemy.y * TILE_SIZE}px) translateZ(1px)`,
                 zIndex: 20,
                 transition: 'all 0.4s linear',
             }}>
@@ -147,14 +144,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             ))}
 
             <div className="absolute" style={{
-                top: `${player.y * TILE_SIZE}px`,
-                left: `${player.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${TILE_HEIGHT/2}px)`,
+                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) translateZ(1px)`,
                 zIndex: 30,
             }}>
-                <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />
+                <PlayerIcon className="w-full h-full" />
             </div>
         </div>
     </div>

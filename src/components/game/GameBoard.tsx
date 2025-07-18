@@ -28,47 +28,35 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = () => (
-    <div
-        className="bg-background"
-        style={{
-            position: 'absolute',
-            width: TILE_SIZE,
-            height: TILE_SIZE,
-        }}
-    />
-);
-
-const WallPlane = ({ orientation, color }: { orientation: 'horizontal' | 'vertical', color: string }) => {
-  const baseStyle: React.CSSProperties = {
-    position: 'absolute',
-    background: color,
-    transformOrigin: 'bottom',
-  };
-
-  const style = orientation === 'horizontal'
-    ? {
-        ...baseStyle,
-        width: TILE_SIZE,
-        height: WALL_HEIGHT,
-        transform: `rotateX(-90deg) translateY(-${TILE_SIZE}px)`,
-      }
-    : {
-        ...baseStyle,
-        width: WALL_HEIGHT,
-        height: TILE_SIZE,
-        transform: `rotateY(90deg) translateX(-${TILE_SIZE}px)`,
-      };
-
-  return <div style={style} />;
+const WallSegment = ({ color, topColor, style }: { color: string, topColor: string, style: React.CSSProperties }) => {
+  return (
+    <div className="absolute" style={{...style, transformStyle: 'preserve-3d'}}>
+        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(-${WALL_HEIGHT/2}px) rotateX(90deg)`, backfaceVisibility: 'hidden' }} />
+        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(${WALL_HEIGHT/2}px) rotateX(-90deg)`, backfaceVisibility: 'hidden' }} />
+        <div className="absolute w-full h-full" style={{ background: topColor, height: TILE_SIZE, transform: `translateY(-${WALL_HEIGHT/2}px) rotateX(90deg) scale(1.02)`, backfaceVisibility: 'hidden' }} />
+    </div>
+  )
 }
 
+const boardWidth = MAZE_WIDTH * TILE_SIZE;
+const boardHeight = MAZE_HEIGHT * TILE_SIZE;
+
+const floorGridStyle: React.CSSProperties = {
+  width: boardWidth,
+  height: boardHeight,
+  backgroundImage: `
+    linear-gradient(hsl(var(--primary) / 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.2) 1px, transparent 1px)
+  `,
+  backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+  position: 'absolute',
+  transform: `translate(-50%, -50%)`,
+  left: '50%',
+  top: '50%',
+}
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
-
-  const boardWidth = MAZE_WIDTH * TILE_SIZE;
-  const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
   return (
     <div
@@ -94,30 +82,37 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 `,
             }}
         >
+            <div style={floorGridStyle} />
+
             {maze.map((row, y) =>
-                row.map((cell, x) => (
-                    <div
-                        key={`${x}-${y}`}
-                        className="absolute"
-                        style={{
-                            width: `${TILE_SIZE}px`,
-                            height: `${TILE_SIZE}px`,
-                            transform: `translateX(${x * TILE_SIZE}px) translateY(${y * TILE_SIZE}px)`,
-                            transformStyle: 'preserve-3d',
-                        }}
-                    >
-                        {cell === 0 && <FloorTile />}
-                         {cell === 1 && (
-                          <>
-                           {/* Horizontal Wall (top) */}
-                            {y > 0 && maze[y - 1][x] === 0 && <WallPlane orientation="horizontal" color="hsl(var(--primary) / 0.7)" />}
-                            {/* Vertical Wall (left) */}
-                            {x > 0 && maze[y][x - 1] === 0 && <WallPlane orientation="vertical" color="hsl(var(--primary))" />}
-                          </>
-                        )}
-                    </div>
-                  )
-                )
+                row.map((cell, x) => {
+                    if (cell === 1) {
+                        return (
+                          <div key={`${x}-${y}`} className="absolute" style={{
+                              width: `${TILE_SIZE}px`,
+                              height: `${TILE_SIZE}px`,
+                              transform: `translateX(${x * TILE_SIZE}px) translateY(${y * TILE_SIZE}px)`,
+                              transformStyle: 'preserve-3d',
+                          }}>
+                              {/* Horizontal Wall */}
+                              {y > 0 && maze[y-1][x] === 0 && 
+                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(-${TILE_SIZE/2}px)`}} />
+                              }
+                              {y < MAZE_HEIGHT - 1 && maze[y+1][x] === 0 && 
+                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(${TILE_SIZE/2}px)`}} />
+                              }
+                              {/* Vertical Wall */}
+                              {x > 0 && maze[y][x-1] === 0 && 
+                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(-${TILE_SIZE/2}px) rotateY(90deg)`}} />
+                              }
+                              {x < MAZE_WIDTH - 1 && maze[y][x+1] === 0 && 
+                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(${TILE_SIZE/2}px) rotateY(90deg)`}} />
+                              }
+                          </div>
+                        )
+                    }
+                    return null;
+                })
             )}
             
             {items.map((item, i) => (
@@ -135,7 +130,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             <div key={`enemy-${i}`} className="absolute" style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateX(${enemy.x * TILE_SIZE}px) translateY(${enemy.y * TILE_SIZE}px) translateZ(1px)`,
+                transform: `translateX(${enemy.x * TILE_SIZE}px) translateY(${enemy.y * TILE_SIZE}px) translateZ(${WALL_HEIGHT/2}px)`,
                 zIndex: 20,
                 transition: 'all 0.4s linear',
             }}>
@@ -146,7 +141,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             <div className="absolute" style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) rotateX(-90deg) translateZ(20px)`,
+                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) rotateX(-90deg) translateZ(${WALL_HEIGHT-5}px)`,
                 transformOrigin: 'center bottom',
                 zIndex: 30,
             }}>

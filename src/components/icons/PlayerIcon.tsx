@@ -7,22 +7,19 @@ export default function PlayerIcon({ className }: { className?: string }) {
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMidYMax meet"
         >
-            <g transform="translate(0, 10)">
-                {/* Suit Jacket */}
-                <path d="M 10 30 L 10 90 L 40 90 L 40 30 L 25 45 Z" fill="#334155" />
-                <path d="M 10 30 L 25 45 L 40 30" fill="#273244"/>
-
-                {/* Shirt */}
-                <polygon points="20,30 30,30 25,40" fill="white" />
-                
-                {/* Tie */}
-                <polygon points="25,40 22,55 28,55" fill="hsl(var(--primary))" />
-
+            <g>
+                {/* Body */}
+                <path d="M 20 30 L 20 70 L 30 70 L 30 30 Z" fill="hsl(var(--primary))" />
+                {/* Legs */}
+                <path d="M 20 70 L 15 95 L 20 95 Z" fill="hsl(var(--primary) / 0.8)" />
+                <path d="M 30 70 L 35 95 L 30 95 Z" fill="hsl(var(--primary) / 0.8)" />
+                 {/* Arms */}
+                <path d="M 20 35 L 15 60 L 20 60 Z" fill="hsl(var(--primary) / 0.9)" />
+                <path d="M 30 35 L 35 60 L 30 60 Z" fill="hsl(var(--primary) / 0.9)" />
                 {/* Head */}
-                <circle cx="25" cy="15" r="15" fill="#f1d4ad" />
-
-                {/* Hair */}
-                <path d="M 10 15 A 15 15 0 0 1 40 15 A 15 18 0 0 0 10 15 Z" fill="#1e293b" />
+                <circle cx="25" cy="15" r="12" fill="hsl(var(--accent))" />
+                {/* Visor */}
+                <rect x="15" y="10" width="20" height="8" fill="hsl(var(--background))" />
             </g>
         </svg>
     );

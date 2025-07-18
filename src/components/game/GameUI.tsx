@@ -12,6 +12,7 @@ import { Progress } from "../ui/progress";
 import { ScrollArea } from "../ui/scroll-area";
 import AnimatedScore from './AnimatedScore';
 import MainAnimatedScore from './MainAnimatedScore';
+import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 
 export default function GameUI({ 
@@ -103,12 +104,20 @@ export default function GameUI({
                   </div>
                   <AnimatedScore score={gameState.collectibles.flyers} />
                 </div>
-                <div className={inventoryItemClasses('pills')}>
-                  <div className="flex items-center gap-3">
-                    <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
-                    <span className="font-medium">Pills</span>
+                <div>
+                  <div className={inventoryItemClasses('pills')}>
+                    <div className="flex items-center gap-3">
+                      <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
+                      <span className="font-medium">Pills</span>
+                    </div>
+                     <AnimatedScore score={gameState.collectibles.pills} />
                   </div>
-                   <AnimatedScore score={gameState.collectibles.pills} />
+                  {gameState.collectibles.pills > 0 && (
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2 pl-3">
+                      <FlashingPillIcon className="w-4 h-4" />
+                      <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
+                    </div>
+                  )}
                 </div>
                 <div className={inventoryItemClasses('tunes')}>
                   <div className="flex items-center gap-3">
@@ -131,8 +140,9 @@ export default function GameUI({
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
                   <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
+                  <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill and distract police.</li>
                   <li>Refuel at Fuel Stations!</li>
-                  <li>Avoid the ghosts!</li>
+                  <li>Avoid the police!</li>
                   <li>Watch your fuel, it depletes as you move!</li>
               </ul>
             </div>

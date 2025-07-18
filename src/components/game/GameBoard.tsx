@@ -9,7 +9,7 @@ import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 20;
-const TILE_HEIGHT = 20;
+const TILE_HEIGHT = 20; 
 const FLOOR_HEIGHT = 20;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
@@ -32,23 +32,17 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
         background: `
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
-            hsl(220, 20%, 20%)
+            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+            hsl(220, 20%, 15%)
         `,
         backgroundSize: '20px 20px',
         boxShadow: 'inset 0 1px 1px hsla(220, 40%, 5%, 0.5), inset 0 -1px 1px hsla(220, 40%, 70%, 0.1)',
     };
-    const sidePanelStyle: React.CSSProperties = { backgroundColor: 'hsl(220, 40%, 10%)' };
 
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             <div className="absolute w-full h-full" style={{ ...topPanelStyle, transform: `rotateX(90deg) translateZ(${FLOOR_HEIGHT / 2}px)` }} />
-            <div className="absolute w-full h-full" style={{ ...sidePanelStyle, transform: `rotateX(-90deg) translateZ(${FLOOR_HEIGHT / 2}px)` }} />
-            <div className="absolute w-full" style={{...sidePanelStyle, height: `${FLOOR_HEIGHT}px`, transform: `translateZ(${FLOOR_HEIGHT/2}px) rotateX(180deg)` , transformOrigin: 'bottom'}}/>
-            <div className="absolute w-full" style={{...sidePanelStyle, height: `${FLOOR_HEIGHT}px`, transform: `translateZ(-${FLOOR_HEIGHT/2}px) rotateX(0deg)`, transformOrigin: 'top' }}/>
-            <div className="absolute h-full" style={{...sidePanelStyle, width: `${FLOOR_HEIGHT}px`, transform: `translateX(-${FLOOR_HEIGHT/2}px) rotateY(90deg)`, transformOrigin: 'right' }} />
-            <div className="absolute h-full" style={{...sidePanelStyle, width: `${FLOOR_HEIGHT}px`, transform: `translateX(${TILE_SIZE - FLOOR_HEIGHT/2}px) rotateY(-90deg)`, transformOrigin: 'left' }} />
         </div>
     );
 };
@@ -66,17 +60,10 @@ const WallTile = () => {
 
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Top */}
-            <div style={{ ...topFaceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE / 2}px) translateY(-${TILE_SIZE / 2}px) ` }} />
-            {/* Bottom */}
-            <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(-${TILE_HEIGHT}px + ${TILE_SIZE/2}px) translateY(-${TILE_SIZE / 2}px)` }} />
-            {/* Front */}
+            <div style={{ ...topFaceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE / 2}px) translateY(-${TILE_SIZE / 2}px)` }} />
             <div style={{ ...faceStyle, transform: `rotateY(0deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Back */}
             <div style={{ ...faceStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Left */}
             <div style={{ ...faceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Right */}
             <div style={{ ...faceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
         </div>
     );
@@ -96,7 +83,6 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         width: `${48 * 16}px`,
         height: `${48 * 16}px`,
         background: 'hsl(215, 35%, 12%)',
-        perspective: '1200px',
       }}
       data-ai-hint="maze puzzle"
     >
@@ -107,11 +93,12 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 height: boardHeight,
                 transformStyle: 'preserve-3d',
                 transform: `
+                    perspective(800px)
                     translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
-                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 220}px)
+                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2}px)
                     rotateX(60deg)
-                    rotateZ(45deg)
-                    translateZ(250px)
+                    rotateZ(0deg)
+                    translateZ(-100px)
                 `,
             }}
         >

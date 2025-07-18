@@ -28,13 +28,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const WallSegment = ({ color, topColor, style }: { color: string, topColor: string, style: React.CSSProperties }) => {
+const WallSegment = ({ color, style }: { color: string, style: React.CSSProperties }) => {
   return (
     <div className="absolute" style={{...style, transformStyle: 'preserve-3d'}}>
-        {/* Face */}
-        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(-2.5px)` }} />
-        {/* Top */}
-        <div className="absolute w-full" style={{ background: topColor, height: `5px`, transform: `translateY(-${WALL_HEIGHT/2}px) rotateX(90deg)` }} />
+        <div className="absolute w-full h-full animate-pulse-glow-secondary" style={{ background: color, transform: `translateZ(-2.5px)` }} />
     </div>
   )
 }
@@ -80,7 +77,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     translateY(${300 - player.y*TILE_SIZE}px)
                     rotateX(60deg)
                     rotateZ(-45deg)
-                    translateZ(150px)
+                    translateZ(200px)
                 `,
             }}
         >
@@ -98,17 +95,17 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                           }}>
                               {/* Horizontal Wall */}
                               {y > 0 && maze[y-1][x] === 0 && 
-                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(-${TILE_SIZE/2}px)`}} />
+                                <WallSegment color="hsl(var(--primary) / 0.5)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(-${TILE_SIZE/2}px)`}} />
                               }
                               {y < MAZE_HEIGHT - 1 && maze[y+1][x] === 0 && 
-                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(${TILE_SIZE/2}px)`}} />
+                                <WallSegment color="hsl(var(--primary) / 0.5)" style={{width: TILE_SIZE, height: WALL_HEIGHT, transform: `translateY(${TILE_SIZE/2}px)`}} />
                               }
                               {/* Vertical Wall */}
                               {x > 0 && maze[y][x-1] === 0 && 
-                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(-${TILE_SIZE/2}px) rotateY(90deg)`}} />
+                                <WallSegment color="hsl(var(--primary) / 0.5)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(-${TILE_SIZE/2}px) rotateY(90deg)`}} />
                               }
                               {x < MAZE_WIDTH - 1 && maze[y][x+1] === 0 && 
-                                <WallSegment color="hsl(var(--primary) / 0.5)" topColor="hsl(var(--primary) / 0.8)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(${TILE_SIZE/2}px) rotateY(90deg)`}} />
+                                <WallSegment color="hsl(var(--primary) / 0.5)" style={{width: WALL_HEIGHT, height: TILE_SIZE, transform: `translateX(${TILE_SIZE/2}px) rotateY(90deg)`}} />
                               }
                           </div>
                         )

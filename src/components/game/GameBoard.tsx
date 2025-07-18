@@ -10,7 +10,6 @@ import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 20;
 const TILE_HEIGHT = 20;
-const FLOOR_HEIGHT = 20;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
@@ -29,53 +28,45 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const FloorTile = () => {
-    const faceStyle: React.CSSProperties = {
-        position: 'absolute',
-        width: `${TILE_SIZE}px`,
-        height: `${TILE_SIZE}px`,
-    };
-    
-    return (
-        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
-            {/* Top Face */}
-            <div
-                style={{
-                    ...faceStyle,
-                    height: `${TILE_SIZE}px`,
-                    background: 'linear-gradient(45deg, #1a1a1a 25%, #2a2a2a 25%, #2a2a2a 50%, #1a1a1a 50%, #1a1a1a 75%, #2a2a2a 75%, #2a2a2a 100%)',
-                    backgroundSize: '8px 8px',
-                    transform: 'rotateX(90deg) translateZ(10px)',
-                    transformOrigin: 'bottom',
-                }}
-            />
-        </div>
-    );
-};
+const FloorTile = () => (
+    <div
+        style={{
+            width: `${TILE_SIZE}px`,
+            height: `${TILE_SIZE}px`,
+            background: 'linear-gradient(45deg, #1a1a1a 25%, #2a2a2a 25%, #2a2a2a 50%, #1a1a1a 50%, #1a1a1a 75%, #2a2a2a 75%, #2a2a2a 100%)',
+            backgroundSize: '8px 8px',
+        }}
+    />
+);
+
 
 const WallTile = () => {
     const faceStyle: React.CSSProperties = {
         position: 'absolute',
         width: TILE_SIZE,
-        height: TILE_HEIGHT,
+        height: TILE_SIZE,
         background: '#2c3e50',
         border: '1px solid #1a253c',
     };
+    const heightStyle: React.CSSProperties = {
+        ...faceStyle,
+        height: TILE_HEIGHT,
+    }
 
     return (
-        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${FLOOR_HEIGHT - TILE_HEIGHT}px)`}}>
+        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             {/* Top */}
-            <div style={{...faceStyle, height: TILE_SIZE, transform: `rotateX(90deg) translateZ(${TILE_HEIGHT/2}px)`}} />
+            <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${TILE_SIZE/2}px)` }} />
             {/* Bottom */}
-            <div style={{...faceStyle, height: TILE_SIZE, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT/2}px) translateY(${TILE_SIZE - TILE_HEIGHT}px)`}} />
-            {/* Front */}
-            <div style={{...faceStyle, transform: `translateZ(${TILE_SIZE/2}px)`}} />
+            <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
+             {/* Front */}
+            <div style={{ ...heightStyle, transform: `translateZ(${TILE_SIZE/2}px)` }} />
             {/* Back */}
-            <div style={{...faceStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px)`}} />
+            <div style={{ ...heightStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px)` }} />
             {/* Left */}
-            <div style={{...faceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px)`}} />
+            <div style={{ ...heightStyle, width: TILE_SIZE, transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px)` }} />
             {/* Right */}
-            <div style={{...faceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px)`}} />
+            <div style={{ ...heightStyle, width: TILE_SIZE, transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px)` }} />
         </div>
     );
 };
@@ -109,7 +100,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
                     rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(0px)
+                    translateZ(150px)
                 `,
             }}
         >
@@ -138,7 +129,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 left: `${item.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`,
+                transform: `translateZ(${TILE_HEIGHT/2}px)`,
                 zIndex: 10,
             }}>
                 <ItemIcon type={item.type} />
@@ -151,7 +142,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 left: `${enemy.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`,
+                transform: `translateZ(${TILE_HEIGHT/2}px)`,
                 zIndex: 20,
                 transition: 'all 0.4s linear',
             }}>
@@ -164,7 +155,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 left: `${player.x * TILE_SIZE}px`,
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateZ(${FLOOR_HEIGHT}px)`,
+                transform: `translateZ(${TILE_HEIGHT/2}px)`,
                 zIndex: 30,
             }}>
                 <PlayerIcon className="w-full h-full drop-shadow-[0_0_8px_hsl(var(--accent))]" />

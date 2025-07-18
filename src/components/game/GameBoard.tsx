@@ -47,11 +47,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             style={{
                 width: boardWidth,
                 height: boardHeight,
-                transformStyle: 'preserve-3d',
                 transform: `
                     translateX(${400 - player.x*TILE_SIZE}px)
                     translateY(${300 - player.y*TILE_SIZE}px)
-                    scale(2)
+                    scale(1.5)
                 `,
             }}
         >

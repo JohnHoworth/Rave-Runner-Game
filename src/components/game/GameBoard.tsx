@@ -9,7 +9,7 @@ import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import { cn } from "@/lib/utils";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
-const TILE_SIZE = 40; 
+const TILE_SIZE = 40;
 const TILE_HEIGHT = 20;
 const FLOOR_HEIGHT = 4;
 
@@ -32,19 +32,19 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 
 const FloorTile = () => {
     const topPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220, 10%, 12%)',
+        backgroundColor: 'hsl(215, 30%, 12%)',
         backgroundImage: `
-            linear-gradient(hsl(220, 10%, 18%) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(220, 10%, 18%) 1px, transparent 1px)
+            linear-gradient(hsl(215, 20%, 20%) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(215, 20%, 20%) 1px, transparent 1px)
         `,
-        backgroundSize: '100% 100%, 100% 100%',
-        backgroundPosition: 'center center',
+        backgroundSize: '100% 100%, 40px 40px, 40px 40px',
+        backgroundPosition: 'center center'
     };
     const sidePanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220, 10%, 8%)'
+        backgroundColor: 'hsl(215, 30%, 8%)'
     };
     const frontPanelStyle: React.CSSProperties = {
-        backgroundColor: 'hsl(220, 10%, 10%)'
+        backgroundColor: 'hsl(215, 30%, 10%)'
     };
 
     return (
@@ -59,30 +59,19 @@ const FloorTile = () => {
 const WallTile = () => {
     const topPanelStyle: React.CSSProperties = {
         backgroundColor: 'hsl(220, 15%, 25%)',
-        backgroundImage: 'linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1))'
-    };
-    
-    const sharedSideStyles: React.CSSProperties = {
-      backgroundSize: '100% 100%, 100% 100%, 100% 100%',
-      backgroundPosition: 'center, center, 5% center, 95% center',
-      backgroundRepeat: 'no-repeat, no-repeat, no-repeat'
+        backgroundImage: `
+            linear-gradient(hsla(0, 0%, 100%, 0.05), hsla(0, 0%, 0%, 0.1)),
+            linear-gradient(hsl(220, 15%, 20%) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(220, 15%, 20%) 1px, transparent 1px)
+        `,
+        backgroundSize: '100% 100%, 8px 8px, 8px 8px',
     };
 
     const sidePanelStyle: React.CSSProperties = {
-        ...sharedSideStyles,
-        backgroundImage: `
-            linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%)),
-            linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
-            repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
-        `
+        backgroundImage: `linear-gradient(to right, hsl(220, 15%, 15%), hsl(220, 15%, 22%))`
     };
     const frontPanelStyle: React.CSSProperties = {
-        ...sharedSideStyles,
-        backgroundImage: `
-            linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%)),
-            linear-gradient(to right, transparent, transparent 10%, cyan 12%, cyan 14%, transparent 16%, transparent 84%, cyan 86%, cyan 88%, transparent 90%, transparent),
-            repeating-linear-gradient(to top, transparent, transparent 4px, hsl(30, 100%, 50%) 5px, hsl(30, 100%, 50%) 7px, transparent 8px)
-        `
+        backgroundImage: `linear-gradient(to right, hsl(220, 15%, 22%), hsl(220, 15%, 28%))`
     };
 
     return (
@@ -126,7 +115,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,
         perspective: '1200px',
-        background: 'hsl(220, 15%, 10%)' 
+        background: 'hsl(220, 25%, 10%)' 
       }}
       data-ai-hint="maze puzzle"
     >

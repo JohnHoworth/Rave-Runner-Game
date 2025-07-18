@@ -105,7 +105,7 @@ export default function GameUI({
                 </div>
                 <div className={inventoryItemClasses('pills')}>
                   <div className="flex items-center gap-3">
-                    <Pill className="w-6 h-6 text-accent" style={{filter: 'drop-shadow(0 0 5px hsl(var(--accent)))'}} />
+                    <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
                     <span className="font-medium">Pills</span>
                   </div>
                   <span className="text-2xl font-bold text-primary">{gameState.collectibles.pills}</span>
@@ -130,7 +130,7 @@ export default function GameUI({
               </h2>
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
-                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-accent" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
+                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
                   <li>Watch your fuel, it depleles as you move!</li>

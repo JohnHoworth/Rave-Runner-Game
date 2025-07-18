@@ -15,7 +15,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'flyer':
             return <FileText className="w-full h-full text-cyan-200" />;
         case 'pills':
-            return <Pill className="w-full h-full text-cyan-200 -rotate-45" />;
+            return <Pill className="w-full h-full text-red-500 -rotate-45" style={{filter: 'drop-shadow(0 0 3px #ff0000)'}} />;
         case 'tunes':
             return <DiscAlbum className="w-full h-full text-cyan-200" />;
         case 'fuel_station':

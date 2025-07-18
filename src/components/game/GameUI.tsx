@@ -6,11 +6,12 @@ import { Separator } from "@/components/ui/separator";
 import { BrainCircuit, Coins, DiscAlbum, FileText, Pill, Gamepad2, Timer, Fuel, Siren } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
-import type { GameState, Level, CollectibleType } from "@/lib/types";
+import type { GameState, CollectibleType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Progress } from "../ui/progress";
 import { ScrollArea } from "../ui/scroll-area";
 import AnimatedScore from './AnimatedScore';
+import MainAnimatedScore from './MainAnimatedScore';
 
 
 export default function GameUI({ 
@@ -39,7 +40,6 @@ export default function GameUI({
 
   const fuelPercentage = (gameState.fuel / gameState.maxFuel) * 100;
   
-  // Calculate color from green (120) to red (0)
   const fuelColorHue = (fuelPercentage / 100) * 120;
   const fuelColor = `hsl(${fuelColorHue}, 100%, 50%)`;
 
@@ -52,7 +52,7 @@ export default function GameUI({
         {/* Score and Currency */}
         <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
-          <AnimatedScore score={gameState.score} />
+          <MainAnimatedScore score={gameState.score} />
           <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-accent">
             <div className="flex items-center gap-2">
                 <Timer className="w-7 h-7" />
@@ -101,21 +101,21 @@ export default function GameUI({
                     <FileText className="w-6 h-6 text-green-400" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}}/>
                     <span className="font-medium">Flyers</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.flyers}</span>
+                  <AnimatedScore score={gameState.collectibles.flyers} />
                 </div>
                 <div className={inventoryItemClasses('pills')}>
                   <div className="flex items-center gap-3">
                     <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
                     <span className="font-medium">Pills</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.pills}</span>
+                   <AnimatedScore score={gameState.collectibles.pills} />
                 </div>
                 <div className={inventoryItemClasses('tunes')}>
                   <div className="flex items-center gap-3">
                     <DiscAlbum className="w-6 h-6 text-yellow-300" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />
                     <span className="font-medium">Tunes</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{gameState.collectibles.tunes}</span>
+                  <AnimatedScore score={gameState.collectibles.tunes} />
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function GameUI({
                   <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the ghosts!</li>
-                  <li>Watch your fuel, it depleles as you move!</li>
+                  <li>Watch your fuel, it depletes as you move!</li>
               </ul>
             </div>
           </div>

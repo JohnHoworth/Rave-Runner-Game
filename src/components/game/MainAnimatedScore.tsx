@@ -12,7 +12,7 @@ const AnimatedDigit = ({ digit, style }: { digit: string; style: React.CSSProper
   );
 };
 
-export default function AnimatedScore({ score }: { score: number }) {
+export default function MainAnimatedScore({ score }: { score: number }) {
   const [animationKey, setAnimationKey] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [prevScore, setPrevScore] = useState(score);
@@ -24,8 +24,8 @@ export default function AnimatedScore({ score }: { score: number }) {
       const timer = setTimeout(() => setIsAnimating(false), 800); 
       setPrevScore(score);
       return () => clearTimeout(timer);
-    } else if (score < prevScore) { // Also handle reset or decrease
-      setPrevScore(score);
+    } else if (score === 0 && prevScore !== 0) { // Handle reset
+      setPrevScore(0);
     }
   }, [score, prevScore]);
 
@@ -35,7 +35,7 @@ export default function AnimatedScore({ score }: { score: number }) {
     <div
       key={animationKey}
       className={cn(
-        "text-2xl font-bold tabular-nums font-mono transition-colors text-primary",
+        "text-5xl font-bold tabular-nums font-mono overflow-hidden h-[1.2em] transition-colors text-orange-400",
         isAnimating && "animate-glow-orange-flash animate-pop-burst"
       )}
     >

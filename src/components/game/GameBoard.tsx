@@ -7,6 +7,7 @@ import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
+import { cn } from "@/lib/utils";
 
 const TILE_SIZE = 40;
 
@@ -80,6 +81,12 @@ const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items } = gameState;
 
+  const droppedPillPositions = new Set(
+    items
+      .filter((item) => item.type === 'dropped_pill')
+      .map((item) => `${item.x},${item.y}`)
+  );
+
   return (
     <div
       className="overflow-hidden rounded-lg bg-gray-800"
@@ -116,7 +123,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         {cell === 1 ? (
                             <Building x={x} y={y} />
                         ) : (
-                            <div className="w-full h-full" style={{ 
+                            <div className={cn("w-full h-full", 
+                                droppedPillPositions.has(`${x},${y}`) && "animate-flash-blue-glow-bg"
+                            )} 
+                            style={{ 
                                 backgroundColor: '#3d3d3d',
                                 backgroundImage: `
                                     radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)

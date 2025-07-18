@@ -92,3 +92,18 @@
 .animate-flash-blue-glow {
   animation: flash-blue-glow 1.5s infinite ease-in-out;
 }
+
+@keyframes flash-blue-glow-bg {
+    0%, 100% {
+        background-color: #00BFFF20;
+        box-shadow: inset 0 0 10px #00BFFF;
+    }
+    50% {
+        background-color: #00BFFF10;
+        box-shadow: inset 0 0 5px #00BFFF;
+    }
+}
+
+.animate-flash-blue-glow-bg {
+    animation: flash-blue-glow-bg 1.5s infinite ease-in-out;
+}

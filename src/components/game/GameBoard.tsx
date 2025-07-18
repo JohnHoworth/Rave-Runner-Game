@@ -13,11 +13,11 @@ const TILE_SIZE = 40;
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
-            return <FileText className="w-full h-full text-cyan-200" />;
+            return <FileText className="w-full h-full text-green-400" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}} />;
         case 'pills':
             return <Pill className="w-full h-full text-red-500 -rotate-45" style={{filter: 'drop-shadow(0 0 3px #ff0000)'}} />;
         case 'tunes':
-            return <DiscAlbum className="w-full h-full text-cyan-200" />;
+            return <DiscAlbum className="w-full h-full text-yellow-300" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />;
         case 'fuel_station':
             return <Zap className="w-full h-full text-yellow-300" />;
         case 'dropped_pill':

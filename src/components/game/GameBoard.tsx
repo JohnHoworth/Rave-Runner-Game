@@ -31,9 +31,10 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 const WallSegment = ({ color, topColor, style }: { color: string, topColor: string, style: React.CSSProperties }) => {
   return (
     <div className="absolute" style={{...style, transformStyle: 'preserve-3d'}}>
-        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(-${WALL_HEIGHT/2}px) rotateX(90deg)`, backfaceVisibility: 'hidden' }} />
-        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(${WALL_HEIGHT/2}px) rotateX(-90deg)`, backfaceVisibility: 'hidden' }} />
-        <div className="absolute w-full h-full" style={{ background: topColor, height: TILE_SIZE, transform: `translateY(-${WALL_HEIGHT/2}px) rotateX(90deg) scale(1.02)`, backfaceVisibility: 'hidden' }} />
+        {/* Face */}
+        <div className="absolute w-full h-full" style={{ background: color, transform: `translateZ(-2.5px)` }} />
+        {/* Top */}
+        <div className="absolute w-full" style={{ background: topColor, height: `5px`, transform: `translateY(-${WALL_HEIGHT/2}px) rotateX(90deg)` }} />
     </div>
   )
 }
@@ -79,6 +80,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     translateY(${300 - player.y*TILE_SIZE}px)
                     rotateX(60deg)
                     rotateZ(-45deg)
+                    translateZ(150px)
                 `,
             }}
         >

@@ -9,7 +9,7 @@ import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
 import FlashingPillIcon from "../icons/FlashingPillIcon";
 
 const TILE_SIZE = 20;
-const TILE_HEIGHT = 20; 
+const TILE_HEIGHT = 20;
 const FLOOR_HEIGHT = 20;
 
 const ItemIcon = ({ type }: { type: Item['type'] }) => {

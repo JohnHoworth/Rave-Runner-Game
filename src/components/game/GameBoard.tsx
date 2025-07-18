@@ -68,7 +68,7 @@ const WallTile = () => {
             {/* Top */}
             <div style={{...faceStyle, height: TILE_SIZE, transform: `rotateX(90deg) translateZ(${TILE_HEIGHT/2}px)`}} />
             {/* Bottom */}
-            <div style={{...faceStyle, height: TILE_SIZE, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT/2}px)`}} />
+            <div style={{...faceStyle, height: TILE_SIZE, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT/2}px) translateY(${TILE_SIZE - TILE_HEIGHT}px)`}} />
             {/* Front */}
             <div style={{...faceStyle, transform: `translateZ(${TILE_SIZE/2}px)`}} />
             {/* Back */}
@@ -110,7 +110,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                     translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
                     rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(350px)
+                    translateZ(-100px)
                 `,
             }}
         >

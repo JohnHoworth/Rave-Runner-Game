@@ -14,13 +14,13 @@ const WALL_HEIGHT = 40;
 const ItemIcon = ({ type }: { type: Item['type'] }) => {
     switch (type) {
         case 'flyer':
-            return <FileText className="w-full h-full text-green-400" />;
+            return <FileText className="w-full h-full text-cyan-200" />;
         case 'pills':
-            return <Pill className="w-full h-full text-pink-500 -rotate-45" />;
+            return <Pill className="w-full h-full text-cyan-200 -rotate-45" />;
         case 'tunes':
-            return <DiscAlbum className="w-full h-full text-yellow-400" />;
+            return <DiscAlbum className="w-full h-full text-cyan-200" />;
         case 'fuel_station':
-            return <Zap className="w-full h-full text-cyan-400" />;
+            return <Zap className="w-full h-full text-cyan-200" />;
         case 'dropped_pill':
             return <FlashingPillIcon className="w-full h-full -rotate-45" />;
         default:
@@ -146,7 +146,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             <div className="absolute" style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) rotateX(-90deg) translateZ(20px)`,
+                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) rotateX(-90deg) translateZ(40px)`,
                 transformOrigin: 'center bottom',
                 zIndex: 30,
             }}>

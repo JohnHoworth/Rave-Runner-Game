@@ -146,7 +146,8 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             <div className="absolute" style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
-                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) translateZ(1px)`,
+                transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px) rotateX(-90deg) translateZ(20px)`,
+                transformOrigin: 'center bottom',
                 zIndex: 30,
             }}>
                 <PlayerIcon className="w-full h-full" />

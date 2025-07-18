@@ -30,42 +30,53 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
 }
 
 const FloorTile = () => {
+    const faceStyle: React.CSSProperties = {
+        position: 'absolute',
+        width: `${TILE_SIZE}px`,
+        height: `${TILE_SIZE}px`,
+    };
+    
     return (
         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+            {/* Top Face */}
             <div
-                className="absolute w-full h-full"
                 style={{
-                    background: 'hsl(220, 20%, 15%)',
-                    transform: `translateZ(-${FLOOR_HEIGHT / 2}px) rotateX(90deg) translateZ(${FLOOR_HEIGHT / 2}px)`,
+                    ...faceStyle,
+                    height: `${TILE_SIZE}px`,
+                    background: 'linear-gradient(45deg, #1a1a1a 25%, #2a2a2a 25%, #2a2a2a 50%, #1a1a1a 50%, #1a1a1a 75%, #2a2a2a 75%, #2a2a2a 100%)',
+                    backgroundSize: '8px 8px',
+                    transform: 'rotateX(90deg) translateZ(10px)',
+                    transformOrigin: 'bottom',
                 }}
             />
         </div>
     );
 };
 
+
 const WallTile = () => {
     const faceStyle: React.CSSProperties = {
         position: 'absolute',
-        width: `${TILE_SIZE}px`,
-        height: `${TILE_HEIGHT}px`,
-        background: 'hsl(220, 40%, 12%)',
-        border: '1px solid hsl(220, 40%, 8%)',
+        width: TILE_SIZE,
+        height: TILE_HEIGHT,
+        background: '#2c3e50',
+        border: '1px solid #1a253c',
     };
 
     return (
-        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d', transform: `translateZ(${FLOOR_HEIGHT - TILE_HEIGHT}px)`}}>
             {/* Top */}
-            <div style={{ ...faceStyle, height: `${TILE_SIZE}px`, background: 'hsl(220, 40%, 20%)', transform: `rotateX(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Front */}
-            <div style={{ ...faceStyle, transform: `translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Back */}
-            <div style={{ ...faceStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Left */}
-            <div style={{ ...faceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
-            {/* Right */}
-            <div style={{ ...faceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            <div style={{...faceStyle, height: TILE_SIZE, transform: `rotateX(90deg) translateZ(${TILE_HEIGHT/2}px)`}} />
             {/* Bottom */}
-            <div style={{ ...faceStyle, height: `${TILE_SIZE}px`, background: 'hsl(220, 40%, 5%)', transform: `rotateX(-90deg) translateZ(${TILE_SIZE / 2}px)` }} />
+            <div style={{...faceStyle, height: TILE_SIZE, background: '#1a253c', transform: `rotateX(-90deg) translateZ(${TILE_HEIGHT/2}px)`}} />
+            {/* Front */}
+            <div style={{...faceStyle, transform: `translateZ(${TILE_SIZE/2}px)`}} />
+            {/* Back */}
+            <div style={{...faceStyle, transform: `rotateY(180deg) translateZ(${TILE_SIZE/2}px)`}} />
+            {/* Left */}
+            <div style={{...faceStyle, transform: `rotateY(-90deg) translateZ(${TILE_SIZE/2}px)`}} />
+            {/* Right */}
+            <div style={{...faceStyle, transform: `rotateY(90deg) translateZ(${TILE_SIZE/2}px)`}} />
         </div>
     );
 };
@@ -96,10 +107,10 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 transform: `
                     perspective(800px)
                     translateX(${24*16 - player.x*TILE_SIZE - TILE_SIZE/2}px)
-                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2}px)
+                    translateY(${24*16 - player.y*TILE_SIZE - TILE_SIZE/2 - 50}px)
                     rotateX(50deg)
                     rotateZ(0deg)
-                    translateZ(200px)
+                    translateZ(350px)
                 `,
             }}
         >

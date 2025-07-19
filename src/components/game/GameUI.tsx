@@ -29,7 +29,7 @@ export default function GameUI({
   const inventoryItemClasses = (type: CollectibleType) => cn(
     "flex items-center justify-between p-2 rounded-lg transition-all duration-300",
     lastCollected === 'flyer' && type === 'flyer' && "animate-flash-green-glow",
-    lastCollected === 'pills' && type === 'pills' && "animate-flash-pink-glow",
+    lastCollected === 'pills' && type === 'pills' && "animate-flash-red-glow",
     lastCollected === 'tunes' && type === 'tunes' && "animate-flash-yellow-glow"
   );
 

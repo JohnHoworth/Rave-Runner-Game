@@ -7,7 +7,7 @@ import GameUI from '@/components/game/GameUI';
 import MusicPlayer from "@/components/game/MusicPlayer";
 import Header from '@/components/layout/Header';
 import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection } from "@/lib/types";
-import { generateMaze, MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
+import { generateMaze, MAZE_WIDTH, MAZE_HEIGHT, findEmptySpots } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
 import type { YouTubePlayer } from "react-youtube";

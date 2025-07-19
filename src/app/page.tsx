@@ -6,11 +6,12 @@ import GameBoard from '@/components/game/GameBoard';
 import GameUI from '@/components/game/GameUI';
 import MusicPlayer from "@/components/game/MusicPlayer";
 import Header from '@/components/layout/Header';
-import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection } from "@/lib/types";
+import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection, HighScore } from "@/lib/types";
 import { generateMaze, MAZE_WIDTH, MAZE_HEIGHT, findEmptySpots } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
 import type { YouTubePlayer } from "react-youtube";
+import GameOverScreen from "@/components/game/GameOverScreen";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=OG4NHr77hfU" },
@@ -24,6 +25,7 @@ const INITIAL_LEVELS: Level[] = [
 
 const MAX_FUEL = 100;
 const PILL_EFFECT_DURATION = 10;
+const HIGH_SCORE_KEY = 'raveRunnerHighScores';
 
 const createInitialState = (): GameState => {
   const maze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
@@ -89,6 +91,8 @@ export default function Home() {
   const isResettingRef = useRef(false);
   const [currentTrack, setCurrentTrack] = useState<Level>(INITIAL_LEVELS[0]);
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [highScores, setHighScores] = useState<HighScore[]>([]);
 
 
   const initAudio = () => {
@@ -241,8 +245,13 @@ export default function Home() {
     }, 2000);
   }, [playBustedSound, stopAllSirens]);
 
+  const restartGame = useCallback(() => {
+    setGameState(createInitialState());
+    setIsGameOver(false);
+  }, []);
+
   const movePlayer = useCallback((dx: number, dy: number, direction: PlayerDirection) => {
-    if (isBusted) return;
+    if (isBusted || isGameOver) return;
 
     setGameState(prev => {
       if (!prev) return null;
@@ -307,10 +316,10 @@ export default function Home() {
       }
       return newState;
     });
-  }, [isBusted, playMoveSound, playCollectSound, playRefuelSound]);
+  }, [isBusted, isGameOver, playMoveSound, playCollectSound, playRefuelSound]);
 
   const dropPill = useCallback(() => {
-    if (isBusted) return;
+    if (isBusted || isGameOver) return;
     setGameState(prev => {
       if (!prev || prev.collectibles.pills <= 0) {
         return prev;
@@ -329,7 +338,7 @@ export default function Home() {
         pillEffectTimer: PILL_EFFECT_DURATION,
       };
     });
-  }, [isBusted, playDropPillSound]);
+  }, [isBusted, isGameOver, playDropPillSound]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -352,7 +361,7 @@ export default function Home() {
   }, [movePlayer, dropPill]);
 
   useEffect(() => {
-    if (isBusted) return;
+    if (isBusted || isGameOver) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
@@ -377,11 +386,11 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [isBusted]);
+  }, [isBusted, isGameOver]);
   
   // Centralized collision detection hook
   useEffect(() => {
-    if (!gameState || isBusted || gameState.pillEffectActive) return;
+    if (!gameState || isBusted || gameState.pillEffectActive || isGameOver) return;
 
     const { player, enemies } = gameState;
     for (const enemy of enemies) {
@@ -390,10 +399,10 @@ export default function Home() {
         return; 
       }
     }
-  }, [gameState, isBusted, resetGame]);
+  }, [gameState, isBusted, resetGame, isGameOver]);
 
   useEffect(() => {
-    if (isBusted || !gameState || !audioContextRef.current) {
+    if (isBusted || isGameOver || !gameState || !audioContextRef.current) {
         if (sirenAudioNode.current) {
             stopAllSirens();
         }
@@ -460,11 +469,11 @@ export default function Home() {
             }
         }, 300);
     }
-  }, [gameState, isBusted, stopAllSirens]);
+  }, [gameState, isBusted, stopAllSirens, isGameOver]);
 
 
   useEffect(() => {
-    if (isBusted || !playerRef.current) return;
+    if (isBusted || isGameOver || !playerRef.current) return;
 
     const timer = setInterval(() => {
       const player = playerRef.current;
@@ -477,6 +486,10 @@ export default function Home() {
             if (!prev) return null;
             const remainingTime = Math.max(0, Math.floor(duration - currentTime));
             
+            if (remainingTime <= 0) {
+              setIsGameOver(true);
+            }
+
             if (prev.time !== remainingTime) {
               return { ...prev, time: remainingTime };
             }
@@ -487,7 +500,7 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted, playerRef, playerRef.current]);
+  }, [isBusted, isGameOver, playerRef, playerRef.current]);
 
   useEffect(() => {
     if (!gameState?.pillEffectActive) return;
@@ -513,8 +526,31 @@ export default function Home() {
   }, [gameState?.pillEffectActive]);
 
   useEffect(() => {
+    try {
+        const savedScores = localStorage.getItem(HIGH_SCORE_KEY);
+        if (savedScores) {
+            setHighScores(JSON.parse(savedScores));
+        }
+    } catch (e) {
+        console.error("Could not load high scores from localStorage", e);
+    }
     setGameState(createInitialState());
   }, []);
+
+  const handleAddHighScore = useCallback((name: string) => {
+    if (!gameState) return;
+    const newScore: HighScore = { name, score: gameState.score };
+    const newHighScores = [...highScores, newScore]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+    
+    try {
+      localStorage.setItem(HIGH_SCORE_KEY, JSON.stringify(newHighScores));
+      setHighScores(newHighScores);
+    } catch (e) {
+      console.error("Could not save high scores to localStorage", e);
+    }
+  }, [gameState, highScores]);
 
   useEffect(() => {
     if (gameState?.level && levels[gameState.level - 1]) {
@@ -539,6 +575,18 @@ export default function Home() {
       </div>
     );
   }
+  
+  if (isGameOver) {
+    return (
+      <GameOverScreen
+        score={gameState.score}
+        highScores={highScores}
+        onAddHighScore={handleAddHighScore}
+        onRestart={restartGame}
+      />
+    );
+  }
+
 
   return (
     <div className="flex flex-col h-screen bg-transparent font-body text-foreground overflow-hidden">

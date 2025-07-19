@@ -108,6 +108,8 @@ export default {
         'spin-slow': 'spin-slow 5s linear infinite',
         'roll-up': 'roll-up 0.5s ease-out forwards',
         'pop-burst': 'pop-burst 0.5s ease-out',
+        'scanline': 'scanline 10s linear infinite',
+        'flicker': 'flicker 4s infinite linear',
       },
     },
   },

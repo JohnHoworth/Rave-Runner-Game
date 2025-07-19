@@ -46,3 +46,8 @@ export type Level = {
   theme: string;
   youtubeUrl: string;
 };
+
+export type HighScore = {
+  name: string;
+  score: number;
+};

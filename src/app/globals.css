@@ -179,3 +179,37 @@
 .animate-glow-red-bar {
     animation: glow-red-bar 1.5s infinite ease-in-out;
 }
+
+@keyframes arrested {
+  0%, 100% {
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000;
+    transform: scale(1);
+  }
+  50% {
+    color: #ff4d4d;
+    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
+    transform: scale(1.05);
+  }
+}
+
+.animate-arrested {
+  animation: arrested 1s infinite ease-in-out;
+}
+
+@keyframes police-lights {
+  0%, 100% {
+    border-color: #0000ff;
+    box-shadow: 0 0 20px #0000ff, inset 0 0 10px #0000ff;
+    background-color: rgba(0, 0, 255, 0.1);
+  }
+  50% {
+    border-color: #0055ff;
+    box-shadow: 0 0 30px #0055ff, inset 0 0 20px #0055ff;
+    background-color: rgba(0, 0, 255, 0.2);
+  }
+}
+
+.animate-police-lights {
+  animation: police-lights 1s infinite;
+}

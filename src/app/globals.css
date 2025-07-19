@@ -23,7 +23,6 @@
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 180 100% 50%;
-    --radius: 0.5rem;
   }
 
   .dark {
@@ -181,20 +180,25 @@
 }
 
 @keyframes arrested {
-  0%, 100% {
+  0% {
     color: #ff0000;
-    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000;
-    transform: scale(1);
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    transform: scale(1.2) rotate(-2deg);
   }
   50% {
-    color: #ff4d4d;
-    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
-    transform: scale(1.05);
+    color: white;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    transform: scale(1.25) rotate(2deg);
+  }
+  100% {
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    transform: scale(1.2) rotate(-2deg);
   }
 }
 
 .animate-arrested {
-  animation: arrested 1s infinite ease-in-out;
+  animation: arrested 0.5s infinite ease-in-out;
 }
 
 @keyframes police-lights {
@@ -204,12 +208,12 @@
     background-color: rgba(0, 0, 255, 0.1);
   }
   50% {
-    border-color: #0055ff;
-    box-shadow: 0 0 30px #0055ff, inset 0 0 20px #0055ff;
-    background-color: rgba(0, 0, 255, 0.2);
+    border-color: #ff0000;
+    box-shadow: 0 0 30px #ff0000, inset 0 0 20px #ff0000;
+    background-color: rgba(255, 0, 0, 0.1);
   }
 }
 
 .animate-police-lights {
-  animation: police-lights 1s infinite;
+  animation: police-lights 0.5s infinite;
 }

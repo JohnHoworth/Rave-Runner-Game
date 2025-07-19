@@ -22,7 +22,7 @@ export default function GameOverScreen({
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const isHighScore = score > 0 && (highScores.length < 5 || score > highScores[highScores.length - 1].score);
+  const isHighScore = score > 0 && (highScores.length < 5 || score > (highScores[highScores.length - 1]?.score || 0));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,18 +43,18 @@ export default function GameOverScreen({
         </h1>
         <p className="text-3xl mb-8 text-primary">Your Final Score: {score}</p>
 
-        <div className="flex flex-col md:flex-row gap-8 justify-center">
+        <div className="flex flex-col md:flex-row gap-8 justify-center items-start">
           {/* High Score Submission */}
-          {(isHighScore || submitted) && (
+          {isHighScore && (
             <Card className="bg-black/50 border-accent/50 w-full md:w-1/2 lg:w-1/3 text-left">
               <CardHeader>
                 <CardTitle className="text-accent flex items-center gap-2 font-headline tracking-widest">
                   <Award />
-                  {isHighScore && !submitted ? "New High Score!" : "Score Submitted"}
+                  { !submitted ? "New High Score!" : "Score Submitted"}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {isHighScore && !submitted ? (
+                {!submitted ? (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <p className="text-muted-foreground">Enter your initials to join the legends:</p>
                     <Input
@@ -64,6 +64,7 @@ export default function GameOverScreen({
                       maxLength={3}
                       placeholder="AAA"
                       className="text-center text-2xl h-12 bg-background/80 border-primary/50 text-primary font-mono tracking-[0.3em]"
+                      autoFocus
                     />
                     <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                       Submit Score
@@ -114,13 +115,3 @@ export default function GameOverScreen({
     </div>
   );
 }
-
-// Add this to your globals.css or tailwind config for the background pattern
-const styles = `
-  .bg-grid-pattern {
-    background-image:
-      linear-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px),
-      linear-gradient(to right, hsl(var(--primary) / 0.1) 1px, transparent 1px);
-    background-size: 2rem 2rem;
-  }
-`;

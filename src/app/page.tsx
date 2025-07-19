@@ -232,7 +232,7 @@ export default function Home() {
           bustedCount: newBustedCount,
           score: prevState.score,
           raveBucks: prevState.raveBucks,
-          collectibles: prevState.collectibles, // This was the fix
+          collectibles: prevState.collectibles,
           time: 0,
         };
       });

@@ -98,12 +98,8 @@ export default {
         },
         'pop-burst': {
           '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.2)' },
+          '50%': { transform: 'scale(1.4)' },
           '100%': { transform: 'scale(1)' },
-        },
-        'glow-orange-flash': {
-            '0%, 100%': { color: 'hsl(var(--primary))', textShadow: 'none' },
-            '50%': { color: 'hsl(28, 100%, 50%)', textShadow: '0 0 10px hsl(28, 100%, 50%)' },
         },
       },
       animation: {
@@ -112,7 +108,6 @@ export default {
         'spin-slow': 'spin-slow 5s linear infinite',
         'roll-up': 'roll-up 0.5s ease-out forwards',
         'pop-burst': 'pop-burst 0.5s ease-out',
-        'glow-orange-flash': 'glow-orange-flash 0.8s ease-out',
       },
     },
   },

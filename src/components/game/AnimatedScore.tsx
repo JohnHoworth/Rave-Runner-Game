@@ -21,7 +21,7 @@ export default function AnimatedScore({ score }: { score: number }) {
     if (score > prevScore) {
       setAnimationKey(prevKey => prevKey + 1);
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 800); 
+      const timer = setTimeout(() => setIsAnimating(false), 500); 
       setPrevScore(score);
       return () => clearTimeout(timer);
     } else if (score < prevScore) { // Also handle reset or decrease
@@ -36,7 +36,7 @@ export default function AnimatedScore({ score }: { score: number }) {
       key={animationKey}
       className={cn(
         "text-2xl font-bold tabular-nums font-mono transition-colors text-primary",
-        isAnimating && "animate-glow-orange-flash animate-pop-burst"
+        isAnimating && "animate-pop-burst"
       )}
     >
       {scoreString.split('').map((digit, index) => (

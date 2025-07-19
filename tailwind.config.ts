@@ -92,11 +92,22 @@ export default {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
+        'roll-up': {
+            '0%': { transform: 'translateY(100%)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'pop-burst': {
+            '0%': { transform: 'scale(1)', opacity: '1' },
+            '50%': { transform: 'scale(1.4)', opacity: '1' },
+            '100%': { transform: 'scale(1)', opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin-slow 5s linear infinite',
+        'roll-up': 'roll-up 0.5s ease-out forwards',
+        'pop-burst': 'pop-burst 0.5s ease-out',
       },
     },
   },

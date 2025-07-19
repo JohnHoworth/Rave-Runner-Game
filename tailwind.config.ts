@@ -101,29 +101,6 @@ export default {
             '50%': { transform: 'scale(1.4)', opacity: '1' },
             '100%': { transform: 'scale(1)', opacity: '1' },
         },
-        'arrested': {
-          '0%': {
-            transform: 'scale(1.2) rotate(-2deg)',
-          },
-          '50%': {
-            transform: 'scale(1.25) rotate(2deg)',
-          },
-          '100%': {
-            transform: 'scale(1.2) rotate(-2deg)',
-          },
-        },
-        'police-lights': {
-          '0%, 100%': {
-            borderColor: '#0000ff',
-            boxShadow: '0 0 20px #0000ff, inset 0 0 10px #0000ff',
-            backgroundColor: 'rgba(0, 0, 255, 0.1)',
-          },
-          '50%': {
-            borderColor: '#ff0000',
-            boxShadow: '0 0 30px #ff0000, inset 0 0 20px #ff0000',
-            backgroundColor: 'rgba(255, 0, 0, 0.1)',
-          },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',

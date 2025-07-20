@@ -342,6 +342,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isGameOver) return;
       e.preventDefault();
 
       if (!hasInteractedRef.current) {
@@ -358,7 +359,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [movePlayer, dropPill]);
+  }, [movePlayer, dropPill, isGameOver]);
 
   useEffect(() => {
     if (isBusted || isGameOver) return;

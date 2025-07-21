@@ -45,7 +45,7 @@ const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: bool
             width: TILE_SIZE,
             height: TILE_SIZE,
             backgroundColor: buildingColor,
-            border: `1px solid ${roofColor}`,
+            border: `2px solid ${roofColor}`,
             position: 'relative' as const,
             boxSizing: 'border-box' as const,
             styleType,

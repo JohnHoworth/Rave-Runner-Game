@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -110,11 +111,11 @@
 @keyframes flash-green-glow-building {
     0%, 100% {
         border-color: #39FF14;
-        box-shadow: 0 0 10px #39FF14, inset 0 0 5px #39FF14;
+        box-shadow: 0 0 12px 2px #39FF14, inset 0 0 6px #39FF14;
     }
     50% {
         border-color: #ADFF2F;
-        box-shadow: 0 0 5px #39FF14, inset 0 0 2px #39FF14;
+        box-shadow: 0 0 6px #39FF14, inset 0 0 3px #39FF14;
     }
 }
 .animate-flash-green-glow-building {

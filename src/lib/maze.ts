@@ -71,4 +71,19 @@ export function findEmptySpots(maze: number[][]): Position[] {
     return emptySpots;
 }
 
-    
+/**
+ * Finds all wall spots (buildings) in the maze.
+ * @param maze The maze to search in.
+ * @returns An array of positions.
+ */
+export function findWallSpots(maze: number[][]): Position[] {
+    const wallSpots: Position[] = [];
+    for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[0].length; x++) {
+            if (maze[y][x] === 1) {
+                wallSpots.push({ x, y });
+            }
+        }
+    }
+    return wallSpots;
+}

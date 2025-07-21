@@ -7,7 +7,7 @@ import GameUI from '@/components/game/GameUI';
 import MusicPlayer from "@/components/game/MusicPlayer";
 import Header from '@/components/layout/Header';
 import type { GameState, Level, Item, CollectibleType, Position, PlayerDirection, HighScore } from "@/lib/types";
-import { generateMaze, MAZE_WIDTH, MAZE_HEIGHT, findEmptySpots } from "@/lib/maze";
+import { generateMaze, MAZE_WIDTH, MAZE_HEIGHT, findEmptySpots, findWallSpots } from "@/lib/maze";
 import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
 import type { YouTubePlayer } from "react-youtube";
@@ -67,6 +67,7 @@ const createInitialState = (): GameState => {
     maxFuel: MAX_FUEL,
     pillEffectActive: false,
     pillEffectTimer: 0,
+    flashingBuildings: [],
   };
 }
 
@@ -280,6 +281,7 @@ export default function Home() {
         let newScore = newState.score;
         let newRaveBucks = newState.raveBucks;
         let newFuel = newState.fuel;
+        let newFlashingBuildings = [...newState.flashingBuildings];
 
         setLastCollected(collectedItem.type);
         setTimeout(() => setLastCollected(null), 1500);
@@ -289,6 +291,12 @@ export default function Home() {
           playCollectSound();
           newScore += 10;
           newCollectibles.flyers++;
+
+          const wallSpots = findWallSpots(newState.maze);
+          if (wallSpots.length > 0) {
+            const randomWallSpot = wallSpots[Math.floor(Math.random() * wallSpots.length)];
+            newFlashingBuildings.push(randomWallSpot);
+          }
         } else if (collectedItem.type === 'pills') {
           newItems.splice(itemIndex, 1);
           playCollectSound();
@@ -312,6 +320,7 @@ export default function Home() {
             score: newScore,
             raveBucks: newRaveBucks,
             fuel: newFuel,
+            flashingBuildings: newFlashingBuildings,
         };
       }
       return newState;

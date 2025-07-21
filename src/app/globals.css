@@ -107,6 +107,20 @@
     animation: flash-blue-glow-bg 1.5s infinite ease-in-out;
 }
 
+@keyframes flash-green-glow-building {
+    0%, 100% {
+        border-color: #39FF14;
+        box-shadow: 0 0 10px #39FF14, inset 0 0 5px #39FF14;
+    }
+    50% {
+        border-color: #ADFF2F;
+        box-shadow: 0 0 5px #39FF14, inset 0 0 2px #39FF14;
+    }
+}
+.animate-flash-green-glow-building {
+  animation: flash-green-glow-building 1.5s infinite ease-in-out;
+}
+
 @keyframes flash-green-glow {
     0%, 100% {
         background-color: #39FF1420;

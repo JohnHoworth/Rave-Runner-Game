@@ -38,6 +38,7 @@ export type GameState = {
   maxFuel: number;
   pillEffectActive: boolean;
   pillEffectTimer: number;
+  flashingBuildings: Position[];
 };
 
 export type Level = {

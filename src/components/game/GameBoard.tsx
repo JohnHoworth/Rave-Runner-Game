@@ -29,18 +29,16 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
     }
 }
 
-const Building = ({ x, y }: { x: number, y: number }) => {
+const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: boolean }) => {
     const style = React.useMemo(() => {
         const seed = (x * 13 + y * 29) % 100;
         
-        // Building Colors
         const roofColors = ['#4a4a4a', '#5a5a5a', '#6a6a6a', '#7a7a7a'];
         const buildingColors = ['#a9a9a9', '#bdc3c7', '#95a5a6'];
 
         const roofColor = roofColors[seed % roofColors.length];
         const buildingColor = buildingColors[seed % buildingColors.length];
         
-        // Building style
         const styleType = seed % 3;
 
         return {
@@ -56,24 +54,27 @@ const Building = ({ x, y }: { x: number, y: number }) => {
     }, [x, y]);
 
     return (
-        <div style={{
-            width: style.width,
-            height: style.height,
-            backgroundColor: style.backgroundColor,
-            border: style.border,
-            position: style.position,
-            boxSizing: style.boxSizing,
-        }}>
-            {style.styleType === 0 && ( // Simple Flat
+        <div 
+            className={cn(isFlashing && 'animate-flash-green-glow-building')}
+            style={{
+                width: style.width,
+                height: style.height,
+                backgroundColor: style.backgroundColor,
+                border: style.border,
+                position: style.position,
+                boxSizing: style.boxSizing,
+            }}
+        >
+            {style.styleType === 0 && ( 
                  <div style={{ width: '80%', height: '80%', backgroundColor: style.roofColor, margin: '10%' }} />
             )}
-            {style.styleType === 1 && ( // House with pitched roof illusion
+            {style.styleType === 1 && ( 
                 <>
                     <div style={{ width: '100%', height: '50%', backgroundColor: style.roofColor, position: 'absolute', top: 0 }} />
                     <div style={{ width: '100%', height: '50%', backgroundColor: `rgba(0,0,0,0.1)`, position: 'absolute', bottom: 0 }} />
                 </>
             )}
-            {style.styleType === 2 && ( // Building with details
+            {style.styleType === 2 && ( 
                  <div style={{
                     width: '20%',
                     height: '20%',
@@ -93,12 +94,16 @@ const boardWidth = MAZE_WIDTH * TILE_SIZE;
 const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
-  const { maze, player, enemies, items } = gameState;
+  const { maze, player, enemies, items, flashingBuildings } = gameState;
 
   const droppedPillPositions = new Set(
     items
       .filter((item) => item.type === 'dropped_pill')
       .map((item) => `${item.x},${item.y}`)
+  );
+
+  const flashingBuildingPositions = new Set(
+    flashingBuildings.map((pos) => `${pos.x},${pos.y}`)
   );
 
   return (
@@ -135,7 +140,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         }}
                     >
                         {cell === 1 ? (
-                            <Building x={x} y={y} />
+                            <Building x={x} y={y} isFlashing={flashingBuildingPositions.has(`${x},${y}`)} />
                         ) : (
                             <div className={cn("w-full h-full", 
                                 droppedPillPositions.has(`${x},${y}`) && "animate-flash-blue-glow-bg"

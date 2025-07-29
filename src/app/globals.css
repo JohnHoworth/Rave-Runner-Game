@@ -111,13 +111,15 @@
 @keyframes flash-green-glow-building {
     0%, 100% {
         border-color: #39FF14;
-        box-shadow: 0 0 12px 2px #39FF14, inset 0 0 6px #39FF14;
+        box-shadow: 0 0 15px 3px #39FF14, inset 0 0 8px #39FF14;
         border-width: 2px;
+        background-color: rgba(57, 255, 20, 0.1);
     }
     50% {
         border-color: #ADFF2F;
-        box-shadow: 0 0 18px 4px #39FF14, inset 0 0 9px #39FF14;
+        box-shadow: 0 0 25px 5px #39FF14, inset 0 0 12px #39FF14;
         border-width: 2px;
+        background-color: rgba(57, 255, 20, 0.2);
     }
 }
 .animate-flash-green-glow-building {

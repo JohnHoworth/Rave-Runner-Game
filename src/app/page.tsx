@@ -55,6 +55,7 @@ const createInitialState = (): GameState => {
   return {
     score: 0,
     raveBucks: 0,
+    raveXp: 0,
     bustedCount: 0,
     collectibles: { flyers: 0, pills: 0, tunes: 0 },
     level: 1,
@@ -94,6 +95,7 @@ export default function Home() {
   const playerRef = useRef<YouTubePlayer | null>(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const [highScores, setHighScores] = useState<HighScore[]>([]);
+  const [isGainingXp, setIsGainingXp] = useState(false);
 
 
   const initAudio = () => {
@@ -237,6 +239,7 @@ export default function Home() {
           bustedCount: newBustedCount,
           score: prevState.score,
           raveBucks: prevState.raveBucks,
+          raveXp: prevState.raveXp,
           collectibles: prevState.collectibles,
           time: 0,
         };
@@ -536,6 +539,46 @@ export default function Home() {
   }, [gameState?.pillEffectActive]);
 
   useEffect(() => {
+    if (isBusted || isGameOver) {
+      setIsGainingXp(false);
+      return;
+    };
+
+    const xpGainInterval = setInterval(() => {
+        setGameState(prev => {
+            if (!prev || prev.fuel <= 0) return prev;
+
+            const { player, flashingBuildings } = prev;
+            let isNearFlashingBuilding = false;
+
+            for (const building of flashingBuildings) {
+                const dx = Math.abs(player.x - building.x);
+                const dy = Math.abs(player.y - building.y);
+                if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
+                    isNearFlashingBuilding = true;
+                    break;
+                }
+            }
+            
+            if (isNearFlashingBuilding) {
+                if (!isGainingXp) setIsGainingXp(true);
+                return {
+                    ...prev,
+                    raveXp: prev.raveXp + 1,
+                    fuel: Math.max(0, prev.fuel - 1),
+                };
+            } else {
+                if (isGainingXp) setIsGainingXp(false);
+                return prev;
+            }
+        });
+    }, 250);
+
+    return () => clearInterval(xpGainInterval);
+  }, [gameState?.flashingBuildings, gameState?.player, isBusted, isGameOver, isGainingXp]);
+
+
+  useEffect(() => {
     try {
         const savedScores = localStorage.getItem(HIGH_SCORE_KEY);
         if (savedScores) {
@@ -606,6 +649,7 @@ export default function Home() {
             gameState={gameState} 
             lastCollected={lastCollected} 
             isBustedAnimating={isBustedAnimating}
+            isGainingXp={isGainingXp}
         />
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
           <GameBoard gameState={gameState} />

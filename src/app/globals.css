@@ -116,7 +116,7 @@
     }
     50% {
         border-color: #ADFF2F;
-        box-shadow: 0 0 6px #39FF14, inset 0 0 3px #39FF14;
+        box-shadow: 0 0 18px 4px #39FF14, inset 0 0 9px #39FF14;
         border-width: 2px;
     }
 }
@@ -180,6 +180,22 @@
 .animate-glow-red-text {
     animation: glow-red-text 1.5s infinite ease-in-out;
 }
+
+@keyframes glow-green-text {
+    0%, 100% {
+        text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14;
+        color: #ADFF2F;
+    }
+    50% {
+        text-shadow: 0 0 2px #39FF14, 0 0 5px #39FF14;
+        color: #39FF14;
+    }
+}
+
+.animate-glow-green-text {
+    animation: glow-green-text 1.5s infinite ease-in-out;
+}
+
 
 @keyframes glow-red-bar {
     0%, 100% {

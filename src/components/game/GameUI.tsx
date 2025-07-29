@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BrainCircuit, Coins, DiscAlbum, FileText, Pill, Gamepad2, Timer, Fuel, Siren } from "lucide-react";
+import { BrainCircuit, Coins, DiscAlbum, FileText, Pill, Gamepad2, Timer, Fuel, Siren, Sparkles } from "lucide-react";
 import RaveCustomizer from "./RaveCustomizer";
 import { useState } from "react";
 import type { GameState, CollectibleType } from "@/lib/types";
@@ -18,11 +18,13 @@ import FlashingPillIcon from "../icons/FlashingPillIcon";
 export default function GameUI({ 
     gameState, 
     lastCollected, 
-    isBustedAnimating, 
+    isBustedAnimating,
+    isGainingXp,
 }: { 
     gameState: GameState, 
     lastCollected: CollectibleType | null, 
-    isBustedAnimating: boolean, 
+    isBustedAnimating: boolean,
+    isGainingXp: boolean,
 }) {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
@@ -56,6 +58,13 @@ export default function GameUI({
         <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>
           <MainAnimatedScore score={gameState.score} />
+          
+          <div className={cn("flex items-center justify-center gap-2", isGainingXp && "animate-glow-green-text")}>
+             <Sparkles className="w-5 h-5" />
+             <h3 className="text-md font-semibold font-headline tracking-widest">RAVE XP</h3>
+             <AnimatedScore score={gameState.raveXp} />
+          </div>
+
           <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-accent">
             <div className="flex items-center gap-2">
                 <Timer className="w-7 h-7" />
@@ -149,6 +158,7 @@ export default function GameUI({
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
                   <li>Use <kbd>Arrow Keys</kbd> to move.</li>
                   <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
+                  <li>Stand next to glowing buildings to gain Rave XP!</li>
                   <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill and distract police.</li>
                   <li>Refuel at Fuel Stations!</li>
                   <li>Avoid the police!</li>

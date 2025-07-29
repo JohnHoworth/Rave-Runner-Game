@@ -55,9 +55,7 @@ const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: bool
 
     if (isFlashing) {
         return (
-            <div 
-                className='w-full h-full animate-flash-green-glow-building' 
-            />
+            <div className='w-full h-full animate-flash-green-glow-building' />
         );
     }
 

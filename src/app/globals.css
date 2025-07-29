@@ -318,3 +318,19 @@
     animation: chase-lights 2s linear infinite;
     opacity: 0.3;
 }
+
+@keyframes emergency-title {
+    0%, 100% {
+        color: #ff4d4d;
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+        transform: scale(1) skew(-1deg);
+    }
+    50% {
+        color: #4d4dff;
+        text-shadow: 0 0 10px #0000ff, 0 0 20px #0000ff, 0 0 30px #0000ff;
+        transform: scale(1.02) skew(1deg);
+    }
+}
+.animate-emergency-title {
+    animation: emergency-title 0.5s infinite ease-in-out;
+}

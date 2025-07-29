@@ -21,8 +21,8 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
             <div className="relative z-10 text-center flex flex-col items-center gap-8 w-full max-w-4xl">
                 <header className="flex items-center gap-4">
                     <Disc3 className="text-primary h-16 w-16 animate-spin-slow" />
-                    <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-primary font-headline animate-flicker">
-                        RaveRunner<span className="text-accent">: The Acid Maze</span>
+                    <h1 className="text-6xl md:text-8xl font-bold tracking-tighter font-headline animate-emergency-title">
+                        RaveRunner: The Acid Maze
                     </h1>
                 </header>
 

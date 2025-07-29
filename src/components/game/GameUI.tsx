@@ -9,7 +9,6 @@ import { useState } from "react";
 import type { GameState, CollectibleType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Progress } from "../ui/progress";
-import { ScrollArea } from "../ui/scroll-area";
 import AnimatedScore from './AnimatedScore';
 import MainAnimatedScore from './MainAnimatedScore';
 import FlashingPillIcon from "../icons/FlashingPillIcon";
@@ -101,59 +100,49 @@ export default function GameUI({
         
         <Separator />
 
-        {/* Scrollable middle section */}
-        <ScrollArea className="flex-1 -mx-6">
-          <div className="px-6 flex flex-col gap-6">
-            {/* Collectibles */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">INVENTORY</h2>
-              <div className="space-y-3">
-                <div className={inventoryItemClasses('flyer')}>
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-6 h-6 text-green-400" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}}/>
-                    <span className="font-medium">Flyers</span>
-                  </div>
-                  <AnimatedScore score={gameState.collectibles.flyers} />
+        {/* Collectibles */}
+        <div className="space-y-4 flex-1">
+            <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">INVENTORY</h2>
+            <div className="space-y-3">
+            <div className={inventoryItemClasses('flyer')}>
+                <div className="flex items-center gap-3">
+                <FileText className="w-6 h-6 text-green-400" style={{filter: 'drop-shadow(0 0 5px #39FF14)'}}/>
+                <span className="font-medium">Flyers</span>
                 </div>
-                <div>
-                  <div className={inventoryItemClasses('pills')}>
-                    <div className="flex items-center gap-3">
-                      <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
-                      <span className="font-medium">Pills</span>
-                    </div>
-                     <AnimatedScore score={gameState.collectibles.pills} />
-                  </div>
-                  <div className="flex items-start flex-col gap-2 text-xs text-muted-foreground mt-2 pl-3">
-                    {gameState.collectibles.pills > 0 && (
-                      <div className="flex items-center gap-2">
-                        <FlashingPillIcon className="w-4 h-4" />
-                        <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
-                      </div>
-                    )}
-                    {gameState.pillEffectActive && (
-                      <div className="w-full pr-3 mt-1">
-                        <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="animate-glow-red-bar" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className={inventoryItemClasses('tunes')}>
-                  <div className="flex items-center gap-3">
-                    <DiscAlbum className="w-6 h-6 text-yellow-300" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />
-                    <span className="font-medium">Tunes</span>
-                  </div>
-                  <AnimatedScore score={gameState.collectibles.tunes} />
-                </div>
-              </div>
+                <AnimatedScore score={gameState.collectibles.flyers} />
             </div>
-            
-            <Separator />
-            
-          </div>
-        </ScrollArea>
-        
-        <Separator />
-        
+            <div>
+                <div className={inventoryItemClasses('pills')}>
+                <div className="flex items-center gap-3">
+                    <Pill className="w-6 h-6 text-red-500" style={{filter: 'drop-shadow(0 0 5px #ff0000)'}} />
+                    <span className="font-medium">Pills</span>
+                </div>
+                    <AnimatedScore score={gameState.collectibles.pills} />
+                </div>
+                <div className="flex items-start flex-col gap-2 text-xs text-muted-foreground mt-2 pl-3">
+                {gameState.collectibles.pills > 0 && (
+                    <div className="flex items-center gap-2">
+                    <FlashingPillIcon className="w-4 h-4" />
+                    <span>EVASION PILL: Press <kbd>SPACE</kbd> to drop</span>
+                    </div>
+                )}
+                {gameState.pillEffectActive && (
+                    <div className="w-full pr-3 mt-1">
+                    <Progress value={pillEffectPercentage} className="h-2" indicatorClassName="animate-glow-red-bar" />
+                    </div>
+                )}
+                </div>
+            </div>
+            <div className={inventoryItemClasses('tunes')}>
+                <div className="flex items-center gap-3">
+                <DiscAlbum className="w-6 h-6 text-yellow-300" style={{filter: 'drop-shadow(0 0 5px #DFFF00)'}} />
+                <span className="font-medium">Tunes</span>
+                </div>
+                <AnimatedScore score={gameState.collectibles.tunes} />
+            </div>
+            </div>
+        </div>
+
         <Button onClick={() => setIsCustomizerOpen(true)} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 shrink-0">
           <BrainCircuit className="mr-2 h-5 w-5" />
           AI Rave Customizer

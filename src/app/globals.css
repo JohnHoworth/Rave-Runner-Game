@@ -112,10 +112,12 @@
     0%, 100% {
         border-color: #39FF14;
         box-shadow: 0 0 12px 2px #39FF14, inset 0 0 6px #39FF14;
+        border-width: 2px;
     }
     50% {
         border-color: #ADFF2F;
         box-shadow: 0 0 6px #39FF14, inset 0 0 3px #39FF14;
+        border-width: 2px;
     }
 }
 .animate-flash-green-glow-building {

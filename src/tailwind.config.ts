@@ -93,13 +93,51 @@ export default {
           to: { transform: 'rotate(360deg)' },
         },
         'roll-up': {
-          '0%': { transform: 'translateY(100%)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+            '0%': { transform: 'translateY(100%)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         'pop-burst': {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.4)' },
-          '100%': { transform: 'scale(1)' },
+            '0%': { transform: 'scale(1)', opacity: '1' },
+            '50%': { transform: 'scale(1.4)', opacity: '1' },
+            '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        'arrested': {
+          '0%': {
+            'color': '#ff0000',
+            'text-shadow': '0 0 10px #ff0000, 0 0 20px #ff0000',
+            transform: 'scale(1.2) rotate(-2deg)'
+          },
+          '50%': {
+            'color': 'white',
+            'text-shadow': '0 0 10px #fff, 0 0 20px #fff',
+            transform: 'scale(1.25) rotate(2deg)'
+          },
+          '100%': {
+            'color': '#ff0000',
+            'text-shadow': '0 0 10px #ff0000, 0 0 20px #ff0000',
+            transform: 'scale(1.2) rotate(-2deg)'
+          }
+        },
+        'police-lights': {
+            '0%, 100%': {
+                'border-color': '#0000ff',
+                'box-shadow': '0 0 20px #0000ff, inset 0 0 10px #0000ff',
+                'background-color': 'rgba(0, 0, 255, 0.1)'
+            },
+            '50%': {
+                'border-color': '#ff0000',
+                'box-shadow': '0 0 30px #ff0000, inset 0 0 20px #ff0000',
+                'background-color': 'rgba(255, 0, 0, 0.1)'
+            }
+        },
+        'spotlight-scan': {
+            '0%': { transform: 'translateX(-100%) skewX(-15deg)', opacity: '0.5' },
+            '50%': { transform: 'translateX(100%) skewX(-15deg)', opacity: '1' },
+            '100%': { transform: 'translateX(-100%) skewX(-15deg)', opacity: '0.5' },
+        },
+        'chase-lights': {
+            '0%': { 'background-position': '-100vw 0' },
+            '100%': { 'background-position': '100vw 0' },
         },
       },
       animation: {
@@ -108,8 +146,11 @@ export default {
         'spin-slow': 'spin-slow 5s linear infinite',
         'roll-up': 'roll-up 0.5s ease-out forwards',
         'pop-burst': 'pop-burst 0.5s ease-out',
-        'scanline': 'scanline 10s linear infinite',
-        'flicker': 'flicker 4s infinite linear',
+        'arrested': 'arrested 0.5s infinite ease-in-out',
+        'police-lights': 'police-lights 0.5s infinite',
+        'glow-green-text': 'glow-green-text 1.5s infinite ease-in-out',
+        'spotlight-scan': 'spotlight-scan 3s infinite linear',
+        'chase-lights': 'chase-lights 2s linear infinite',
       },
     },
   },

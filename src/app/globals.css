@@ -286,3 +286,35 @@
 .animate-flicker {
   animation: flicker 4s infinite linear;
 }
+
+
+@keyframes spotlight-scan {
+    0% { transform: translateX(-100%) skewX(-15deg); opacity: 0.5; }
+    50% { transform: translateX(100%) skewX(-15deg); opacity: 1; }
+    100% { transform: translateX(-100%) skewX(-15deg); opacity: 0.5; }
+}
+.animate-spotlight-scan {
+    animation: spotlight-scan 3s infinite linear;
+}
+
+@keyframes chase-lights {
+    0% { background-position: -100vw 0; }
+    100% { background-position: 100vw 0; }
+}
+
+.animate-chase-lights {
+    background-image:
+        repeating-linear-gradient(-45deg,
+            rgba(255,0,0,0.4),
+            rgba(255,0,0,0.4) 20px,
+            transparent 20px,
+            transparent 40px,
+            rgba(0,0,255,0.4) 40px,
+            rgba(0,0,255,0.4) 60px,
+            transparent 60px,
+            transparent 80px
+        );
+    background-size: 200vw 100%;
+    animation: chase-lights 2s linear infinite;
+    opacity: 0.3;
+}

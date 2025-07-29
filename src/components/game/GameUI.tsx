@@ -149,22 +149,6 @@ export default function GameUI({
             
             <Separator />
             
-            {/* How to Play */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-accent font-headline tracking-widest flex items-center gap-2">
-                <Gamepad2 className="w-6 h-6" />
-                HOW TO PLAY
-              </h2>
-              <ul className="text-sm text-muted-foreground list-disc list-inside space-y-2 pl-2">
-                  <li>Use <kbd>Arrow Keys</kbd> to move.</li>
-                  <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-primary/80" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
-                  <li>Stand next to glowing buildings to gain Rave XP!</li>
-                  <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill and distract police.</li>
-                  <li>Refuel at Fuel Stations!</li>
-                  <li>Avoid the police!</li>
-                  <li>Watch your fuel, it depletes as you move!</li>
-              </ul>
-            </div>
           </div>
         </ScrollArea>
         

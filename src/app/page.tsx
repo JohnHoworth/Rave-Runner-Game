@@ -12,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import { findPath } from "@/lib/pathfinding";
 import type { YouTubePlayer } from "react-youtube";
 import GameOverScreen from "@/components/game/GameOverScreen";
+import StartScreen from "@/components/game/StartScreen";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=OG4NHr77hfU" },
@@ -83,6 +84,7 @@ type SirenAudio = {
 
 export default function Home() {
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [gameStarted, setGameStarted] = useState(false);
   const [levels] = useState<Level[]>(INITIAL_LEVELS);
   const [isBusted, setIsBusted] = useState(false);
   const [isBustedAnimating, setIsBustedAnimating] = useState(false);
@@ -97,7 +99,6 @@ export default function Home() {
   const [highScores, setHighScores] = useState<HighScore[]>([]);
   const [isGainingXp, setIsGainingXp] = useState(false);
 
-
   const initAudio = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
       try {
@@ -110,6 +111,13 @@ export default function Home() {
     }
     return !!audioContextRef.current;
   }
+
+  const handleStartGame = () => {
+    setGameState(createInitialState());
+    setGameStarted(true);
+    initAudio();
+    hasInteractedRef.current = true;
+  };
 
   const playMoveSound = useCallback(() => {
     if (!audioContextRef.current) return;
@@ -371,10 +379,10 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [movePlayer, dropPill]);
+  }, [movePlayer, dropPill, isGameOver]);
 
   useEffect(() => {
-    if (isBusted || isGameOver) return;
+    if (isBusted || isGameOver || !gameStarted) return;
 
     const gameLoop = setInterval(() => {
       setGameState(prev => {
@@ -399,7 +407,7 @@ export default function Home() {
     }, 400); 
 
     return () => clearInterval(gameLoop);
-  }, [isBusted, isGameOver]);
+  }, [isBusted, isGameOver, gameStarted]);
   
   // Centralized collision detection hook
   useEffect(() => {
@@ -486,7 +494,7 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (isBusted || isGameOver || !playerRef.current) return;
+    if (isBusted || isGameOver || !playerRef.current || !gameStarted) return;
 
     const timer = setInterval(() => {
       const player = playerRef.current;
@@ -513,7 +521,7 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isBusted, isGameOver, playerRef, playerRef.current]);
+  }, [isBusted, isGameOver, playerRef, gameStarted, playerRef.current]);
 
   useEffect(() => {
     if (!gameState?.pillEffectActive) return;
@@ -587,7 +595,6 @@ export default function Home() {
     } catch (e) {
         console.error("Could not load high scores from localStorage", e);
     }
-    setGameState(createInitialState());
   }, []);
 
   const handleAddHighScore = useCallback((name: string) => {
@@ -620,6 +627,10 @@ export default function Home() {
     }
   }, [stopAllSirens]);
 
+  if (!gameStarted) {
+    return <StartScreen onStart={handleStartGame} />;
+  }
+  
   if (!gameState) {
     return (
       <div className="flex flex-col h-screen bg-background font-body text-foreground overflow-hidden items-center justify-center">

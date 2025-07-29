@@ -49,12 +49,11 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
                         <CardContent>
                              <ul className="text-sm text-muted-foreground list-disc list-inside space-y-3">
                                 <li>Use <kbd>Arrow Keys</kbd> to move your <PlayerIcon className="inline-block w-5 h-5 -translate-y-1" />.</li>
-                                <li>Collect items for points: <FileText className="inline-block w-4 h-4 text-green-400" /> <Pill className="inline-block w-4 h-4 text-red-500" /> <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" />.</li>
-                                <li>Stand next to glowing buildings to gain Rave XP!</li>
-                                <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill and distract police.</li>
-                                <li>Refuel at Fuel Stations to keep moving.</li>
-                                <li>Avoid the police <PoliceSirenIcon className="inline-block w-5 h-5 -translate-y-1" />!</li>
-                                <li>Watch your fuel, it depletes as you move!</li>
+                                <li>Collect <FileText className="inline-block w-4 h-4 text-green-400" /> to find rave spots. Stand next to glowing buildings to earn Rave XP, but watch your fuel!</li>
+                                <li>Gather <Pill className="inline-block w-4 h-4 text-red-500" /> & <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" /> for extra points and cash.</li>
+                                <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill to distract the police.</li>
+                                <li>Avoid the police <PoliceSirenIcon className="inline-block w-5 h-5 -translate-y-1" /> at all costs!</li>
+                                <li>Refuel at Fuel Stations to keep moving. Your fuel depletes as you move or gain XP.</li>
                             </ul>
                         </CardContent>
                     </Card>

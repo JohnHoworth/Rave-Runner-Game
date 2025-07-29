@@ -347,12 +347,10 @@ export default function Home() {
       
       playDropPillSound();
       
-      const newItems = [...prev.items, { type: 'dropped_pill', x: prev.player.x, y: prev.player.y }];
       const newCollectibles = { ...prev.collectibles, pills: prev.collectibles.pills - 1 };
 
       return { 
         ...prev, 
-        items: newItems, 
         collectibles: newCollectibles,
         pillEffectActive: true,
         pillEffectTimer: PILL_EFFECT_DURATION,
@@ -536,7 +534,6 @@ export default function Home() {
             ...prev,
             pillEffectActive: false,
             pillEffectTimer: 0,
-            items: prev.items.filter(item => item.type !== 'dropped_pill')
           };
         }
         return { ...prev, pillEffectTimer: newTime };

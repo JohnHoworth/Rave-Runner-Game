@@ -23,7 +23,7 @@ const ItemIcon = ({ type }: { type: Item['type'] }) => {
         case 'fuel_station':
             return <Zap className="w-full h-full text-blue-400 animate-flash-blue-glow" />;
         case 'dropped_pill':
-            return <FlashingPillIcon className="w-full h-full -rotate-45" />;
+             return null; // This is now handled on the player icon
         default:
             return null;
     }
@@ -99,13 +99,7 @@ const boardWidth = MAZE_WIDTH * TILE_SIZE;
 const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 
 export default function GameBoard({ gameState }: { gameState: GameState }) {
-  const { maze, player, enemies, items, flashingBuildings } = gameState;
-
-  const droppedPillPositions = new Set(
-    items
-      .filter((item) => item.type === 'dropped_pill')
-      .map((item) => `${item.x},${item.y}`)
-  );
+  const { maze, player, enemies, items, flashingBuildings, pillEffectActive } = gameState;
 
   const flashingBuildingPositions = new Set(
     flashingBuildings.map((pos) => `${pos.x},${pos.y}`)
@@ -147,9 +141,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         {cell === 1 ? (
                             <Building x={x} y={y} isFlashing={flashingBuildingPositions.has(`${x},${y}`)} />
                         ) : (
-                            <div className={cn("w-full h-full", 
-                                droppedPillPositions.has(`${x},${y}`) && "animate-flash-blue-glow-bg"
-                            )} 
+                            <div className="w-full h-full"
                             style={{ 
                                 backgroundColor: '#3d3d3d',
                                 backgroundImage: `
@@ -192,6 +184,11 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 zIndex: 30,
             }}>
                 <PlayerIcon className="w-full h-full" />
+                {pillEffectActive && (
+                    <div className="absolute inset-0 p-1">
+                        <FlashingPillIcon className="w-full h-full -rotate-45" />
+                    </div>
+                )}
             </div>
         </div>
     </div>

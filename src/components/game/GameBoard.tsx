@@ -53,9 +53,16 @@ const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: bool
         };
     }, [x, y]);
 
+    if (isFlashing) {
+        return (
+            <div 
+                className='w-full h-full animate-flash-green-glow-building' 
+            />
+        );
+    }
+
     return (
         <div 
-            className={cn(isFlashing && 'animate-flash-green-glow-building')}
             style={{
                 width: style.width,
                 height: style.height,

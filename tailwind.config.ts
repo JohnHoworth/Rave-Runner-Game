@@ -162,26 +162,6 @@ export default {
               color: '#ff8080',
           }
         },
-        'glow-orange-border': {
-            '0%, 100%': {
-                'border-color': '#FFA500',
-                'box-shadow': '0 0 10px #FFA500, inset 0 0 5px #FFA500',
-            },
-            '50%': {
-                'border-color': '#FFD700',
-                'box-shadow': '0 0 20px #FFA500, inset 0 0 10px #FFA500',
-            },
-        },
-        'glow-blue-border': {
-            '0%, 100%': {
-                'border-color': '#7DF9FF',
-                'box-shadow': '0 0 10px #7DF9FF, inset 0 0 5px #7DF9FF',
-            },
-            '50%': {
-                'border-color': '#00BFFF',
-                'box-shadow': '0 0 20px #7DF9FF, inset 0 0 10px #7DF9FF',
-            },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -196,8 +176,6 @@ export default {
         'chase-lights': 'chase-lights 2s linear infinite',
         'emergency-title': 'emergency-title 0.5s infinite ease-in-out',
         'glow-red-text': 'glow-red-text 1.5s infinite ease-in-out',
-        'glow-orange-border': 'glow-orange-border 2s infinite ease-in-out',
-        'glow-blue-border': 'glow-blue-border 2s infinite ease-in-out',
       },
     },
   },

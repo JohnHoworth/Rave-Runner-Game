@@ -52,7 +52,7 @@ export default function GameUI({
 
   return (
     <>
-      <aside className="w-80 bg-card/30 border-r border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg animate-glow-orange-border">
+      <aside className="w-80 bg-card/30 border-r border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg shadow-[0_0_15px_hsl(var(--accent)/0.7)] border-accent">
         {/* Score and Currency */}
         <div className="space-y-4 text-center">
           <h2 className="text-lg font-semibold text-accent font-headline tracking-widest">SCORE</h2>

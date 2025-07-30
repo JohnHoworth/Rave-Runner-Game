@@ -92,7 +92,7 @@ export default function MusicPlayer({
   };
 
   return (
-    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg animate-glow-orange-border">
+    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg shadow-[0_0_15px_hsl(var(--accent)/0.7)] border-accent">
       {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={handlePlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
       
       {/* Now Playing Section */}

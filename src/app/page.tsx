@@ -669,7 +669,7 @@ export default function Home() {
             isBustedAnimating={isBustedAnimating}
             isGainingXp={isGainingXp}
         />
-        <div className="flex-1 flex items-center justify-center p-4 lg:p-8 relative border-2 rounded-lg animate-glow-blue-border">
+        <div className="flex-1 flex items-center justify-center p-4 lg:p-8 relative border-2 rounded-lg shadow-[0_0_15px_hsl(var(--primary)/0.7)] border-primary">
           <GameBoard gameState={gameState} />
            {showNoFuelMessage && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-40 pointer-events-none">

@@ -130,6 +130,37 @@ export default {
                 'background-color': 'rgba(255, 0, 0, 0.1)'
             }
         },
+        'spotlight-scan': {
+            '0%': { transform: 'translateX(-100%) skewX(-15deg)', opacity: '0.5' },
+            '50%': { transform: 'translateX(100%) skewX(-15deg)', opacity: '1' },
+            '100%': { transform: 'translateX(-100%) skewX(-15deg)', opacity: '0.5' },
+        },
+        'chase-lights': {
+            '0%': { 'background-position': '-100vw 0' },
+            '100%': { 'background-position': '100vw 0' },
+        },
+        'emergency-title': {
+            '0%, 100%': {
+                color: '#ff4d4d',
+                'text-shadow': '0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000',
+                transform: 'scale(1) skew(-1deg)',
+            },
+            '50%': {
+                color: '#4d4dff',
+                'text-shadow': '0 0 10px #0000ff, 0 0 20px #0000ff, 0 0 30px #0000ff',
+                transform: 'scale(1.02) skew(1deg)',
+            },
+        },
+        'glow-red-text': {
+          '0%, 100%': {
+              'text-shadow': '0 0 5px #ff0000, 0 0 10px #ff0000',
+              color: '#ff4d4d',
+          },
+          '50%': {
+              'text-shadow': '0 0 2px #ff0000, 0 0 5px #ff0000',
+              color: '#ff8080',
+          }
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -140,6 +171,10 @@ export default {
         'arrested': 'arrested 0.5s infinite ease-in-out',
         'police-lights': 'police-lights 0.5s infinite',
         'glow-green-text': 'glow-green-text 1.5s infinite ease-in-out',
+        'spotlight-scan': 'spotlight-scan 3s infinite linear',
+        'chase-lights': 'chase-lights 2s linear infinite',
+        'emergency-title': 'emergency-title 0.5s infinite ease-in-out',
+        'glow-red-text': 'glow-red-text 1.5s infinite ease-in-out',
       },
     },
   },

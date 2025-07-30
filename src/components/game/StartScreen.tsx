@@ -49,7 +49,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
                         <CardContent>
                              <ul className="text-sm text-muted-foreground list-disc list-inside space-y-3">
                                 <li>Use <kbd>Arrow Keys</kbd> to move your <PlayerIcon className="inline-block w-5 h-5 -translate-y-1" />.</li>
-                                <li>Collect <FileText className="inline-block w-4 h-4 text-green-400" /> to find rave spots. Stand next to glowing buildings to earn Rave XP, but watch your fuel!</li>
+                                <li>Collect <FileText className="inline-block w-4 h-4 text-green-400" /> to find rave spots. Stand on glowing buildings to earn Rave XP, but watch your fuel!</li>
                                 <li>Gather <Pill className="inline-block w-4 h-4 text-red-500" /> & <DiscAlbum className="inline-block w-4 h-4 text-yellow-300" /> for extra points and cash.</li>
                                 <li>Press <kbd>SPACE</kbd> to drop an Evasion Pill to distract the police.</li>
                                 <li>Avoid the police <PoliceSirenIcon className="inline-block w-5 h-5 -translate-y-1" /> at all costs!</li>
@@ -62,7 +62,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
                 <Button 
                     onClick={onStart} 
                     size="lg" 
-                    className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest transition-all duration-200 hover:scale-105 active:scale-100"
+                    className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest transition-all duration-200 hover:scale-105 active:scale-100 hover:animate-glow-red-border active:animate-glow-orange-border"
                 >
                     BEGIN
                 </Button>

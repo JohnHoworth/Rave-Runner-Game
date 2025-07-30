@@ -99,7 +99,7 @@ export default {
         },
         'pop-burst': {
             '0%': { transform: 'scale(1)', opacity: '1' },
-            '50%': { transform: 'scale(1.4)', opacity: '1' },
+            '50%': { transform: 'scale(1.8)', opacity: '1' },
             '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },

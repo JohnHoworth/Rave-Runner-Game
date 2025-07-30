@@ -59,7 +59,11 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
                     </Card>
                 </div>
 
-                <Button onClick={onStart} size="lg" className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest">
+                <Button 
+                    onClick={onStart} 
+                    size="lg" 
+                    className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest transition-all duration-200 hover:scale-105 active:scale-100"
+                >
                     BEGIN
                 </Button>
             </div>

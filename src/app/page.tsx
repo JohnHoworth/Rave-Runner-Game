@@ -13,6 +13,7 @@ import { findPath } from "@/lib/pathfinding";
 import type { YouTubePlayer } from "react-youtube";
 import GameOverScreen from "@/components/game/GameOverScreen";
 import StartScreen from "@/components/game/StartScreen";
+import { cn } from "@/lib/utils";
 
 const INITIAL_LEVELS: Level[] = [
     { name: "Your Love", artist: "Frankie Knuckles", theme: "Chicago Warehouse", youtubeUrl: "https://www.youtube.com/watch?v=OG4NHr77hfU" },
@@ -98,6 +99,7 @@ export default function Home() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [highScores, setHighScores] = useState<HighScore[]>([]);
   const [isGainingXp, setIsGainingXp] = useState(false);
+  const [showNoFuelMessage, setShowNoFuelMessage] = useState(false);
 
   const initAudio = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
@@ -616,6 +618,12 @@ export default function Home() {
         setCurrentTrack(levels[gameState.level - 1]);
     }
   }, [gameState?.level, levels]);
+  
+  useEffect(() => {
+    if(gameState) {
+        setShowNoFuelMessage(gameState.fuel <= 0);
+    }
+  }, [gameState?.fuel]);
 
   useEffect(() => {
     return () => {
@@ -661,8 +669,15 @@ export default function Home() {
             isBustedAnimating={isBustedAnimating}
             isGainingXp={isGainingXp}
         />
-        <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
+        <div className="flex-1 flex items-center justify-center p-4 lg:p-8 relative">
           <GameBoard gameState={gameState} />
+           {showNoFuelMessage && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-40 pointer-events-none">
+              <h1 className="text-8xl font-extrabold tracking-widest font-headline animate-glow-red-text">
+                NO FUEL
+              </h1>
+            </div>
+          )}
         </div>
         <MusicPlayer
           levels={levels}
@@ -683,5 +698,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

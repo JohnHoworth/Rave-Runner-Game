@@ -204,17 +204,17 @@
 
 @keyframes glow-red-bar {
     0%, 100% {
-        background-color: #ef4444; /* red-500 */
-        box-shadow: 0 0 8px #ef4444;
+        background-color: #dc2626; /* red-600 */
+        box-shadow: 0 0 12px #ef4444, 0 0 4px #f87171;
     }
     50% {
-        background-color: #f87171; /* red-400 */
-        box-shadow: 0 0 12px #ef4444;
+        background-color: #ef4444; /* red-500 */
+        box-shadow: 0 0 20px #ef4444, 0 0 8px #f87171;
     }
 }
 
 .animate-glow-red-bar {
-    animation: glow-red-bar 1.5s infinite ease-in-out;
+    animation: glow-red-bar 1.2s infinite ease-in-out;
 }
 
 @keyframes arrested {

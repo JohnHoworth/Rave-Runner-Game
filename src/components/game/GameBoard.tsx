@@ -184,10 +184,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             ))}
 
             <div 
-              className={cn(
-                "absolute p-1",
-                pillEffectActive && "animate-flash-red-glow rounded-full"
-              )} 
+              className="absolute" 
               style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
@@ -195,9 +192,18 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                 zIndex: 30,
               }}
             >
-                <PlayerIcon className="w-full h-full" />
+                <div 
+                    className={cn(
+                        "w-full h-full p-1",
+                        pillEffectActive && "animate-flash-red-glow"
+                    )}
+                >
+                    <PlayerIcon className="w-full h-full" />
+                </div>
             </div>
         </div>
     </div>
   );
 }
+
+    

@@ -54,7 +54,18 @@ const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: bool
 
     if (isFlashing) {
         return (
-            <div className='w-full h-full animate-flash-green-glow-building' />
+            <div className="relative w-full h-full">
+                <div className='absolute inset-0 w-full h-full animate-flash-green-glow-building' />
+                <div className="absolute inset-0 w-full h-full"
+                    style={{ 
+                        backgroundColor: 'transparent',
+                        backgroundImage: `
+                            radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)
+                        `,
+                        backgroundSize: '5px 5px',
+                        opacity: 0.5,
+                    }}/>
+            </div>
         );
     }
 

@@ -271,10 +271,14 @@ export default function Home() {
   
       const newPlayerPos = { x: prev.player.x + dx, y: prev.player.y + dy };
   
+      const isFlashingBuilding = prev.flashingBuildings.some(
+        (b) => b.x === newPlayerPos.x && b.y === newPlayerPos.y
+      );
+
       if (
         newPlayerPos.y < 0 || newPlayerPos.y >= MAZE_HEIGHT ||
         newPlayerPos.x < 0 || newPlayerPos.x >= MAZE_WIDTH ||
-        prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1
+        (prev.maze[newPlayerPos.y]?.[newPlayerPos.x] === 1 && !isFlashingBuilding)
       ) {
         return { ...prev, player: { ...prev.player, direction } };
       }
@@ -554,18 +558,16 @@ export default function Home() {
             if (!prev || prev.fuel <= 0) return prev;
 
             const { player, flashingBuildings } = prev;
-            let isNearFlashingBuilding = false;
+            let isOnFlashingBuilding = false;
 
             for (const building of flashingBuildings) {
-                const dx = Math.abs(player.x - building.x);
-                const dy = Math.abs(player.y - building.y);
-                if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
-                    isNearFlashingBuilding = true;
+                if (player.x === building.x && player.y === building.y) {
+                    isOnFlashingBuilding = true;
                     break;
                 }
             }
             
-            if (isNearFlashingBuilding) {
+            if (isOnFlashingBuilding) {
                 if (!isGainingXp) setIsGainingXp(true);
                 return {
                     ...prev,

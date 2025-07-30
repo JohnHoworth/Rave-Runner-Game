@@ -124,6 +124,7 @@ export default {
         'chase-lights': 'chase-lights 2s linear infinite',
         'emergency-title': 'emergency-title 0.5s infinite ease-in-out',
         'glow-red-text': 'glow-red-text 1.5s infinite ease-in-out',
+        'glow-red-border': 'glow-red-border 1.5s infinite ease-in-out',
       },
     },
   },

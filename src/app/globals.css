@@ -335,6 +335,21 @@
 .animate-emergency-title {
     animation: emergency-title 0.5s infinite ease-in-out;
 }
+
+@keyframes glow-red-border {
+    0%, 100% {
+        border-color: #ff4d4d;
+        box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    }
+    50% {
+        border-color: #ff8080;
+        box-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+}
+.animate-glow-red-border {
+  animation: glow-red-border 1.5s infinite ease-in-out;
+}
     
 
     
+

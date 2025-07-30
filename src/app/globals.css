@@ -93,20 +93,20 @@
   animation: flash-blue-glow 1.5s infinite ease-in-out;
 }
 
-@keyframes flash-blue-glow-bg {
+@keyframes flash-red-glow {
     0%, 100% {
-        background-color: #00BFFF20;
-        box-shadow: inset 0 0 10px #00BFFF;
+        background-color: #ff000020;
+        box-shadow: inset 0 0 10px #ff0000;
     }
     50% {
-        background-color: #00BFFF10;
-        box-shadow: inset 0 0 5px #00BFFF;
+        background-color: #ff000010;
+        box-shadow: inset 0 0 5px #ff0000;
     }
 }
-
-.animate-flash-blue-glow-bg {
-    animation: flash-blue-glow-bg 1.5s infinite ease-in-out;
+.animate-flash-red-glow {
+    animation: flash-red-glow 1.5s infinite ease-in-out;
 }
+
 
 @keyframes flash-green-glow-building {
     0%, 100% {
@@ -140,20 +140,6 @@
 }
 .animate-flash-green-glow {
   animation: flash-green-glow 1.5s ease-in-out;
-}
-
-@keyframes flash-red-glow {
-    0%, 100% {
-        background-color: #ff000020;
-        box-shadow: inset 0 0 10px #ff0000;
-    }
-    50% {
-        background-color: #ff000010;
-        box-shadow: inset 0 0 5px #ff0000;
-    }
-}
-.animate-flash-red-glow {
-  animation: flash-red-glow 1.5s ease-in-out;
 }
 
 @keyframes flash-yellow-glow {

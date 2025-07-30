@@ -56,7 +56,7 @@ const Building = ({ x, y, isFlashing }: { x: number, y: number, isFlashing: bool
         return (
             <div className="relative w-full h-full">
                 <div className='absolute inset-0 w-full h-full animate-flash-green-glow-building' />
-                <div className="absolute inset-0 w-full h-full"
+                <div className="w-full h-full"
                     style={{ 
                         backgroundColor: 'transparent',
                         backgroundImage: `
@@ -111,10 +111,6 @@ const boardHeight = MAZE_HEIGHT * TILE_SIZE;
 export default function GameBoard({ gameState }: { gameState: GameState }) {
   const { maze, player, enemies, items, flashingBuildings, pillEffectActive } = gameState;
 
-  const flashingBuildingPositions = new Set(
-    flashingBuildings.map((pos) => `${pos.x},${pos.y}`)
-  );
-
   return (
     <div
       className="overflow-hidden rounded-lg bg-gray-800"
@@ -149,7 +145,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
                         }}
                     >
                         {cell === 1 ? (
-                            <Building x={x} y={y} isFlashing={flashingBuildingPositions.has(`${x},${y}`)} />
+                            <Building x={x} y={y} isFlashing={flashingBuildings.some(b => b.x === x && b.y === y)} />
                         ) : (
                             <div className="w-full h-full"
                             style={{ 
@@ -190,7 +186,7 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             <div 
               className={cn(
                 "absolute p-1",
-                pillEffectActive && "animate-flash-blue-glow-bg rounded-full"
+                pillEffectActive && "animate-flash-red-glow rounded-full"
               )} 
               style={{
                 width: `${TILE_SIZE}px`,

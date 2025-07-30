@@ -62,7 +62,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
                 <Button 
                     onClick={onStart} 
                     size="lg" 
-                    className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest transition-all duration-200 hover:scale-105 active:scale-100 hover:animate-glow-red-border active:animate-glow-orange-border"
+                    className="mt-8 text-4xl px-12 py-8 bg-primary text-primary-foreground hover:bg-primary/90 animate-flicker font-headline tracking-widest transition-all duration-200 hover:scale-105 active:scale-100 hover:border-accent active:border-accent-foreground border-4 border-transparent"
                 >
                     BEGIN
                 </Button>

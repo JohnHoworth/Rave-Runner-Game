@@ -7,7 +7,6 @@ import PoliceSirenIcon from "@/components/icons/PoliceSirenIcon";
 import { GameState, Item } from "@/lib/types";
 import { DiscAlbum, FileText, Pill, Zap } from "lucide-react";
 import { MAZE_WIDTH, MAZE_HEIGHT } from "@/lib/maze";
-import FlashingPillIcon from "../icons/FlashingPillIcon";
 import { cn } from "@/lib/utils";
 
 const TILE_SIZE = 40;
@@ -177,18 +176,19 @@ export default function GameBoard({ gameState }: { gameState: GameState }) {
             </div>
             ))}
 
-            <div className="absolute p-1" style={{
+            <div 
+              className={cn(
+                "absolute p-1",
+                pillEffectActive && "animate-flash-blue-glow-bg rounded-full"
+              )} 
+              style={{
                 width: `${TILE_SIZE}px`,
                 height: `${TILE_SIZE}px`,
                 transform: `translateX(${player.x * TILE_SIZE}px) translateY(${player.y * TILE_SIZE}px)`,
                 zIndex: 30,
-            }}>
+              }}
+            >
                 <PlayerIcon className="w-full h-full" />
-                {pillEffectActive && (
-                    <div className="absolute inset-0 p-1">
-                        <FlashingPillIcon className="w-full h-full -rotate-45" />
-                    </div>
-                )}
             </div>
         </div>
     </div>

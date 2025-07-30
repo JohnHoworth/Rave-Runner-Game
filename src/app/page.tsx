@@ -391,10 +391,10 @@ export default function Home() {
         if (!prev || prev.pillEffectActive) return prev;
 
         const newState = { ...prev };
-        const { player, maze } = newState;
+        const { player, maze, flashingBuildings } = newState;
 
         const newEnemies = newState.enemies.map(enemy => {
-          const path = findPath(enemy, player, maze);
+          const path = findPath(enemy, player, maze, flashingBuildings);
           if (path && path.length > 1) {
             return path[1];
           }
@@ -683,3 +683,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

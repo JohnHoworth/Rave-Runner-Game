@@ -92,7 +92,7 @@ export default function MusicPlayer({
   };
 
   return (
-    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg shadow-[0_0_15px_hsl(var(--accent)/0.7)] border-accent">
+    <aside className="w-80 bg-card/30 border-l border-border/50 p-6 flex flex-col gap-6 hidden lg:flex border-2 rounded-lg border-red-500 animate-glow-red-border">
       {typeof window !== 'undefined' && <YouTube videoId={videoId || undefined} opts={opts} onReady={handlePlayerReady} onStateChange={onPlayerStateChange} className="hidden" />}
       
       {/* Now Playing Section */}
@@ -164,7 +164,7 @@ export default function MusicPlayer({
                   'p-3 rounded-md transition-all duration-150 ease-in-out border-2 cursor-pointer hover:scale-95 active:scale-110',
                   currentTrack.name === level.name 
                     ? 'bg-green-500/20 border-green-500 animate-glow-green-border' 
-                    : 'border-primary/20 hover:border-red-500 hover:animate-glow-red-border'
+                    : 'border-primary/20 hover:border-accent'
                 )}
               >
                 <p className="font-bold text-primary">{`LVL ${index + 1}: ${level.name}`}</p>
